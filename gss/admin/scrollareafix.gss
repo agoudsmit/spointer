@@ -1,0 +1,6 @@
+/**
+ * Shift the scroll bar as per the new design
+ */
+.custom-scroll-bar {
+  -webkit-transform: translate(25px, 0);
+}

@@ -1,0 +1,47 @@
+
+@defmixin lineargradient(R, G, B, START, STOP) {
+  background-color: rgba(R, G, B, START);
+  background-image: -webkit-linear-gradient(top, rgba(R, G, B, START), rgba(R, G, B, STOP));
+  /* @alternate */ background-image: -moz-linear-gradient(top, rgba(R, G, B, START), rgba(R, G, B, STOP));
+  /* @alternate */ background-image: -ms-linear-gradient(top, rgba(R, G, B, START), rgba(R, G, B, STOP));
+}
+
+@defmixin headerBG() {
+  @mixin lineargradient(73, 118, 147, 0.11, 0.48);
+}
+/** Define the header colors and sizes */
+.header {
+  border: 1px solid BORDER_COLOR;
+  width: 100%;
+  min-width: 640px;
+  height: 160px;
+  margin-bottom: 40px;
+  position: relative;
+  /*text-shadow: #ffffff 0px 1px 0, #000000 0 -1px 0;*/
+  text-shadow: #ffffff 0px 1px 0;
+  @mixin headerBG();
+
+}
+
+/** Defines the looks of the InterAct title */
+.header h1 {
+  margin-left: 10px;
+  font-family: Impact;
+  font-size: 40px;
+  font-weight: normal;
+}
+
+.header .to-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 40px 20px 0 0;
+  text-align: right;
+}
+
+.fullscreen {
+  width: 100%;
+  height: 100%;
+  padding: 0 40px 0 40px;
+  color: EMBOSS_TEXT_COLOR;
+}

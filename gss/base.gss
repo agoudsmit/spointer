@@ -1,0 +1,75 @@
+/** The color of the background generally */
+@def BACKGROUND_COLOR #edeff1;
+/** THe color of all input elements (input, textarea etc) */
+@def BASE_COLOR #ffffff;
+/** The color used for borders in general */
+@def BORDER_COLOR #ffffff;
+/** The color of text in the major text areas */
+@def EMBOSS_TEXT_COLOR #497593;
+/** This is the color used to draw fake focus / outline */
+@def OUTLINE_COLOR #009fe3;
+/** Color used to display errors inline */
+@def ERROR_COLOR red;
+@def BUTTON_SIZE 32px;
+/** Define the size of the cicrle buttons */
+@defmixin cirlebutton() {
+  width: BUTTON_SIZE;
+  height: BUTTON_SIZE;
+  background-image: url("../assets/sprite2.png"), url("../assets/sprite2.png");
+  background-repeat: no-repeat;
+}
+
+/** Define the icons that can be used with their active state. */
+
+
+
+@defmixin icons(NUMBER) {
+  background-position: mult(32px, NUMBER, -1) 0, 32px 0;
+}
+
+@defmixin hovericons(NUMBER) {
+  background-position: mult(32px, NUMBER, -1) 0, -320px 0;
+}
+
+
+/** Add natural box sizing, works in ie8+, ff, chrome */
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/** Define the font face, probably not a good idea...*/
+@font-face {
+  font-family: "segoe";
+  src: url("../assets/segoeuil.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/** Setup html body and screen for this app */
+html, body, #screen {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+/** Setup the styling for the app */
+body {
+  font-family: "segoe";
+  background-color: BACKGROUND_COLOR;
+  background-image: url("../assets/bg.png");
+  background-repeat: repeat;
+  color: white;
+  font-size: 13px;
+}
+
+#screen {
+  overflow: hidden;
+}
+
+/** Common util classes */
+.bold {
+  font-weight: bold;
+}

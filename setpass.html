@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>InterAct - Set your new password</title>
+    <link rel="stylesheet" href="build/setpass.css" type="text/css">
+  </head>
+  <body>
+    <div id="screen" style="width:100%;height:100%;">
+      <div class="fullscreen">
+        <div class="header">
+          <h1>InterAct</h1>
+          <div class="to-right">
+            <div class="date-time"></div>
+            <div>You are not logged in.</div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="center-both">
+            <div class="login-panel">
+              <!-- Here you have the change to put a server side error message: String -->
+              <div class="error"><?php ... ?></div>
+              <div class="greeting">SET NEW PASSWORD</div>
+              <form action="<?php ... ?>"
+              method="post" accept-charset="utf-8">
+                <div class="input">
+                  <input id="pass" name="password" type="password" label="password" />
+                </div>
+                <div class="input">
+                  <input id="cpass" name="confirmpassword" type="password" label="confirm password" />
+                </div>
+                <div class="goog-button form-button"></div>
+                <div class="tip">Submit</div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--
+    <script src="build/setpass-cssmap.js"></script>
+    <script src="../../library/closure/goog/base.js"></script>
+    <script src="build/deps.js"></script>
+    <script>goog.require('setpass');</script>
+    -->
+    <script src="build/setpass.build.js"></script>
+
+  </body>
+</html>

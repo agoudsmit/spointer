@@ -1,0 +1,8 @@
+/** The large body of the data */
+.content {
+  border: 1px solid BORDER_COLOR;
+  width: 100%;
+  display: table;
+  height: 550px;
+  background-color: rgba(73, 118, 147, 0.11);
+}

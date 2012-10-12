@@ -1,0 +1,86 @@
+/** The large body of the data */
+.content {
+  border: 1px solid BORDER_COLOR;
+  width: 100%;
+  display: table;
+  height: 550px;
+  background-color: rgba(73, 118, 147, 0.11);
+}
+
+/** Center smaller content vertically and horizontally, all divs put into this
+container will be centered */
+.center-both {
+  display: table-cell;
+  vertical-align: middle;
+  margin: auto;
+}
+
+/** The login panel, this used to be colored, but now is transparent and only
+sets the dimentions of the login/reset/recorver area */
+.login-panel {
+  height: 180px;
+  width: 250px;
+  color: black;
+  margin: auto;
+}
+
+/** Defines how the header of the panel area will look like */
+.greeting {
+  font-weight: bold;
+  height: 30px;
+  color: OUTLINE_COLOR;
+}
+
+/** The input divs. We need those to space out the inputs more reliably */
+.input {
+  padding: 2px;
+  height: 40px;
+}
+
+/** Define how the input fields will look like in all login panels */
+input[type="text"], input[type="password"] {
+  width: 200px;
+  background-color: BASE_COLOR;
+  border: 1px solid #98aebf;
+  color: #98aebf;
+  padding: 6px;
+  outline: none;
+}
+
+input[type="text"]:focus, input[type="password"]:focus,
+input[type="text"]:focus.invalid-value {
+  border-color: OUTLINE_COLOR;
+}
+
+input[type="text"].invalid-value,
+input[type="password"].invalid-value {
+  border-color: red;
+}
+
+/** How the server error will look like. The server generated errors should come
+inline in the html, this is only possible in the login stage*/
+.error {
+  color: ERROR_COLOR;
+}
+
+/** Define how the form submition button will look like */
+.form-button {
+  @mixin icons(2);
+  position: relative;
+  float: right;
+  @mixin cirlebutton();
+  cursor: pointer;
+  outline: none;
+}
+
+.form-button:hover, .font-button:active, .form-button-focused {
+  @mixin hovericons(2);
+}
+
+/** Defines how the tip for the button will look like */
+.tip {
+  color: EMBOSS_TEXT_COLOR;
+  height: BUTTON_SIZE;
+  line-height: BUTTON_SIZE;
+  font-style: italic;
+}

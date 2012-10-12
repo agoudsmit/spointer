@@ -1,0 +1,42 @@
+/** Setup the modal dialog */
+.modal-dialog-bg {
+  position: absolute;
+  background-color: black;
+  top: 0;
+  left: 0;
+}
+
+.modal-dialog {
+  position: absolute;
+  background-color: white;
+  padding: 30px;
+  color: black;
+}
+
+.modal-dialog-content {
+  margin: 15px;
+}
+
+.modal-dialog-buttons {
+  float: right;
+}
+
+/** Setup the link bottom on the panel*/
+.link {
+  cursor: pointer;
+  color: EMBOSS_TEXT_COLOR;
+  font-style: italic;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited .link {
+  color: EMBOSS_TEXT_COLOR;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: blue;
+}

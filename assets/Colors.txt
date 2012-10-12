@@ -1,0 +1,33 @@
+Login Screen
+BLUE BACKGROUND COLOR: 						#497693 Opacity: 35%
+BACKGROUND COLOR:						#f0f2f4	Mislq 4e ako e s Opacity: 70% i dobavim pattern-a 6te i
+"Login" TEXT COLOR:						#009fe3
+input text field BORDER COLOR: 					#92acbe
+"InterAct" TEXT COLOR: 						#3b6e8f
+
+Recover Password Screen
+"Recover password" TEXT COLOR: 					#3b6e8f
+
+Games Screen
+"ADD NEW GAME" TEXT COLOR:					#80a1b6
+Input field "ADD NEW GAME" BORDER COLOR:			#497693
+"Game One" TEXT COLOR:						#009fe3
+"search" INPUT BORDER COLOR:					#92acbe
+"search" TEXT COLOR:						#80a1b6
+SCROLLBAR THUMB BORDER COLOR:					#92acbe
+SCROLLBAR TRACK LINE COLOR					#497693
+
+Inside Games Active Screen
+Time speed line Color:						#497693
+
+Teams Users Screen
+LEFT BOX BACKGROUND COLOR:					#92acbe	Opacity 50%
+HEADER BACKGROUND GRADIENT:					top: #ccd7df, bottom: #b4c5d0 (for no alpha)
+BOX BACKGROUND COLOR: 						#cfdae1
+input text field edit player BACKGROUND COLOR:			#eef2f5
+selected player box BACKGROUND COLOR:				#e2e8ed
+
+Edit Team Control User
+edit team box BACKGROUND COLOR:					#dae2e8
+left content box BACKGROUND COLOR:				#c1cfd9
+right content box BACKGROUND COLOR:				#ced8e0

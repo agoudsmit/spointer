@@ -1,0 +1,130 @@
+{namespace spo.template}
+
+/**
+ * This is the clock at the header, it is used programatically.
+ * @param time The time string to set.
+ * @param date The date string to set.
+ */
+{template .clock}
+  <div>time <span class="{css time} {css bold}">{$time}</span></div>
+  <div>date <span class="{css date} {css bold}">{$date}</span></div>
+{/template}
+
+/**
+ * This is the default non-logged user header.
+ */
+{template .header}
+  <div class="{css header}">
+    <h1>InterAct</h1>
+    <div class="{css to-right}">
+      <div class="{css date-time}"></div>
+      <div>You are not logged in</div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * Marks with css class 'live' the sections that are supposed to be handled
+ * by the js logic and not directly filled in by the template engine
+ * @param username The user's name as provided by the server.
+ */
+{template .headerWithLogin}
+    <h1>InterAct</h1>
+    <h3 class="{css live} {css game-name}"></h3>
+    <h2 class="{css live} {css view-name}"></h2>
+    <div class="{css to-right}">
+      <div class="{css date-time}"></div>
+      <div>You are logged in as <span class="{css bold}">{$username}</span></div>
+      <div><a class="{css header-link}" href="">Log out</a></div>
+      <div class="{css live} {css search-input}" style="display: none;">
+        <input type="text" />
+      </div>
+    </div>
+{/template}
+
+/**
+ * Represent the login form, it has two states!
+ * @param loginurl The url to assign to the login form
+ */
+{template .loginForm}
+  <div class="{css login-panel}">
+    <div class="{css greeting}"></div>
+    <form action="{$loginurl}" method="post"
+    accept-charset="utf-8">
+      <div class="{css input}">
+        <input id="loginemail" name="loginemail" type="text" label="Name" />
+      </div>
+      <div class="{css login-mode}" style="display:none;">
+        <div class="{css input}">
+          <input id="password" name="password" type="password"
+          label="Password" class="{css input-password}" />
+        </div>
+        <div>
+          <a href="#/forgotpass">
+            <span class="{css link}">Lost your password?</span>
+          </a>
+        </div>
+      </div>
+      <div class="{css forgotpass-mode}" style="display:none;">
+        <div>
+          <a href="#">
+            <span class="{css link}">Return to login form</span>
+          </a>
+        </div>
+      </div>
+      <div style="clear:both;"></div>
+      <div style="float:right;position:relative;width:25px;height:25px;top:-50px;left: -10px">
+        <div class="{css goog-button} {css form-button}"></div>
+      </div>
+    </form>
+  </div>
+{/template}
+
+
+/**
+ * Composition for the login screen. Re-use the header here.
+ * @param loginurl The url to use for the form
+ */
+{template .login}
+  <div class="{css fullscreen}">
+    {call .header /}
+    <div class="{css content}">
+      <div class="{css center-both}">
+        {call .loginForm}
+          {param loginurl: $loginurl /}
+        {/call}
+      </div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * This is the main
+ */
+{template .admin}
+  <div class="{css fullscreen}">
+    <div class="{css header}">
+      <!-- put here the header widget -->
+    </div>
+    <div class="{css content}">
+    </div>
+  </div>
+{/template}
+
+
+/**
+ * @param title The screen title to use.
+ */
+{template .screenWithTileList}
+  <div class="{css left-panel-sixty}">
+    <div class="{css tile-list-container}"></div>
+  </div>
+  <div class="{css right-panel-fourty}"></div>
+  <div class="{css top-panel}">
+    <span class="{css back-button}" aria-hidden="true" data-icon="&#x21;"></span>
+    <span class="{css main-header}">{$title}</span>
+    <input name="searchterm" type="text" label="Search for game" class="{css search-field}"></input>
+  </div>
+{/template}
+
+{/namespace}
