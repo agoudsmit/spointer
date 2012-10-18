@@ -10,6 +10,8 @@ goog.inherits(spo.ui.Header, goog.ui.Component);
 goog.scope(function() {
   var proto = spo.ui.Header.prototype;
 
+  proto.defaultGameName_ = '&nbsp;';
+  proto.defaultViewName_ = '&nbsp;';
   proto.decorateInternal = function(element) {
     // The element should already be in the page, because we want the header
     // to persists. Just fill it in now with the content.
@@ -24,10 +26,12 @@ goog.scope(function() {
 
   };
   proto.setViewName = function(viewname) {
-    this.viewName_.innerHTML = viewname;
+    this.viewName_.innerHTML = viewname || this.defaultViewName_;
   }
   proto.setGameName = function(gamename) {
-    this.gameNameLabel_.innerHTML = gamename;
+    this.gameNameLabel_.innerHTML = gamename || this.defaultGameName_;
   };
 
 });
+
+goog.addSingletonGetter(spo.ui.Header);

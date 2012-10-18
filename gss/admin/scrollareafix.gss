@@ -3,4 +3,15 @@
  */
 .custom-scroll-bar {
   -webkit-transform: translate(25px, 0);
+  /* @alternate */ -moz-transform: translate(25px, 0);
+}
+
+.custom-scroll-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.5s;
+  /* @alternate */ -moz-transition: -moz-transform 0.5s;
+  /* @alternate */ -webkit-transition: -webkit-transform 0.5s;
+  /* @alternate */ -ms-transition: -ms-transform 0.5s;
 }

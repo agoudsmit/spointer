@@ -1,0 +1,19 @@
+.column-one {
+  float: left;
+  width: 60%;
+  padding: 15px;
+  border-right: 1px solid white;
+  min-height: 100%;
+}
+
+
+.detail-heading {
+  color: OUTLINE_COLOR;
+}
+
+.hr {
+  height: 1px;
+  background-color: BORDER_COLOR;
+  width: 98%;
+  margin:15px auto 5px;
+}

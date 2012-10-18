@@ -1,0 +1,11 @@
+/** The large body of the data */
+.content {
+  width: 100%;
+  display: table;
+  height: 550px;
+  position: relative;
+}
+
+.colored-content {
+  background-color: SOFT_BLUE;
+}

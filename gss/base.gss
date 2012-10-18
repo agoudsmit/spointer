@@ -19,6 +19,8 @@
   background-repeat: no-repeat;
 }
 
+@def SOFT_BLUE rgba(73, 118, 147, 0.11);
+
 /** Define the icons that can be used with their active state. */
 
 
@@ -62,7 +64,7 @@ body {
   background-image: url("../assets/bg.png");
   background-repeat: repeat;
   color: white;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 #screen {

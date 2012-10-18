@@ -127,4 +127,97 @@
   </div>
 {/template}
 
+/**
+ * @param name The name of the item.
+ * @param starttime The start time, parsed as human readable item.
+ * @param playercount The number of active players in the game.
+ * @param status The current status of the game.
+ * @param gameclass The class name to set on the status line for customer required styling.
+ */
+{template .gameTile}
+  <div class="{css tile-item} {css scroll-list-item}">
+    <div class="{css tile-inner-container}">
+      <div class="{css tile-body}">
+        <div class="{css game-name}">{$name}</div>
+        <div>Users: {$playercount}</div>
+        <div>Game started: {$starttime}</div>
+        <div>Current time: <span class="{css game-time}"></span></div>
+        <div>State: <span class="{css game-status} {$gameclass}">{$status}</span></div>
+      </div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * @param hint The hint to show to the user
+ */
+{template .createGame}
+  <div class="{css tile-item} {css scroll-list-item}">
+    <div class="{css tile-inner-container}">
+      <div class="{css tile-body}">
+        <div class="{css input}">
+          <input id="gamename" name="gamename" type="text"
+          label="{$hint}" />
+        </div>
+        <div class="{css error} {css bold}"></div>
+        <div class="{css bottom-right}">
+          <div class="{css goog-button} {css form-button} {css text-button}">Confirm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+{/template}
+
+/**
+ * @param description The game record to present.
+ */
+{template .gameSettings}
+  <div class="{css column-one}">
+    <div class="detail-heading">Game description</div>
+    <div class="game-description">{$description}</div>
+    <div class="{css hr}"></div>
+    <div class="detail-heading">Game date <span class="game-date"></span></div>
+    <div class="{css hr}"></div>
+    <div class="detail-heading">Game time <span class="game-time"></span></div>
+    <div class="{css hr}"></div>
+    <div class="detail-heading">Change game time</div>
+    <div>One day passes in <span class="detail-heading"></span> minute(s)</div>
+    <div class="goog-slider"></div>
+  </div>
+{/template}
+
+/**
+ *
+ */
+{template .gameControls}
+  <div class="{css game-controls}">
+    <div class="{css game-control-item} {css form-button} {css goog-button} {css pause-button} {css circle-button}" data-action="pause"></div>
+    <div class="{css game-control-item} {css form-button} {css goog-button} {css stop-button} {css circle-button}" data-action="stop"></div>
+    <div class="{css game-control-item} {css form-button} {css goog-button} {css delete-button} {css circle-button}" data-action="delete"></div>
+    <div class="{css game-control-item} {css form-button} {css goog-button} {css edit-button} {css circle-button}" data-action="edit"></div>
+
+    <div class="{css game-control-item} {css text-button} {css form-button} {css goog-button}" data-action="uploaduser" style="position:relative;top:5px;float:right;margin-right:11px;">Upload user/team list</div>
+    <div class="{css game-control-item} {css text-button} {css form-button} {css goog-button}" data-action="managecontrols" style="position:relative;top:5px;float:right;margin-right:11px">Manage controls</div>
+    <div class="{css game-control-item} {css text-button} {css form-button} {css goog-button}" data-action="uploadscenario" style="position:relative;top:5px;float:right;margin-right:11px;">Upload scenario</div>
+  </div>
+{/template}
+
+/**
+ * @param game The game details to use.
+ */
+{template .gameDetails}
+  <div class="{css game-details}">
+    <div class="{css back-link}"></div>
+    <div class="{css forward-link}"></div>
+    <div class="{css game-controls}"></div>
+    <div class="{css column-one} {css float-left}">
+      {call .gameSettings}
+        {param game: $game /}
+      {/call}
+    </div>
+    <div class="{css column-two} {css float-left}"></div>
+    <div class="{css column-three} {css float-left}"></div>
+  </div>
+{/template}
+
 {/namespace}

@@ -63,6 +63,16 @@ cssbuild:
 	gss/base.gss \
 	gss/$(NS)/*.gss
 
+cssdebug:
+	java -jar ../../stylesheets/cs.jar \
+	--allowed-non-standard-function color-stop \
+	--output-file $(BUILDDIR)/$(NS).css \
+	--output-renaming-map-format CLOSURE_COMPILED \
+	--rename NONE \
+	--output-renaming-map $(BUILDDIR)/cssmap-build.js \
+	gss/base.gss \
+	gss/$(NS)/*.gss
+
 
 compile: cssbuild
 	python ../../library/closure/bin/build/closurebuilder.py \
@@ -77,6 +87,19 @@ compile: cssbuild
 	--output_file=$(BUILDDIR)/$(NS).build.js
 	rm $(BUILDDIR)/cssmap-build.js
 
+debug: cssdebug
+	python ../../library/closure/bin/build/closurebuilder.py \
+	-n $(NS) \
+	--root=js/ \
+	--root=../../templates/ \
+	--root=../../library/ \
+	--root=../../third_party/ \
+	-o compiled \
+	-c ../../compiler/compiler.jar \
+	-f --debug \
+	-f --flagfile=js/build-options.ini \
+	--output_file=$(BUILDDIR)/$(NS).build.js
+	rm $(BUILDDIR)/cssmap-build.js
 
 initproject:
 	mkdir -p gss/$(NS) js/templates $(BUILDDIR) assets

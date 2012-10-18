@@ -18,7 +18,8 @@
   height: 100%;
   background-color: transparent;
   outline: 0;
-  float: left;
+  position:absolute;
+  right: 0;
   /* float should be set by the component */
 }
 
@@ -28,15 +29,13 @@
   height: 100%;
   top: 0;
   left: sub(divide(CUSTOM_SCROLL_BAR_WIDTH, 2), divide(SCROLL_BAR_RAIL_WIDTH, 2));
-  background-color: white;
+  background-color: EMBOSS_TEXT_COLOR;
   width: SCROLL_BAR_RAIL_WIDTH;
 }
 
 /* This is for the goog slider, without it it cannot function properly */
 .goog-slider-vertical {
-  left: 0;
   overflow: hidden;
-  position: relative;
 }
 
 /* This is for the goog slider's thumb, without it, it cannot function properly */
@@ -50,7 +49,7 @@
 .custom-scroll-bar-thumb {
   left: 0;
   background-color: transparent;
-  background-image: url("../assets/tile-list-scroll-thumb.png");
+  background-image: url("../assets/ring.png");
   width: CUSTOM_SCROLL_BAR_WIDTH;
   height: CUSTOM_SCROLL_BAR_WIDTH;
 }
