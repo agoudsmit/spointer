@@ -1,13 +1,13 @@
 /**
- * @fileOverview provides the data getting abstraction to encode the data
+ * @fileoverview provides the data getting abstraction to encode the data
  * in the way that jquery does it and PHP expects it.
  */
 
 goog.provide('spo.ds.Resource');
 
+goog.require('goog.array');
 goog.require('goog.json.NativeJsonProcessor');
 goog.require('goog.net.XhrIo');
-goog.require('goog.array');
 
 /**
  * This class should only be accessed as instance (getInstance())
@@ -64,14 +64,14 @@ spo.ds.Resource.prototype.add_ = function(arr, key, value) {
 /**
  * Port from jquery.
  * @private
- * @param  {!Array.<strnig>} arr
+ * @param  {!Array.<string>} arr
  * @param  {string} prefix
  * @param  {*} data
  */
 spo.ds.Resource.prototype.buildParams_ = function(arr, prefix, data) {
   var name;
   if (goog.isArray(data)) {
-    goog.array.forEach(data, function(el, index) {
+    goog.array.forEach(/** @type {!Array} */(data), function(el, index) {
       if (/\[\]$/.test(prefix)) {
         this.add_(arr, prefix, el);
       } else {

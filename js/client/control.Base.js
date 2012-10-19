@@ -6,6 +6,7 @@ goog.require('goog.events.EventHandler');
 /**
  * A base controler class to inherit from. It contains some uilities.
  * @constructor
+ * @extends {goog.Disposable}
  * @param {!Element} container The HTMl element to use as container.
  */
 spo.control.Base = function(container) {
@@ -16,7 +17,7 @@ goog.inherits(spo.control.Base, goog.Disposable);
 
 /**
  * The event handler for this instance.
- * @type {goog.events.EventType}
+ * @type {goog.events.EventHandler}
  * @private
  */
 spo.control.Base.prototype.eh_;
@@ -26,6 +27,7 @@ spo.control.Base.prototype.eh_;
  * Implementors should override this class.
  * @param {boolean} enable The state to put the controler in, true if it should
  * be enabled, false otherwise.
+ * @param {Function=} fn Function to execute after the disable finished.
  */
 spo.control.Base.prototype.setEnabled = goog.abstractMethod;
 

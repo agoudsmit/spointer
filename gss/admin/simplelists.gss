@@ -1,0 +1,8 @@
+.simple-list-list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+.simple-list-title {
+  color: OUTLINE_COLOR;
+}

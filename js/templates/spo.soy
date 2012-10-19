@@ -220,4 +220,19 @@
   </div>
 {/template}
 
+/**
+ * @param title The title of the list.
+ * @param teams List of team names (as strings).
+ */
+{template .simplelist}
+  <div class="{css simple-list}">
+    <div class="{css simple-list-title}">{$title}</div>
+    <ul class="{css simple-list-list}">
+      {foreach $name in $teams}
+        <li>{$name}</li>
+      {/foreach}
+    </ul>
+  </div>
+{/template}
+
 {/namespace}

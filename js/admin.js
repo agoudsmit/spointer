@@ -16,27 +16,26 @@ goog.require('spo.control.Game');
  */
 admin = function() {
   var screen = goog.dom.getElement('screen');
-  screen.innerHTML = spo.template.admin();
+  screen.innerHTML = spo.template.admin({});
 
   var header_element = goog.dom.getElementByClass(goog.getCssName('header'),
     screen);
-  var header = new spo.ui.Header.getInstance();
+  var header = spo.ui.Header.getInstance();
   header.decorate(header_element);
 
-  var contentElement = goog.dom.getElementByClass(goog.getCssName('content'),
-    screen);
+  var contentElement = /** @type {!Element} */(goog.dom.getElementByClass(
+    goog.getCssName('content'),
+      screen));
   var currentView = null;
   var Router = spo.admin.Router.getInstance();
 
   /**
    * Enable switching active screen with callback. This is if we want to perform
    * something nice for the eye without distorting the view and logic
-   * @param {!spo.control.Base} screen The screen to enable next
+   * @param {!spo.control.Base} app The screen to enable next
    */
-  function setActiveScreen(app) {
-    console.log('change screen')
+  function setActiveControl(app) {
     if (currentView != null) {
-      console.log('tell the current view to disapear');
       currentView.setEnabled(false, function() {
         app.setEnabled(true);
       });
@@ -61,13 +60,13 @@ admin = function() {
     // Assume game list
     header.setViewName('dashboard');
     header.setGameName();
-    setActiveScreen(gamesScreen);
+    setActiveControl(gamesScreen);
   });
 
   /** Detailed view of a game, an ID is used to figure out the game */
-  Router.route('/game/:id', function(fragment, id) {
-    var gamed = new spo.control.Game(contentElement);
-    setActiveScreen(gamed);
+  Router.route('/game/:id{/:edit}', function(fragment, id, edit) {
+    var gamed = new spo.control.Game(contentElement, id, edit);
+    setActiveControl(gamed);
   });
 
   Router.setEnabled(true);

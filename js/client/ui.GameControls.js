@@ -1,3 +1,7 @@
+/**
+ * TODO: Add dispose method as this component is often disposed
+ */
+
 goog.provide('spo.ui.GameControls');
 
 goog.require('goog.ui.Component');
@@ -8,6 +12,11 @@ goog.require('goog.dom');
 goog.require('goog.dom.dataset');
 
 
+/**
+ * @constructor
+ * @extends {goog.ui.Component}
+ * @param {goog.dom.DomHelper=} odh Optional dom helper.
+ */
 spo.ui.GameControls = function(odh) {
   goog.base(this, odh);
   this.actionToButtonMap_ = new goog.structs.Map();
@@ -17,7 +26,9 @@ goog.inherits(spo.ui.GameControls, goog.ui.Component);
 
 goog.scope(function() {
   var proto = spo.ui.GameControls.prototype;
-
+  /**
+   * @inheritDoc
+   */
   proto.createDom = function() {
     this.decorateInternal(goog.dom.htmlToDocumentFragment(
       spo.template.gameControls()));
@@ -44,6 +55,9 @@ goog.scope(function() {
     return this.actionToButtonMap_.get(button);
   };
 
+  /**
+   * @inheritDoc
+   */
   proto.decorateInternal = function(element) {
     goog.base(this, 'decorateInternal', element);
     var controls = goog.dom.getElementsByClass(goog.getCssName(

@@ -5,9 +5,9 @@
 goog.provide('spo.control.LiveList');
 
 goog.require('goog.ui.Component.EventType');
-goog.require('spo.ds.GameList');
 goog.require('pstj.ui.ScrollList');
 goog.require('spo.control.Base');
+goog.require('spo.ds.GameList');
 goog.require('spo.ui.Game');
 goog.require('spo.ui.NewGame');
 
@@ -47,7 +47,7 @@ spo.control.LiveList.prototype.handleChildAction_ = function(e) {
   // If this is the create game child action
   if (target == this.view_.getChildAt(0)) {
     e.stopPropagation();
-    this.requestNewGame_(target);
+    this.requestNewGame_(/** @type {!spo.ui.NewGame} */(target));
   }
 };
 
@@ -75,11 +75,19 @@ spo.control.LiveList.prototype.requestNewGame_ = function(widget) {
   }
 };
 
+/**
+ * INit the controler.
+ */
 spo.control.LiveList.prototype.init = function() {
   this.inited_ = true;
   spo.ds.GameList.getList().addCallback(goog.bind(this.load_, this));
 };
 
+/**
+ * Load the data into the controller.
+ * @param  {spo.ds.GameList} list The list of games returned by the server.
+ * @private
+ */
 spo.control.LiveList.prototype.load_ = function(list) {
   this.list_ = list;
   this.loadView();
@@ -95,6 +103,10 @@ spo.control.LiveList.prototype.handleListAddition_ = function(ev) {
   console.log(ev);
 };
 
+/**
+ * Shows the controller's view (and activates it).
+ * @private
+ */
 spo.control.LiveList.prototype.show_ = function() {
   if (!this.inited_) this.init();
   else {
@@ -113,6 +125,10 @@ spo.control.LiveList.prototype.setEnabled = function(enable, fn) {
   }
 };
 
+/**
+ * Hides the controller's view (and desactivates it).
+ * @private
+ */
 spo.control.LiveList.prototype.hide_ = function() {
   this.view_.exitDocument();
 };
@@ -128,13 +144,12 @@ spo.control.LiveList.prototype.addGame_ = function(gameRecord) {
   gameView.setModel(gameRecord);
   //Add +1 for the "new game" child
   this.view_.addChildAt(gameView, this.list_.getIndexByItem(gameRecord) + 1,
-    true)
+    true);
 };
 
 /**
  * Loads the view into existence. This is performed right after ew have the
  * initial data to show.
- * @private
  */
 spo.control.LiveList.prototype.loadView = function() {
   //data = data['games'];

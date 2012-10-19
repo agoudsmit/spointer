@@ -64,3 +64,16 @@ spo.template.gameControls = function(opt_data) {
 spo.template.gameDetails = function(opt_data) {
   return '<div class="' + goog.getCssName('game-details') + '"><div class="' + goog.getCssName('back-link') + '"></div><div class="' + goog.getCssName('forward-link') + '"></div><div class="' + goog.getCssName('game-controls') + '"></div><div class="' + goog.getCssName('column-one') + ' ' + goog.getCssName('float-left') + '">' + spo.template.gameSettings(opt_data) + '</div><div class="' + goog.getCssName('column-two') + ' ' + goog.getCssName('float-left') + '"></div><div class="' + goog.getCssName('column-three') + ' ' + goog.getCssName('float-left') + '"></div></div>';
 };
+
+
+spo.template.simplelist = function(opt_data) {
+  var output = '<div class="' + goog.getCssName('simple-list') + '"><div class="' + goog.getCssName('simple-list-title') + '">' + soy.$$escapeHtml(opt_data.title) + '</div><ul class="' + goog.getCssName('simple-list-list') + '">';
+  var nameList299 = opt_data.teams;
+  var nameListLen299 = nameList299.length;
+  for (var nameIndex299 = 0; nameIndex299 < nameListLen299; nameIndex299++) {
+    var nameData299 = nameList299[nameIndex299];
+    output += '<li>' + soy.$$escapeHtml(nameData299) + '</li>';
+  }
+  output += '</ul></div>';
+  return output;
+};

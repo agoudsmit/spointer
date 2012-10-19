@@ -17,3 +17,18 @@
   width: 98%;
   margin:15px auto 5px;
 }
+
+.column-two {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  border-right: 1px solid BORDER_COLOR;
+  min-height: 100%;
+}
+
+.column-three {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  min-height: 100%;
+}
