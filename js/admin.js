@@ -64,10 +64,16 @@ admin = function() {
   });
 
   /** Detailed view of a game, an ID is used to figure out the game */
-  Router.route('/game/:id{/:edit}', function(fragment, id, edit) {
-    var gamed = new spo.control.Game(contentElement, id, edit);
+  Router.route('/game/:id{/:edit}',
+    /** @type {function(string, ...[string]): ?} */ (function(fragment,
+      id, edit) {
+    var gid = /** @type {!string} */ id;
+    if (!goog.isString(gid)) {
+      throw Error('Cannot create game control without game id.');
+    }
+    var gamed = new spo.control.Game(contentElement, gid, edit);
     setActiveControl(gamed);
-  });
+  }));
 
   Router.setEnabled(true);
 

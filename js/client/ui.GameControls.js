@@ -30,8 +30,10 @@ goog.scope(function() {
    * @inheritDoc
    */
   proto.createDom = function() {
-    this.decorateInternal(goog.dom.htmlToDocumentFragment(
-      spo.template.gameControls()));
+
+    this.decorateInternal(
+      /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
+      spo.template.gameControls({}))));
   };
 
   proto.createControls_ = function(els) {

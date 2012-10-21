@@ -38,8 +38,9 @@ spo.ui.NewGame.prototype.createDom = function() {
   var a = spo.template.createGame({
     hint: spo.ui.NewGame.Strings.ADD_GAME
   });
-  this.decorateInternal(goog.dom.htmlToDocumentFragment(
-    a));
+  this.decorateInternal(
+    /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
+    a)));
 };
 
 /**

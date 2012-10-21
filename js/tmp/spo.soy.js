@@ -42,7 +42,7 @@ spo.template.screenWithTileList = function(opt_data) {
 
 
 spo.template.gameTile = function(opt_data) {
-  return '<div class="' + goog.getCssName('tile-item') + ' ' + goog.getCssName('scroll-list-item') + '"><div class="' + goog.getCssName('tile-inner-container') + '"><div class="' + goog.getCssName('tile-body') + '"><div class="' + goog.getCssName('game-name') + '">' + soy.$$escapeHtml(opt_data.name) + '</div><div>Users: ' + soy.$$escapeHtml(opt_data.playercount) + '</div><div>Game started: ' + soy.$$escapeHtml(opt_data.starttime) + '</div><div>Current time: <span class="' + goog.getCssName('game-time') + '"></span></div><div>State: <span class="' + goog.getCssName('game-status') + ' ' + soy.$$escapeHtml(opt_data.gameclass) + '">' + soy.$$escapeHtml(opt_data.status) + '</span></div></div></div></div>';
+  return '<div class="' + goog.getCssName('tile-item') + ' ' + goog.getCssName('scroll-list-item') + '"><div class="' + goog.getCssName('tile-inner-container') + '"><div class="' + goog.getCssName('tile-body') + '"><div class="' + goog.getCssName('game-name') + '">' + soy.$$escapeHtml(opt_data.name) + '</div><div>Users: ' + soy.$$escapeHtml(opt_data.playercount) + '</div><div>Game started: ' + soy.$$escapeHtml(opt_data.starttime) + '</div><div>Current time: <span class="' + goog.getCssName('game-time') + '"></span></div><div>State: <span class="' + goog.getCssName('game-status') + '">' + soy.$$escapeHtml(opt_data.status) + '</span></div></div></div></div>';
 };
 
 
@@ -68,11 +68,11 @@ spo.template.gameDetails = function(opt_data) {
 
 spo.template.simplelist = function(opt_data) {
   var output = '<div class="' + goog.getCssName('simple-list') + '"><div class="' + goog.getCssName('simple-list-title') + '">' + soy.$$escapeHtml(opt_data.title) + '</div><ul class="' + goog.getCssName('simple-list-list') + '">';
-  var nameList299 = opt_data.teams;
-  var nameListLen299 = nameList299.length;
-  for (var nameIndex299 = 0; nameIndex299 < nameListLen299; nameIndex299++) {
-    var nameData299 = nameList299[nameIndex299];
-    output += '<li>' + soy.$$escapeHtml(nameData299) + '</li>';
+  var nameList297 = opt_data.teams;
+  var nameListLen297 = nameList297.length;
+  for (var nameIndex297 = 0; nameIndex297 < nameListLen297; nameIndex297++) {
+    var nameData297 = nameList297[nameIndex297];
+    output += '<li>' + soy.$$escapeHtml(nameData297) + '</li>';
   }
   output += '</ul></div>';
   return output;

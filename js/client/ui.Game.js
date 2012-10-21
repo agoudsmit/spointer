@@ -61,7 +61,7 @@ goog.scope(function() {
       var s_time = model.getProp(spo.ds.Game.Property.START_TIME);
 
       this.decorateInternal(
-          (/** @type {!Element} */ goog.dom.htmlToDocumentFragment(
+          /** @type {!Element} */ (goog.dom.htmlToDocumentFragment(
         spo.template.gameTile({
           name: model.getProp(spo.ds.Game.Property.NAME),
           starttime: ((s_time != 0) ? pstj.date.utils.renderTime(
@@ -85,8 +85,8 @@ goog.scope(function() {
     var status = this.getModel().getProp(spo.ds.Game.Property.STATUS);
     if (status == 1) return spo.ui.Game.Strings.STARTED;
     else if (status == 2) return spo.ui.Game.Strings.PAUSED;
-    else if (status == 3) return spo.ui.ds.Game.Strings.STOPPED;
-    else return spo.ui.ds.Game.Strings.REMOVED;
+    else if (status == 3) return spo.ui.Game.Strings.STOPPED;
+    else return spo.ui.Game.Strings.REMOVED;
   };
 
   /**

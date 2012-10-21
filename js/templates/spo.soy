@@ -132,7 +132,6 @@
  * @param starttime The start time, parsed as human readable item.
  * @param playercount The number of active players in the game.
  * @param status The current status of the game.
- * @param gameclass The class name to set on the status line for customer required styling.
  */
 {template .gameTile}
   <div class="{css tile-item} {css scroll-list-item}">
@@ -142,7 +141,7 @@
         <div>Users: {$playercount}</div>
         <div>Game started: {$starttime}</div>
         <div>Current time: <span class="{css game-time}"></span></div>
-        <div>State: <span class="{css game-status} {$gameclass}">{$status}</span></div>
+        <div>State: <span class="{css game-status}">{$status}</span></div>
       </div>
     </div>
   </div>
