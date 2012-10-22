@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Provides the global access to the admin panel router.
+ */
 goog.provide('spo.admin.Router');
 
 goog.require('pstj.mvc.SimpleRouter');
