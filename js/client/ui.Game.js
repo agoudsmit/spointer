@@ -112,8 +112,8 @@ goog.scope(function() {
    */
   proto.onMouseDown_ = function(ev) {
     goog.dom.classes.add(this.getElement(), this.cssClassPressed_);
-    goog.events.listenOnce(document, goog.events.EventType.MOUSEUP,
-      goog.bind(this.onMouseUp_, this));
+    this.getHandler().listenOnce(document, goog.events.EventType.MOUSEUP,
+      this.onMouseUp_);
   };
 
   /**
