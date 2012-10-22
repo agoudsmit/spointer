@@ -32,3 +32,12 @@
   padding: 10px;
   min-height: 100%;
 }
+
+.hidden-form {
+  display: none;
+}
+
+.notification-area {
+  color: ERROR_COLOR;
+  text-align: center;
+}

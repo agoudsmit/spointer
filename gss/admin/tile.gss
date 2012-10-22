@@ -19,14 +19,15 @@
 .tile-item {
   float: left;
   position: relative;
-  /*width: 128px;*/
-  height: 164px;
+  /*width: 195px;*/
+  height: 200px;
   background-color: transparent;
 }
 
 .tile-inner-container {
   width: 100%;
   height: 100%;
+  padding: 10px;
 }
 
 .tile-body {

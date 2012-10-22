@@ -22,3 +22,18 @@ h3 {
   margin-left: 10px;
   font-size: 24px;
 }
+
+.forward-link {
+  position: absolute;
+  right: -25px;
+  bottom: -32px;
+}
+.forward-link a, .back-link a {
+  color: OUTLINE_COLOR;
+}
+
+.back-link {
+  position: absolute;
+  left: -25px;
+  bottom: -32px;
+}

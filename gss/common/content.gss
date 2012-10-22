@@ -4,5 +4,5 @@
   width: 100%;
   display: table;
   height: 550px;
-  background-color: rgba(73, 118, 147, 0.11);
+  /**background-color: rgba(73, 118, 147, 0.11);*/
 }
