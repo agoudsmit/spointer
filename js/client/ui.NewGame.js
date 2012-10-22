@@ -31,6 +31,19 @@ spo.ui.NewGame.Strings = {
   ADD_GAME: 'Add new game'
 };
 
+
+
+/**
+ * @inheritDoc
+ */
+spo.ui.NewGame.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  goog.dispose(this.input_);
+  goog.dispose(this.button_);
+  delete this.input_;
+  delete this.button_;
+};
+
 /**
  * @inheritDoc
  */

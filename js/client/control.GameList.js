@@ -9,6 +9,7 @@ goog.require('pstj.ui.ScrollList');
 goog.require('spo.control.Base');
 goog.require('spo.ds.GameList');
 goog.require('spo.ui.Game');
+goog.require('spo.ui.Header');
 goog.require('spo.ui.NewGame');
 
 /**
@@ -19,7 +20,7 @@ goog.require('spo.ui.NewGame');
 spo.control.LiveList = function(container) {
   goog.base(this, container);
 
-  this.view_ = new pstj.ui.ScrollList(125);
+  this.view_ = new pstj.ui.ScrollList(195);
   this.view_.setScrollInsideTheWidget(false);
 
   // Listen for action on the new game.
@@ -110,6 +111,7 @@ spo.control.LiveList.prototype.handleListAddition_ = function(ev) {
 spo.control.LiveList.prototype.show_ = function() {
   if (!this.inited_) this.init();
   else {
+    spo.ui.Header.getInstance().setLinks();
     this.view_.enterDocument();
   }
 };

@@ -4,13 +4,16 @@ goog.require('goog.async.Deferred');
 goog.require('goog.async.DeferredList');
 goog.require('goog.dom.classes');
 goog.require('pstj.ui.CustomScrollArea');
+goog.require('spo.admin.Router');
 goog.require('spo.control.Base');
+goog.require('spo.control.EventType');
 goog.require('spo.ds.ControlTeam');
 goog.require('spo.ds.ControlTeamList');
 goog.require('spo.ds.Game');
 goog.require('spo.ds.Resource');
 goog.require('spo.ds.Team');
 goog.require('spo.ds.TeamList');
+goog.require('spo.ui.Forms');
 goog.require('spo.ui.GameControls');
 goog.require('spo.ui.GameDetails');
 
@@ -29,6 +32,7 @@ spo.control.Game = function(container, gameid, edit) {
   if (edit == 'edit') {
     this.editMode_ = true;
   }
+
   this.gameId_ = gameid;
   this.view_ = new pstj.ui.CustomScrollArea();
   this.view_.setScrollInsideTheWidget(false);
@@ -51,6 +55,14 @@ spo.control.Game.prototype.editMode_ = false;
  * @private
  */
 spo.control.Game.prototype.gameId_;
+
+/**
+ * The forms control used to upload files.
+ * @type {goog.ui.Component}
+ * @private
+ */
+spo.control.Game.prototype.hiddenForms_;
+
 /**
  * @type {spo.ds.GameList}
  * @private
@@ -142,9 +154,16 @@ spo.control.Game.prototype.loadView = function() {
   //gd.render(this.view_.getContentElement());
   this.view_.addChildAt(gd, 1, true);
 
+  this.hiddenForms_ = new spo.ui.Forms();
+  this.hiddenForms_.setModel(this.gamelist_.getById(this.gameId_));
+  this.view_.addChildAt(this.hiddenForms_, 2, true);
+
   spo.ui.Header.getInstance().setViewName('game details');
   spo.ui.Header.getInstance().setGameName(
     dsGame.getProp(spo.ds.Game.Property.NAME).toString());
+
+  spo.ui.Header.getInstance().setLinks('/games', 'dashboard', '/teams/' +
+    this.gameId_, 'manager teams/users');
 
   // create the list views
   var column2 = goog.dom.getElementByClass(goog.getCssName(
@@ -208,17 +227,68 @@ spo.control.Game.prototype.loadView = function() {
   goog.dom.appendChild(this.view_.getContentElement(),
     goog.dom.htmlToDocumentFragment(lists));
 
+  this.setupListeners_();
+
+
 };
+
+/**
+ * Sets up the listeners for the time of the game being active.
+ * @private
+ */
+spo.control.Game.prototype.setupListeners_ = function() {
+  var handler = this.getHandler();
+  handler.listen(this.view_, spo.control.EventType.CONTROL_ACTION,
+    this.handleExternalControlAction_);
+
+  handler.listen(this.hiddenForms_, [spo.control.EventType.SUCCESS,
+    spo.control.EventType.FAILURE], this.handleFormUploadFinish_);
+};
+
+/**
+ * Hanlder for the upload of files finish action.
+ * @param  {spo.control.Event} e The SUCCESS/FAILURE event from control.
+ * @private
+ */
+spo.control.Game.prototype.handleFormUploadFinish_ = function(e) {
+  if (e.type = spo.control.EventType.SUCCESS) {
+    this.view_.getChildAt(1).setNotification('Upload completed!');
+  } else {
+    this.view_.getChildAt(1).setNotification('Upload failed!');
+  }
+};
+
+/**
+ * Handles the action received from children (basically from the view).
+ * @param  {spo.control.Event} e The control event (ACTION).
+ * @private
+ */
+spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
+  var action = e.getAction();
+  if (action == spo.control.Action.UPLOAD_SCENARIO) {
+    this.hiddenForms_.enableScneario();
+  } else if (action == spo.control.Action.UPLOAD_TEAMLIST) {
+    this.hiddenForms_.enableTeam();
+  } else if (action == spo.control.Action.MANAGE_CONTROLS) {
+    if (this.editMode_) {
+      // Flash error!
+    } else {
+      spo.admin.Router.getInstance().navigate('/control_users/' + this.gameId_);
+    }
+  }
+
+};
+
 /**
  * @inheritDoc
  */
 spo.control.Game.prototype.setEnabled = function(enable, fn) {
   if (enable) {
+
   }
   else {
     console.log('call dispose on this view');
     goog.dispose(this);
-
     fn();
   }
 };
@@ -226,9 +296,16 @@ spo.control.Game.prototype.setEnabled = function(enable, fn) {
  * @inheritDoc
  */
 spo.control.Game.prototype.disposeInternal = function() {
-  this.data_ = null;
   this.view_.exitDocument();
   this.view_.dispose();
-  delete this.inited_;
+  // Should be disposed as it is a child of the main view
+  delete this.hiddenForms_;
+  delete this.editMode_;
+  delete this.gameId_;
+  delete this.gamelist_;
+  delete this.teamlist_;
+  delete this.playerslist_;
+  delete this.cteamList_;
+  delete this.cplayerslist_;
   goog.base(this, 'disposeInternal');
 };

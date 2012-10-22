@@ -23,6 +23,14 @@ goog.inherits(spo.control.Base, goog.Disposable);
 spo.control.Base.prototype.eh_;
 
 /**
+ * Flag - true if the control has been initialized already.
+ * @type {boolean}
+ * @private
+ */
+spo.control.Base.prototype.inited_ = false;
+
+
+/**
  * Method to set the controler state.
  * Implementors should override this class.
  * @param {boolean} enable The state to put the controler in, true if it should
@@ -50,5 +58,6 @@ spo.control.Base.prototype.getHandler = function() {
 spo.control.Base.prototype.disposeInternal = function() {
   if (this.eh_) this.eh_.dispose();
   delete this.eh_;
+  delete this.inited_;
   goog.base(this, 'disposeInternal');
 };

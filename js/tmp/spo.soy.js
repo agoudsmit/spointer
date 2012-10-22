@@ -17,7 +17,7 @@ spo.template.header = function(opt_data) {
 
 
 spo.template.headerWithLogin = function(opt_data) {
-  return '<h1>InterAct</h1><h3 class="' + goog.getCssName('live') + ' ' + goog.getCssName('game-name') + '"></h3><h2 class="' + goog.getCssName('live') + ' ' + goog.getCssName('view-name') + '"></h2><div class="' + goog.getCssName('to-right') + '"><div class="' + goog.getCssName('date-time') + '"></div><div>You are logged in as <span class="' + goog.getCssName('bold') + '">' + soy.$$escapeHtml(opt_data.username) + '</span></div><div><a class="' + goog.getCssName('header-link') + '" href="">Log out</a></div><div class="' + goog.getCssName('live') + ' ' + goog.getCssName('search-input') + '" style="display: none;"><input type="text" /></div></div>';
+  return '<h1>InterAct</h1><h3 class="' + goog.getCssName('live') + ' ' + goog.getCssName('game-name') + '"></h3><h2 class="' + goog.getCssName('live') + ' ' + goog.getCssName('view-name') + '"></h2><div class="' + goog.getCssName('to-right') + '"><div class="' + goog.getCssName('date-time') + '"></div><div>You are logged in as <span class="' + goog.getCssName('bold') + '">' + soy.$$escapeHtml(opt_data.username) + '</span></div><div><a class="' + goog.getCssName('header-link') + '" href="' + soy.$$escapeHtml(opt_data.logoutlink) + '">Log out</a></div><div class="' + goog.getCssName('live') + ' ' + goog.getCssName('search-input') + '" style="display: none;"><input type="text" /></div></div><div class="' + goog.getCssName('back-link') + '"></div><div class="' + goog.getCssName('forward-link') + '"></div>';
 };
 
 
@@ -51,8 +51,13 @@ spo.template.createGame = function(opt_data) {
 };
 
 
+spo.template.uploadForms = function(opt_data) {
+  return '<div class="' + goog.getCssName('hidden-form') + '"><form method="post" enctype="multipart/form-data" action="' + soy.$$escapeHtml(opt_data.action_upload_scenario) + '" name="uploadscenario"><input type="hidden" value="' + soy.$$escapeHtml(opt_data.gameid) + '" name="game_id" /><input name="file" type="file" style="display: none;" class="' + goog.getCssName('monitor') + '" id="scenario" /></form><form method="post" enctype="multipart/form-data" action="' + soy.$$escapeHtml(opt_data.action_upload_teams) + '" name="uploadteams"><input type="hidden" value="' + soy.$$escapeHtml(opt_data.gameid) + '" name="game_id" /><input name="file" type="file" style="display: none;" class="' + goog.getCssName('monitor') + '" id="teamlist" /></form></div>';
+};
+
+
 spo.template.gameSettings = function(opt_data) {
-  return '<div class="' + goog.getCssName('column-one') + '"><div class="detail-heading">Game description</div><div class="game-description">' + soy.$$escapeHtml(opt_data.description) + '</div><div class="' + goog.getCssName('hr') + '"></div><div class="detail-heading">Game date <span class="game-date"></span></div><div class="' + goog.getCssName('hr') + '"></div><div class="detail-heading">Game time <span class="game-time"></span></div><div class="' + goog.getCssName('hr') + '"></div><div class="detail-heading">Change game time</div><div>One day passes in <span class="detail-heading"></span> minute(s)</div><div class="goog-slider"></div></div>';
+  return '<div class="' + goog.getCssName('column-one') + '"><div class="' + goog.getCssName('notification-area') + '">&nbsp;</div><div class="detail-heading">Game description</div><div class="game-description">' + soy.$$escapeHtml(opt_data.description) + '</div><div class="' + goog.getCssName('hr') + '"></div><div class="detail-heading">Game date <span class="game-date"></span></div><div class="' + goog.getCssName('hr') + '"></div><div class="detail-heading">Game time <span class="game-time"></span></div><div class="' + goog.getCssName('hr') + '"></div><div class="detail-heading">Change game time</div><div>One day passes in <span class="detail-heading"></span> minute(s)</div><div class="goog-slider"></div></div>';
 };
 
 
@@ -68,11 +73,11 @@ spo.template.gameDetails = function(opt_data) {
 
 spo.template.simplelist = function(opt_data) {
   var output = '<div class="' + goog.getCssName('simple-list') + '"><div class="' + goog.getCssName('simple-list-title') + '">' + soy.$$escapeHtml(opt_data.title) + '</div><ul class="' + goog.getCssName('simple-list-list') + '">';
-  var nameList297 = opt_data.teams;
-  var nameListLen297 = nameList297.length;
-  for (var nameIndex297 = 0; nameIndex297 < nameListLen297; nameIndex297++) {
-    var nameData297 = nameList297[nameIndex297];
-    output += '<li>' + soy.$$escapeHtml(nameData297) + '</li>';
+  var nameList321 = opt_data.teams;
+  var nameListLen321 = nameList321.length;
+  for (var nameIndex321 = 0; nameIndex321 < nameListLen321; nameIndex321++) {
+    var nameData321 = nameList321[nameIndex321];
+    output += '<li>' + soy.$$escapeHtml(nameData321) + '</li>';
   }
   output += '</ul></div>';
   return output;

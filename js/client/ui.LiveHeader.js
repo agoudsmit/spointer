@@ -33,12 +33,22 @@ spo.ui.Header.prototype.decorateInternal = function(element) {
   // to persists. Just fill it in now with the content.
   goog.base(this, 'decorateInternal', element);
   element.innerHTML = spo.template.headerWithLogin({
-    username: goog.global['USER_NAME']
+    username: goog.global['USER_NAME'],
+    logoutlink: goog.global['LOGOUT_LINK']
   });
+
+  // Label elements.
   this.gameNameLabel_ = goog.dom.getElementByClass(goog.getCssName(
     'game-name'), element);
   this.viewName_ = goog.dom.getElementByClass(goog.getCssName('view-name'),
     element);
+
+  // Links elements.
+  this.backLink_ = goog.dom.getElementByClass(goog.getCssName('back-link'),
+    element);
+  this.forwardLink_ = goog.dom.getElementByClass(goog.getCssName(
+    'forward-link'), element);
+
 };
 
 /**
@@ -55,6 +65,30 @@ spo.ui.Header.prototype.setViewName = function(viewname) {
  */
 spo.ui.Header.prototype.setGameName = function(gamename) {
   this.gameNameLabel_.innerHTML = gamename || this.defaultGameName_;
+};
+
+/**
+ * Setups the links in the header.
+ * @param {string=} back_link    The link url.
+ * @param {string=} back_text    The inner html of the link.
+ * @param {string=} forward_link The link url.
+ * @param {string=} forward_text The inner html of the link.
+ */
+spo.ui.Header.prototype.setLinks = function(back_link, back_text, forward_link,
+  forward_text) {
+  if (goog.isString(back_link)) {
+    this.backLink_.innerHTML = '<a href="#' + back_link + '">' + back_text +
+      '</a>';
+  } else {
+    this.backLink_.innerHTML = '';
+  }
+
+  if (goog.isString(forward_link)) {
+    this.forwardLink_.innerHTML = '<a href="#' + forward_link + '">' +
+    forward_text + '</a>';
+  } else {
+    this.forwardLink_.innerHTML = '';
+  }
 };
 
 goog.addSingletonGetter(spo.ui.Header);
