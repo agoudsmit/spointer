@@ -6,3 +6,7 @@
   height: 550px;
   /**background-color: rgba(73, 118, 147, 0.11);*/
 }
+
+.custom-scroll-bar, .custom-scroll-bar-thumb {
+  cursor: pointer;
+}

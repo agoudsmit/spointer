@@ -17,7 +17,7 @@ spo.template.header = function(opt_data) {
 
 
 spo.template.headerWithLogin = function(opt_data) {
-  return '<h1>InterAct</h1><h3 class="' + goog.getCssName('live') + ' ' + goog.getCssName('game-name') + '"></h3><h2 class="' + goog.getCssName('live') + ' ' + goog.getCssName('view-name') + '"></h2><div class="' + goog.getCssName('to-right') + '"><div class="' + goog.getCssName('date-time') + '"></div><div>You are logged in as <span class="' + goog.getCssName('bold') + '">' + soy.$$escapeHtml(opt_data.username) + '</span></div><div><a class="' + goog.getCssName('header-link') + '" href="' + soy.$$escapeHtml(opt_data.logoutlink) + '">Log out</a></div><div class="' + goog.getCssName('live') + ' ' + goog.getCssName('search-input') + '" style="display: none;"><input type="text" /></div></div><div class="' + goog.getCssName('back-link') + '"></div><div class="' + goog.getCssName('forward-link') + '"></div>';
+  return '<h1>InterAct</h1><h3 class="' + goog.getCssName('live') + ' ' + goog.getCssName('game-name') + '"></h3><h2 class="' + goog.getCssName('live') + ' ' + goog.getCssName('view-name') + '"></h2><div class="' + goog.getCssName('to-right') + '"><div class="' + goog.getCssName('date-time') + '"></div><div>You are logged in as <span class="' + goog.getCssName('bold') + '">' + soy.$$escapeHtml(opt_data.username) + '</span></div><div><a class="' + goog.getCssName('header-link') + '" href="' + soy.$$escapeHtml(opt_data.logoutlink) + '">Log out</a></div><div class="' + goog.getCssName('input') + '"><input class="' + goog.getCssName('live') + ' ' + goog.getCssName('search-input') + '" style="display: none;" type="text" /></div></div><div class="' + goog.getCssName('back-link') + '"></div><div class="' + goog.getCssName('forward-link') + '"></div>';
 };
 
 
@@ -73,11 +73,11 @@ spo.template.gameDetails = function(opt_data) {
 
 spo.template.simplelist = function(opt_data) {
   var output = '<div class="' + goog.getCssName('simple-list') + '"><div class="' + goog.getCssName('simple-list-title') + '">' + soy.$$escapeHtml(opt_data.title) + '</div><ul class="' + goog.getCssName('simple-list-list') + '">';
-  var nameList321 = opt_data.teams;
-  var nameListLen321 = nameList321.length;
-  for (var nameIndex321 = 0; nameIndex321 < nameListLen321; nameIndex321++) {
-    var nameData321 = nameList321[nameIndex321];
-    output += '<li>' + soy.$$escapeHtml(nameData321) + '</li>';
+  var nameList323 = opt_data.teams;
+  var nameListLen323 = nameList323.length;
+  for (var nameIndex323 = 0; nameIndex323 < nameListLen323; nameIndex323++) {
+    var nameData323 = nameList323[nameIndex323];
+    output += '<li>' + soy.$$escapeHtml(nameData323) + '</li>';
   }
   output += '</ul></div>';
   return output;

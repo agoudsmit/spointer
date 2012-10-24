@@ -4,10 +4,14 @@
 
 goog.provide('spo.control.LiveList');
 
+goog.require('goog.array');
+goog.require('goog.string');
 goog.require('goog.ui.Component.EventType');
 goog.require('pstj.ui.ScrollList');
 goog.require('spo.control.Base');
+goog.require('spo.ds.Game');
 goog.require('spo.ds.GameList');
+goog.require('spo.ds.Resource');
 goog.require('spo.ui.Game');
 goog.require('spo.ui.Header');
 goog.require('spo.ui.NewGame');
@@ -20,6 +24,7 @@ goog.require('spo.ui.NewGame');
 spo.control.LiveList = function(container) {
   goog.base(this, container);
 
+  this.hiddenChildrenIndexes_ = [];
   this.view_ = new pstj.ui.ScrollList(195);
   this.view_.setScrollInsideTheWidget(false);
 
@@ -68,11 +73,20 @@ spo.control.LiveList.prototype.requestNewGame_ = function(widget) {
       widget.resetWidget();
     }, 2000);
   } else {
-    // Submit new game request and exit. The backend should use the default
-    // handler if one is not provided and route to the specified list.
-    // var data = ..;
-    // spo.ds.Resource.getInstance().get( data, undefined); // use the default
-    // handler that will use the url to route the result
+    spo.ds.Resource.getInstance().get({
+      'url': '/game/create',
+      'data': {
+        'name': value
+      }
+    }, function(response) {
+      if (response['status'] == 'ok') widget.resetWidget();
+      else {
+        widget.setError(response['error']);
+        setTimeout(function() {
+          widget.resetWidget();
+        }, 2000);
+      }
+    });
   }
 };
 
@@ -102,6 +116,10 @@ spo.control.LiveList.prototype.load_ = function(list) {
 spo.control.LiveList.prototype.handleListAddition_ = function(ev) {
   console.log('The list has been updated a new feature is added');
   console.log(ev);
+  var node = ev.getNode();
+  var index = this.list_.getIndexByItem(node);
+  console.log('The index of the item in the list', index);
+  this.addGame_(node, index + 1);
 };
 
 /**
@@ -109,10 +127,63 @@ spo.control.LiveList.prototype.handleListAddition_ = function(ev) {
  * @private
  */
 spo.control.LiveList.prototype.show_ = function() {
-  if (!this.inited_) this.init();
+  if (!this.inited_) {
+    this.init();
+  }
   else {
-    spo.ui.Header.getInstance().setLinks();
     this.view_.enterDocument();
+    spo.ui.Header.getInstance().setLinks();
+  }
+  this.enableSearch_(true);
+
+};
+
+/**
+ * Sets the filter on the view.
+ * TODO: Ask for specification: should the search be case sensitive or not.
+ * @private
+ * @param {string} str The string from the search field.
+ */
+spo.control.LiveList.prototype.setFilter_ = function(str) {
+  if (goog.isString(str)) {
+    str = goog.string.trim(str);
+
+    this.list_.setFilter((str != '') ? function(item) {
+      // if the item does not match, filter it out - return true;
+      if (goog.string.contains(item.getProp(spo.ds.Game.Property.NAME), str)) {
+        return false;
+      }
+      return true;
+    } : null);
+    // Should be filtered now, go and filter view.
+    var indexes = this.list_.getFilteredIndexes();
+    this.filterOutList_(indexes);
+  }
+};
+
+/**
+ * Filters out the list view based on indexes.
+ * @param  {Array.<number>} indexes LIst of indexes to hide.
+ * @private
+ */
+spo.control.LiveList.prototype.filterOutList_ = function(indexes) {
+  console.log('Filtered indexes', indexes);
+  var all = this.list_.getCount();
+  var cindex;
+  for (var i = 0; i < all; i++) {
+    cindex = i + 1;
+    this.view_.getChildAt(cindex).getElement().style.display = (goog.array.indexOf(
+      indexes, i) == -1) ? 'block' : 'none';
+  }
+};
+
+spo.control.LiveList.prototype.enableSearch_ = function(enable) {
+  if (enable) {
+    spo.ui.Header.getInstance().setSearchFiledState('Search games..',
+      goog.bind(this.setFilter_, this));
+
+  } else {
+    spo.ui.Header.getInstance().setSearchFiledState();
   }
 };
 
@@ -133,21 +204,25 @@ spo.control.LiveList.prototype.setEnabled = function(enable, fn) {
  */
 spo.control.LiveList.prototype.hide_ = function() {
   this.view_.exitDocument();
+  this.enableSearch_(false);
 };
 
 /**
  * Adds a new game view to the list of games in accordance to its position in
  * the list.
  * @param {spo.ds.Game} gameRecord The game record to work with.
+ * @param {number=} position The position to add the child at.
  * @private
  */
-spo.control.LiveList.prototype.addGame_ = function(gameRecord) {
+spo.control.LiveList.prototype.addGame_ = function(gameRecord, position) {
   var gameView = new spo.ui.Game();
   gameView.setModel(gameRecord);
   //Add +1 for the "new game" child
-  this.view_.addChildAt(gameView, this.list_.getIndexByItem(gameRecord) + 1,
+  this.view_.addChildAt(gameView, (goog.isNumber(position) ? position :
+    this.list_.getIndexByItem(gameRecord) + 1),
     true);
 };
+
 
 /**
  * Loads the view into existence. This is performed right after ew have the

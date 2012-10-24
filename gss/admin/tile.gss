@@ -44,7 +44,7 @@
 }
 
 /** Handle the input in the new game tile (special case) */
-.tile-body input {
+input {
   width: 100%;
   background-color: BASE_COLOR;
   border: 1px solid #98aebf;
@@ -53,7 +53,7 @@
   outline: none;
 }
 
-.tile-body input:focus {
+input:focus {
   border-color: OUTLINE_COLOR;
 }
 

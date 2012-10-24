@@ -31,6 +31,62 @@ spo.ds.Resource.MAIN_URL_ = '/InterACT/dispatcher'
 spo.ds.Resource.JSON_PROCESSOR_ = new goog.json.NativeJsonProcessor();
 
 /**
+ * A default callback to use when no callback is provided by the user.
+ * This is same as if the packet has come from the websocket (preliminary work).
+ * @param  {*} response The response from the server. We need a bit of
+ * processing anyway, because of the possibility of an error as we are the
+ * sender.
+ * @private
+ */
+spo.ds.Resource.defaultCallback_ = function(response) {
+  if (response['status'] == 'ok') {
+    var fragment = response['resource'];
+    console.log('Received websocket with resource', fragment);
+    console.log('current urls', spo.ds.Resource.urlhandlers_);
+    goog.array.forEach(spo.ds.Resource.urlhandlers_, function(url, i) {
+      var args = url.exec(fragment);
+      if (!args) return;
+      console.log('Found handler for url');
+      spo.ds.Resource.handlers_[i](response);
+    });
+  }
+};
+
+/**
+ * List of URLs (fragments of url as in packet) that are known to be listened
+ * for by a data structure.
+ * @type {Array.<string>}
+ * @private
+ */
+spo.ds.Resource.urlhandlers_ = [];
+
+/**
+ * List of handlers/function that are known to match (by index) the listened url
+ * from the list of urls.
+ * @type {Array.<Function>}
+ * @private
+ */
+spo.ds.Resource.handlers_ = [];
+
+/**
+ * Register a new websocket resource/route/url with a handler that is interested
+ *  in it.
+ * @param  {!string} url     The url / resource to listen for.
+ * @param  {!function(*): void} handler The hadler of the resource
+ */
+spo.ds.Resource.prototype.registerResourceHandler = function(url, handler) {
+  var route = new RegExp('^' + goog.string.regExpEscape(url)
+    .replace(/\\:\w+/g, '(\\w+)')
+    .replace(/\\\*/g, '(.*)')
+    .replace(/\\\[/g, '(')
+    .replace(/\\\]/g, ')?')
+    .replace(/\\\{/g, '(?:')
+    .replace(/\\\}/g, ')?') + '$');
+  spo.ds.Resource.urlhandlers_.push(route);
+  spo.ds.Resource.handlers_.push(handler);
+};
+
+/**
  * Gets data from the server. The method is designed to work with single
  * requests only, however the server can handle multiple requests and this
  * implementation is embeding the requests in a query array for this.
@@ -141,6 +197,11 @@ spo.ds.Resource.prototype.handleResponse_ = function(cb, e) {
   }
   /** { content: .., status: "OK"|"FAIL"} */
   cb(responseObject);
+  // If there is a resourse - hand over the object to the ws transpass.
+  // Remove this once we have a working websocket on the server.
+  if (goog.isDefAndNotNull(responseObject['resource'])) {
+    spo.ds.Resource.defaultCallback_(responseObject);
+  }
 };
 
 /**

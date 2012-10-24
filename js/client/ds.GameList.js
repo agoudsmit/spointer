@@ -36,10 +36,25 @@ spo.ds.GameList.prototype.loadData = function(content) {
   var g;
 
   for (var i = 0, len = games.length; i < len; i++) {
-    g = new spo.ds.Game(games[i]);
-    this.add(g);
+    this.addFromRawData_(games[i]);
   }
+  // Resolve the deferred now that we have the data.
   spo.ds.GameList.deferred_.callback(this);
+
+  spo.ds.Resource.getInstance().registerResourceHandler('/game/create',
+    goog.bind(function(response) {
+      console.log('Adds new game in the beginning', response);
+      this.addFromRawData_(response['content'], true);
+    }, this));
+};
+
+/**
+ * Helper function that adds a new record item from data chunk/raw data.
+ * @param {*} chunk The raw data chunk.
+ * @private
+ */
+spo.ds.GameList.prototype.addFromRawData_ = function(chunk, reverse) {
+  this.add(new spo.ds.Game(chunk), (reverse == true));
 };
 
 /**

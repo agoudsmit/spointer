@@ -1,6 +1,13 @@
 goog.provide('spo.ui.Header');
 
 goog.require('goog.ui.Component');
+goog.require('goog.ui.LabelInput');
+goog.require('goog.events.EventType');
+goog.require('goog.events.KeyHandler');
+goog.require('goog.events.KeyHandler.EventType');
+goog.require('spo.template');
+goog.require('goog.dom');
+goog.require('goog.async.Delay');
 
 /**
  * The live header widget
@@ -10,6 +17,9 @@ goog.require('goog.ui.Component');
  */
 spo.ui.Header = function(dh) {
   goog.base(this, dh);
+  this.keyHandler_ = new goog.events.KeyHandler();
+  this.searchDelayed_ = new goog.async.Delay(this.performSearchCallback_, 500,
+    this);
 };
 goog.inherits(spo.ui.Header, goog.ui.Component);
 
@@ -24,6 +34,18 @@ spo.ui.Header.prototype.defaultGameName_ = '&nbsp;';
  * @type {string}
  */
 spo.ui.Header.prototype.defaultViewName_ = '&nbsp;';
+
+/**
+ * The key handler that is used by the search field.
+ * @type {goog.events.KeyHandler}
+ * @private
+ */
+spo.ui.Header.prototype.keyHandler_;
+spo.ui.Header.prototype.gameNameLabel_
+spo.ui.Header.prototype.viewName_
+spo.ui.Header.prototype.backLink_
+spo.ui.Header.prototype.forwardLink_
+spo.ui.Header.prototype.searchField_
 
 /**
  * @inheritDoc
@@ -49,7 +71,43 @@ spo.ui.Header.prototype.decorateInternal = function(element) {
   this.forwardLink_ = goog.dom.getElementByClass(goog.getCssName(
     'forward-link'), element);
 
+  // Setup the search field.
+  var searchField = goog.dom.getElementByClass(goog.getCssName(
+    'search-input'), element);
+  this.searchField_ = new goog.ui.LabelInput();
+  this.searchField_.decorate(searchField);
+
+  this.keyHandler_.attach(this.searchField_.getElement());
 };
+
+
+spo.ui.Header.prototype.setSearchEnabled_ = function(enable) {
+  var el = this.searchField_.getElement();
+  console.log(el);
+  if (enable) {
+    console.log('Setting up listener for KEY events')
+    this.getHandler().listen(this.keyHandler_,
+      goog.events.KeyHandler.EventType.KEY, this.onSearchChange_);
+  } else {
+    this.getHandler().unlisten(this.keyHandler_,
+      goog.events.KeyHandler.EventType.KEY, this.onSearchChange_);
+  }
+};
+
+spo.ui.Header.prototype.onSearchChange_ = function(e) {
+  this.searchDelayed_.stop();
+  if (this.searchField_.hasChanged() &&
+    goog.isFunction(this.searchFieldHandler_)) {
+    this.searchDelayed_.start();
+
+  }
+};
+
+spo.ui.Header.prototype.performSearchCallback_ = function() {
+  this.searchFieldHandler_(this.searchField_.getValue());
+};
+
+
 
 /**
  * Public method to set the view name in the header.
@@ -65,6 +123,29 @@ spo.ui.Header.prototype.setViewName = function(viewname) {
  */
 spo.ui.Header.prototype.setGameName = function(gamename) {
   this.gameNameLabel_.innerHTML = gamename || this.defaultGameName_;
+};
+
+/**
+ * Sets the text of the serchfiled in the header.
+ * @param {string=} text The input label. Note that if no text is suppled
+ * the field will be disabled/hidden.
+ * @param {function(goog.events.Event): void=} handler The handler to use with
+ * the fields change currently.
+ */
+spo.ui.Header.prototype.setSearchFiledState = function(text, handler) {
+  console.log('Sets state of search')
+  this.searchField_.clear();
+
+  if (goog.isString(text)) {
+    this.searchField_.setLabel(text);
+    this.searchFieldHandler_ = handler;
+    this.setSearchEnabled_(true);
+    this.searchField_.getElement().style.display = 'block';
+  } else {
+    this.setSearchEnabled_(false);
+    this.searchFieldHandler_ = null;
+    this.searchField_.getElement().style.display = 'none';
+  }
 };
 
 /**
