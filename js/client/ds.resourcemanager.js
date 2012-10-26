@@ -41,12 +41,9 @@ spo.ds.Resource.JSON_PROCESSOR_ = new goog.json.NativeJsonProcessor();
 spo.ds.Resource.defaultCallback_ = function(response) {
   if (response['status'] == 'ok') {
     var fragment = response['resource'];
-    console.log('Received websocket with resource', fragment);
-    console.log('current urls', spo.ds.Resource.urlhandlers_);
     goog.array.forEach(spo.ds.Resource.urlhandlers_, function(url, i) {
       var args = url.exec(fragment);
       if (!args) return;
-      console.log('Found handler for url');
       spo.ds.Resource.handlers_[i](response);
     });
   }
@@ -55,7 +52,7 @@ spo.ds.Resource.defaultCallback_ = function(response) {
 /**
  * List of URLs (fragments of url as in packet) that are known to be listened
  * for by a data structure.
- * @type {Array.<string>}
+ * @type {Array.<RegExp>}
  * @private
  */
 spo.ds.Resource.urlhandlers_ = [];
@@ -193,7 +190,7 @@ spo.ds.Resource.prototype.handleResponse_ = function(cb, e) {
   var responseObject = response['response'][0];
 
   if (responseObject['status'] != 'ok') {
-    console.log('Something wrong with response', responseObject);
+    //console.log('Something wrong with response', responseObject);
   }
   /** { content: .., status: "OK"|"FAIL"} */
   cb(responseObject);

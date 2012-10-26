@@ -33,24 +33,34 @@ goog.inherits(spo.ds.GameList, pstj.ds.List);
 spo.ds.GameList.prototype.loadData = function(content) {
   var games = content['games'];
 
-  var g;
-
   for (var i = 0, len = games.length; i < len; i++) {
     this.addFromRawData_(games[i]);
   }
-  // Resolve the deferred now that we have the data.
-  spo.ds.GameList.deferred_.callback(this);
 
+  // Register for new games.
   spo.ds.Resource.getInstance().registerResourceHandler('/game/create',
     goog.bind(function(response) {
       console.log('Adds new game in the beginning', response);
       this.addFromRawData_(response['content'], true);
     }, this));
+
+  // Register for updated games
+  spo.ds.Resource.getInstance().registerResourceHandler('/game/update/:id',
+    goog.bind(function(response) {
+      console.log('update game in place.', response);
+      this.update(new spo.ds.Game(response['content']));
+    }, this));
+
+  // Resolve the deferred now that we have the data.
+  spo.ds.GameList.deferred_.callback(this);
+
 };
 
 /**
  * Helper function that adds a new record item from data chunk/raw data.
  * @param {*} chunk The raw data chunk.
+ * @param {boolean=} reverse If the addition should happen in the beginning of
+ * the list.
  * @private
  */
 spo.ds.GameList.prototype.addFromRawData_ = function(chunk, reverse) {

@@ -91,7 +91,7 @@ spo.control.LiveList.prototype.requestNewGame_ = function(widget) {
 };
 
 /**
- * INit the controler.
+ * Init the controler.
  */
 spo.control.LiveList.prototype.init = function() {
   this.inited_ = true;
@@ -114,11 +114,8 @@ spo.control.LiveList.prototype.load_ = function(list) {
  * @private
  */
 spo.control.LiveList.prototype.handleListAddition_ = function(ev) {
-  console.log('The list has been updated a new feature is added');
-  console.log(ev);
-  var node = ev.getNode();
+  var node = /** @type {spo.ds.Game} */ (ev.getNode());
   var index = this.list_.getIndexByItem(node);
-  console.log('The index of the item in the list', index);
   this.addGame_(node, index + 1);
 };
 
@@ -140,17 +137,17 @@ spo.control.LiveList.prototype.show_ = function() {
 
 /**
  * Sets the filter on the view.
- * TODO: Ask for specification: should the search be case sensitive or not.
  * @private
  * @param {string} str The string from the search field.
  */
 spo.control.LiveList.prototype.setFilter_ = function(str) {
   if (goog.isString(str)) {
     str = goog.string.trim(str);
-
+    str = str.toLowerCase();
     this.list_.setFilter((str != '') ? function(item) {
       // if the item does not match, filter it out - return true;
-      if (goog.string.contains(item.getProp(spo.ds.Game.Property.NAME), str)) {
+      if (goog.string.contains(item.getProp(
+        spo.ds.Game.Property.NAME).toLowerCase(), str)) {
         return false;
       }
       return true;
@@ -177,6 +174,11 @@ spo.control.LiveList.prototype.filterOutList_ = function(indexes) {
   }
 };
 
+/**
+ * Enables/disables the search in the header and bind search function.
+ * @param  {boolean} enable True if the search should be enabled.
+ * @private
+ */
 spo.control.LiveList.prototype.enableSearch_ = function(enable) {
   if (enable) {
     spo.ui.Header.getInstance().setSearchFiledState('Search games..',

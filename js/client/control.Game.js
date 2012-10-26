@@ -4,6 +4,7 @@ goog.require('goog.async.Deferred');
 goog.require('goog.async.DeferredList');
 goog.require('goog.dom.classes');
 goog.require('pstj.ui.CustomScrollArea');
+goog.require('pstj.ds.ListItem.EventType');
 goog.require('spo.admin.Router');
 goog.require('spo.control.Base');
 goog.require('spo.control.EventType');
@@ -16,6 +17,7 @@ goog.require('spo.ds.TeamList');
 goog.require('spo.ui.Forms');
 goog.require('spo.ui.GameControls');
 goog.require('spo.ui.GameDetails');
+goog.require('spo.ui.GameEdit');
 
 /**
  * Provides the game details control.
@@ -145,32 +147,35 @@ spo.control.Game.prototype.loadView = function() {
     goog.getCssName('colored-content'));
 
   var gc = new spo.ui.GameControls();
-//    gc.render(this.view_.getContentElement());
   this.view_.addChildAt(gc, 0, true);
+  // Update the game control view to match the game state
+  this.updatePauseControl_();
 
+  // Create the game details view
   var gd = new spo.ui.GameDetails();
   var dsGame = this.gamelist_.getById(this.gameId_);
   gd.setModel(dsGame);
-  //gd.render(this.view_.getContentElement());
   this.view_.addChildAt(gd, 1, true);
 
+  // Setup the forms for file upload
   this.hiddenForms_ = new spo.ui.Forms();
   this.hiddenForms_.setModel(this.gamelist_.getById(this.gameId_));
   this.view_.addChildAt(this.hiddenForms_, 2, true);
 
+  // Setup the header attributes to match the view
   spo.ui.Header.getInstance().setViewName('game details');
   spo.ui.Header.getInstance().setGameName(
     dsGame.getProp(spo.ds.Game.Property.NAME).toString());
-
   spo.ui.Header.getInstance().setLinks('/games', 'dashboard', '/teams/' +
-    this.gameId_, 'manager teams/users');
+    this.gameId_, '');
+  // FIXME: Enable this when the team view is ready
+
 
   // create the list views
   var column2 = goog.dom.getElementByClass(goog.getCssName(
     'column-two'), gd.getElement());
   var column3 = goog.dom.getElementByClass(goog.getCssName(
     'column-three'), this.view_.getElement());
-
   var i;
 
   var teamnames = [];
@@ -179,26 +184,22 @@ spo.control.Game.prototype.loadView = function() {
     teamnames.push(this.teamlist_.getByIndex(i).getProp(
       spo.ds.Team.Property.NAME));
   }
-
   var cteamnames = [];
   len = this.cteamList_.getCount();
   for (i = 0; i < len; i++) {
     cteamnames.push(this.cteamList_.getByIndex(i).getProp(
       spo.ds.ControlTeam.Property.NAME));
   }
-
   var playernames = [];
   len = this.playerslist_.length;
   for (i = 0; i < len; i++) {
     playernames.push(this.playerslist_[i]['name']);
   }
-
   var cplayersnames = [];
   len = this.cplayerslist_.length;
   for (i = 0; i < len; i++) {
     cplayersnames.push(this.cplayerslist_[i]['name']);
   }
-
   var lists = '<div class="' + goog.getCssName('column-two') +
   ' ' + goog.getCssName('float-left') + '">';
   lists += spo.template.simplelist({
@@ -227,9 +228,50 @@ spo.control.Game.prototype.loadView = function() {
   goog.dom.appendChild(this.view_.getContentElement(),
     goog.dom.htmlToDocumentFragment(lists));
 
+  // Setup any listeners for this view.
   this.setupListeners_();
+};
 
 
+/**
+ * This method should be called to switch between edit and view state of the
+ * games details only after it was initially rendered, regardless of the initial
+ * state.
+ * @param {boolean} enable True if the view should be switched to edit state.
+ */
+spo.control.Game.prototype.setEditState_ = function(enable) {
+  this.editMode_ = enable;
+  var oldView = this.view_.getChildAt(1);
+  if (oldView instanceof spo.ui.GameEdit && enable) return;
+  if (oldView instanceof spo.ui.GameDetails && !enable) return;
+  var newView;
+  if (enable) {
+    newView = new spo.ui.GameEdit();
+  } else {
+    newView = new spo.ui.GameDetails();
+  }
+  newView.setModel(this.getGameRecord());
+  this.view_.removeChildAt(1, true);
+  this.view_.addChildAt(newView, 1, true);
+  if (enable) newView.focusFirstElement();
+  this.view_.getChildAt(0).setEditState(this.editMode_);
+  oldView.dispose();
+};
+
+/**
+ * Returns the game record that is matching the viewed game.
+ * @return {spo.ds.Game} The game record of this view.
+ */
+spo.control.Game.prototype.getGameRecord = function() {
+  return  /** @type {spo.ds.Game} */ (this.gamelist_.getById(this.gameId_));
+};
+
+/**
+ * Updates the game control view with the pause/play state of the game.
+ * @private
+ */
+spo.control.Game.prototype.updatePauseControl_ = function() {
+  this.view_.getChildAt(0).setPlayState(!this.getGameRecord().isPaused());
 };
 
 /**
@@ -238,12 +280,28 @@ spo.control.Game.prototype.loadView = function() {
  */
 spo.control.Game.prototype.setupListeners_ = function() {
   var handler = this.getHandler();
+  // Listen for control actions (coming from the control panel, but casted
+  // to the parent view)
   handler.listen(this.view_, spo.control.EventType.CONTROL_ACTION,
     this.handleExternalControlAction_);
-
+  // Listen for the uploadd forms events.
   handler.listen(this.hiddenForms_, [spo.control.EventType.SUCCESS,
     spo.control.EventType.FAILURE], this.handleFormUploadFinish_);
+  // Listen for game record updates: those are save to assume switching
+  // to view (intead of edit) because the game should be uneditable
+  // by other users.
+  //
+  // However the game is updates when player count changes as well, so
+  // we need to check with the widget itself first
+  handler.listen(this.getGameRecord(), pstj.ds.ListItem.EventType.UPDATE,
+    function() {
+      if (this.editMode_ && this.view_.getChildAt(1).isSafeToClose()) {
+        this.setEditState_(false);
+      }
+    });
 };
+
+
 
 /**
  * Hanlder for the upload of files finish action.
@@ -271,12 +329,15 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
     this.hiddenForms_.enableTeam();
   } else if (action == spo.control.Action.MANAGE_CONTROLS) {
     if (this.editMode_) {
+      this.view_.getChildAt(1).setNotification('Game is being edited!');
       // Flash error!
     } else {
-      spo.admin.Router.getInstance().navigate('/control_users/' + this.gameId_);
+      // FIXME: enable this when it is ready
+      //spo.admin.Router.getInstance().navigate('/control_users/' + this.gameId_);
     }
+  } else if (action == spo.control.Action.EDIT) {
+    if (this.editMode_ != true) this.setEditState_(true);
   }
-
 };
 
 /**

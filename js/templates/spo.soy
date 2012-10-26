@@ -199,18 +199,39 @@
 {template .gameSettings}
   <div class="{css column-one}">
     <div class="{css notification-area}">&nbsp;</div>
-    <div class="detail-heading">Game description</div>
-    <div class="game-description">{$description}</div>
+    <div class="{css detail-heading}">Game description</div>
+    <div class="{css game-description}">{$description}</div>
     <div class="{css hr}"></div>
-    <div class="detail-heading">Game date <span class="game-date"></span></div>
+    <div class="{css detail-heading}">Game date <span class="{css game-date}"></span></div>
     <div class="{css hr}"></div>
-    <div class="detail-heading">Game time <span class="game-time"></span></div>
+    <div class="{css detail-heading}">Game time <span class="{css game-time}"></span></div>
     <div class="{css hr}"></div>
-    <div class="detail-heading">Change game time</div>
-    <div>One day passes in <span class="detail-heading"></span> minute(s)</div>
-    <div class="goog-slider"></div>
+    <div class="{css detail-heading}">Game speed</div>
+    <div>One day passes in <span class="{css detail-heading}"></span> minute(s)</div>
   </div>
 {/template}
+
+
+/**
+ * @param description The game record to present.
+ */
+{template .gameEdit}
+  <div class="{css column-one}">
+    <div class="{css notification-area}">&nbsp;</div>
+    <div class="{css detail-heading}">Game description</div>
+    <textarea class="{css game-description-edit}">{$description}</textarea>
+    <div class="{css hr}"></div>
+    <div class="{css detail-heading}">Game date <span class="{css game-date}"></span></div>
+    <div class="{css hr}"></div>
+    <div class="{css detail-heading}">Game time <span class="{css game-time}"></span></div>
+    <div class="{css hr}"></div>
+    <div class="{css detail-heading}">Change game time</div>
+    <div>One day passes in <span class="{css detail-heading}"></span> minute(s)</div>
+    <div class="{css goog-slider}"></div>
+    <div class="{css text-button} {css form-button} {css goog-button}">Save</div>
+  </div>
+{/template}
+
 
 /**
  *
@@ -218,6 +239,7 @@
 {template .gameControls}
   <div class="{css game-controls}">
     <div class="{css game-control-item} {css form-button} {css goog-button} {css pause-button} {css circle-button}" data-action="pause"></div>
+    <div class="{css game-control-item} {css form-button} {css goog-button} {css play-button} {css circle-button}" data-action="play"></div>
     <div class="{css game-control-item} {css form-button} {css goog-button} {css stop-button} {css circle-button}" data-action="stop"></div>
     <div class="{css game-control-item} {css form-button} {css goog-button} {css delete-button} {css circle-button}" data-action="delete"></div>
     <div class="{css game-control-item} {css form-button} {css goog-button} {css edit-button} {css circle-button}" data-action="edit"></div>
@@ -226,24 +248,6 @@
 
     <div class="{css game-control-item} {css text-button} {css form-button} {css goog-button}" data-action="managecontrols" style="position:relative;top:5px;float:right;margin-right:11px">Manage controls</div>
     <div class="{css game-control-item} {css text-button} {css form-button} {css goog-button}" data-action="uploadscenario" style="position:relative;top:5px;float:right;margin-right:11px;">Upload scenario</div>
-  </div>
-{/template}
-
-/**
- * @param game The game details to use.
- */
-{template .gameDetails}
-  <div class="{css game-details}">
-    <div class="{css back-link}"></div>
-    <div class="{css forward-link}"></div>
-    <div class="{css game-controls}"></div>
-    <div class="{css column-one} {css float-left}">
-      {call .gameSettings}
-        {param game: $game /}
-      {/call}
-    </div>
-    <div class="{css column-two} {css float-left}"></div>
-    <div class="{css column-three} {css float-left}"></div>
   </div>
 {/template}
 

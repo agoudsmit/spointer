@@ -41,11 +41,41 @@ spo.ui.Header.prototype.defaultViewName_ = '&nbsp;';
  * @private
  */
 spo.ui.Header.prototype.keyHandler_;
-spo.ui.Header.prototype.gameNameLabel_
-spo.ui.Header.prototype.viewName_
-spo.ui.Header.prototype.backLink_
-spo.ui.Header.prototype.forwardLink_
-spo.ui.Header.prototype.searchField_
+
+/**
+ * The game name label element.
+ * @type {Element}
+ * @private
+ */
+spo.ui.Header.prototype.gameNameLabel_;
+
+/**
+ * The view name label element.
+ * @type {Element}
+ * @private
+ */
+spo.ui.Header.prototype.viewName_;
+
+/**
+ * The back link element.
+ * @type {Element}
+ * @private
+ */
+spo.ui.Header.prototype.backLink_;
+
+/**
+ * The forward link element.
+ * @type {Element}
+ * @private
+ */
+spo.ui.Header.prototype.forwardLink_;
+
+/**
+ * The saerch field as lable input component.
+ * @type {goog.ui.LabelInput}
+ * @private
+ */
+spo.ui.Header.prototype.searchField_;
 
 /**
  * @inheritDoc
@@ -83,9 +113,7 @@ spo.ui.Header.prototype.decorateInternal = function(element) {
 
 spo.ui.Header.prototype.setSearchEnabled_ = function(enable) {
   var el = this.searchField_.getElement();
-  console.log(el);
   if (enable) {
-    console.log('Setting up listener for KEY events')
     this.getHandler().listen(this.keyHandler_,
       goog.events.KeyHandler.EventType.KEY, this.onSearchChange_);
   } else {
@@ -129,11 +157,10 @@ spo.ui.Header.prototype.setGameName = function(gamename) {
  * Sets the text of the serchfiled in the header.
  * @param {string=} text The input label. Note that if no text is suppled
  * the field will be disabled/hidden.
- * @param {function(goog.events.Event): void=} handler The handler to use with
+ * @param {function(string): void=} handler The handler to use with
  * the fields change currently.
  */
 spo.ui.Header.prototype.setSearchFiledState = function(text, handler) {
-  console.log('Sets state of search')
   this.searchField_.clear();
 
   if (goog.isString(text)) {

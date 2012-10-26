@@ -39,6 +39,15 @@ spo.ui.ButtonRenderer.prototype.getAriaRole = function() {
 };
 
 /**
+ * Sets the value for the button text.
+ * @param {Element} el    The button element.
+ * @param {string} value The new text value of the button.
+ */
+spo.ui.ButtonRenderer.prototype.setValue = function(el, value) {
+  el.innerHTML = value;
+};
+
+/**
  * Simply forvide this for now, if we need to change content this might
  * change as well
  * @param  {Element} element The element that is assigned to the component

@@ -18,6 +18,14 @@ spo.ds.Game = function(data) {
 goog.inherits(spo.ds.Game, pstj.ds.ListItem);
 
 /**
+ * Checks if the game is paused.
+ * @return {boolean} True is the game is paused, false othrewise.
+ */
+spo.ds.Game.prototype.isPaused = function() {
+  return (this.getProp(spo.ds.Game.Property.STATUS) == 2);
+};
+
+/**
  * Provides the names for the object literal.
  * @enum {string}
  */
