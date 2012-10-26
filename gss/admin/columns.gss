@@ -4,6 +4,13 @@
   padding: 15px;
   border-right: 1px solid white;
   min-height: 100%;
+  position: relative;
+}
+
+.column-one .text-button {
+  position: absolute;
+  margin: 11px;
+  right: 0;
 }
 
 
@@ -40,4 +47,8 @@
 .notification-area {
   color: ERROR_COLOR;
   text-align: center;
+}
+
+.game-description-edit {
+  width: 100%;
 }

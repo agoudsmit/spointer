@@ -30,6 +30,7 @@ h3 {
 }
 .forward-link a, .back-link a {
   color: OUTLINE_COLOR;
+  text-transform: uppercase;
 }
 
 .back-link {

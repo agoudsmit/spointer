@@ -16,6 +16,10 @@
   @mixin icons(6);
 }
 
+.play-button {
+  @mixin icons(8);
+}
+
 .stop-button {
   @mixin icons(4);
 }
@@ -35,6 +39,11 @@
 .pause-button:hover, .pause-button:focus, .form-button-hover.pause-button,
 .form-button-focused.pause-button {
   @mixin hovericons(6);
+}
+
+.play-button:hover, .play-button:focus, .form-button-hover.play-button,
+.form-button-focused.play-button {
+  @mixin hovericons(8);
 }
 
 .stop-button:hover, .stop-button:focus, .form-button-hover.stop-button,

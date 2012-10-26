@@ -22,6 +22,10 @@
   /*width: 195px;*/
   height: 200px;
   background-color: transparent;
+  -webkit-perspective: 400px;
+  /* @alternate */  -moz-perspective: 400px;
+  -webkit-perspective-origin: 50% 50%;
+  /* @alternate */ -moz-perspective-origin: 50% 50%;
 }
 
 .tile-inner-container {
@@ -36,6 +40,11 @@
   margin: 2%;
   padding: 6px;
   background-color: SOFT_BLUE;
+  cursor: pointer;
+  -webkit-transition: all 100ms ease;
+  /* @alternate */ -moz-transition: all 100ms ease;
+  -webkit-transform-origin: 0% 0%;
+  /* @alternate */ -moz-transform-origin: 0% 0%;
 }
 
 /* The game name styling */
@@ -83,10 +92,17 @@ input:focus {
   box-shadow: 0 0 2px 4px white;
 }
 
-.depressed {
-  -webkit-transform: scale(0.8);
+.depressed .tile-inner-container {
+  /**-webkit-transform: scale(0.8); */
+  -webkit-transform-origin: 0% 100%;
+  /* @alternate */ -moz-transform-origin: 0% 100%;
+  -webkit-transform: rotateX(15deg);
+  /* @alternate */  -moz-transform: rotateX(15deg);
+
 }
 
 .error {
   color: ERROR_COLOR;
 }
+
+
