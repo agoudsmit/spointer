@@ -266,4 +266,52 @@
   </div>
 {/template}
 
+/**
+ *
+ */
+{template .TeamList}
+  <div class="{css team-list}">
+    <div class="{css detail-heading}">TEAMS</div>
+  </div>
+{/template}
+
+/**
+ * @param teamName The name of the team.
+ */
+{template .Team}
+  <div class="{css team-item}">{$teamName}</div>
+{/template}
+
+/**
+ * @param teamname The name of the team.
+ */
+{template .Users}
+  <div class="{css user-list}">
+    <div class="{css detail-heading}">{$teamname}</div>
+  </div>
+{/template}
+
+/**
+ * @param username The name of the user.
+ * @param userrole The role (i.e. Barak Obama).
+ * @param userfunction The function the role executes (i.e. president).
+ * @param useremail The email of the user.
+ */
+{template .User}
+  <div class="{css user-item}">
+    <div class="{css user-icon} {css circle-button} {css user-icon-users}"></div>
+    <input class="{css form-values} {css user-role} {css sub-item} {css super-item}" type="text" value="{$userrole}" label="Role.." />
+    <input class="{css form-values} {css user-function} {css sub-item}" value="{$userfunction}" label="Function..." />
+    <input class="{css form-values} {css user-name} {css sub-item}" value="{$username}" label="Name..." />
+    <input class="{css form-values} {css user-email} {css sub-item}" value="{$useremail}" label="E-Mail..." />
+    <div class="{css user-controls}">
+      <div class="{css form-button} {css goog-button} {css save-button} {css circle-button}" style="float:right"></div>
+      <div class="{css form-button} {css goog-button} {css delete-button} {css circle-button}" style="float:right"></div>
+
+      <div style="clear:both"></div>
+    </div>
+    <div class="{css transparent-overlay}"></div>
+  </div>
+{/template}
+
 {/namespace}

@@ -3,8 +3,8 @@ goog.provide('spo.control.Game');
 goog.require('goog.async.Deferred');
 goog.require('goog.async.DeferredList');
 goog.require('goog.dom.classes');
-goog.require('pstj.ui.CustomScrollArea');
 goog.require('pstj.ds.ListItem.EventType');
+goog.require('pstj.ui.CustomScrollArea');
 goog.require('spo.admin.Router');
 goog.require('spo.control.Base');
 goog.require('spo.control.EventType');
@@ -29,8 +29,8 @@ goog.require('spo.ui.GameEdit');
  * @param {string} edit If the game should be in edit state.
  */
 spo.control.Game = function(container, gameid, edit) {
-
   goog.base(this, container);
+
   if (edit == 'edit') {
     this.editMode_ = true;
   }
@@ -166,9 +166,10 @@ spo.control.Game.prototype.loadView = function() {
   spo.ui.Header.getInstance().setViewName('game details');
   spo.ui.Header.getInstance().setGameName(
     dsGame.getProp(spo.ds.Game.Property.NAME).toString());
-  spo.ui.Header.getInstance().setLinks('/games', 'dashboard', '/teams/' +
-    this.gameId_, '');
-  // FIXME: Enable this when the team view is ready
+  console.log('takoa...', this.gameId_)
+  console.log('Setting the links now...')
+  spo.ui.Header.getInstance().setLinks('/games','dashboard', '/teams/' +
+    this.gameId_, 'manage users/teams');
 
 
   // create the list views
@@ -336,7 +337,18 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
       //spo.admin.Router.getInstance().navigate('/control_users/' + this.gameId_);
     }
   } else if (action == spo.control.Action.EDIT) {
-    if (this.editMode_ != true) this.setEditState_(true);
+    if (this.editMode_ != true) {
+      // request edit mode
+      spo.ds.Resource.getInstance().get({
+        'url': '/game/lock/' + this.gameId_
+      }, goog.bind(function(resp) {
+        if (resp['status'] = 'ok') {
+          this.setEditState_(true);
+        } else {
+          this.view_.getChildAt(1).setNotification('Game is locked already!')
+        }
+      }, this));
+    }
   }
 };
 
@@ -348,7 +360,6 @@ spo.control.Game.prototype.setEnabled = function(enable, fn) {
 
   }
   else {
-    console.log('call dispose on this view');
     goog.dispose(this);
     fn();
   }
@@ -357,6 +368,11 @@ spo.control.Game.prototype.setEnabled = function(enable, fn) {
  * @inheritDoc
  */
 spo.control.Game.prototype.disposeInternal = function() {
+  if (this.editMode_) {
+    spo.ds.Resource.getInstance().get({
+      'url': '/game/unlock/' + this.gameId_
+    });
+  }
   this.view_.exitDocument();
   this.view_.dispose();
   // Should be disposed as it is a child of the main view

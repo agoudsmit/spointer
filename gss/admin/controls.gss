@@ -36,9 +36,22 @@
   @mixin icons(8);
 }
 
+.save-button {
+  @mixin icons(9);
+}
+
+.user-icon {
+  @mixin icons(0);
+}
+
 .pause-button:hover, .pause-button:focus, .form-button-hover.pause-button,
 .form-button-focused.pause-button {
   @mixin hovericons(6);
+}
+
+.save-button:hover, .save-button:focus, .form-button-hover.save-button,
+.form-button-focused.save-button {
+  @mixin hovericons(9);
 }
 
 .play-button:hover, .play-button:focus, .form-button-hover.play-button,

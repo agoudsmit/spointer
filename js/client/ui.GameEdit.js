@@ -63,9 +63,6 @@ spo.ui.GameEdit.prototype.saveBtn_;
  * @inheritDoc
  */
 spo.ui.GameEdit.prototype.createDom = function() {
-  console.log(spo.template.gameEdit({
-      description: this.getModel().getProp(spo.ds.Game.Property.DESCRIPTION)
-    }));
   this.decorateInternal(
     /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
     spo.template.gameEdit({
@@ -86,21 +83,14 @@ spo.ui.GameEdit.prototype.isSafeToClose = function() {
  */
 spo.ui.GameEdit.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
-  console.log(el);
-
   // Setup text area
-  console.log('TA');
   this.ta_ = new goog.ui.Textarea();
   this.ta_.setMinHeight(50);
   this.addChild(this.ta_);
-  console.log(goog.getCssName('game-description-edit'));
-  console.log(goog.dom.getElementByClass(goog.getCssName(
-    'game-description-edit'), this.getElement()))
   this.ta_.decorate(goog.dom.getElementByClass(goog.getCssName(
     'game-description-edit'), this.getElement()));
 
   // Setup save button
-  console.log('BUT')
   this.saveBtn_ = new goog.ui.CustomButton('',
     spo.ui.ButtonRenderer.getInstance());
   this.addChild(this.saveBtn_);

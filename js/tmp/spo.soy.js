@@ -82,3 +82,23 @@ spo.template.simplelist = function(opt_data) {
   output += '</ul></div>';
   return output;
 };
+
+
+spo.template.TeamList = function(opt_data) {
+  return '<div class="' + goog.getCssName('team-list') + '"><div class="' + goog.getCssName('detail-heading') + '">TEAMS</div></div>';
+};
+
+
+spo.template.Team = function(opt_data) {
+  return '<div class="' + goog.getCssName('team-item') + '">' + soy.$$escapeHtml(opt_data.teamName) + '</div>';
+};
+
+
+spo.template.Users = function(opt_data) {
+  return '<div class="' + goog.getCssName('user-list') + '"><div class="' + goog.getCssName('detail-heading') + '">' + soy.$$escapeHtml(opt_data.teamname) + '</div></div>';
+};
+
+
+spo.template.User = function(opt_data) {
+  return '<div class="' + goog.getCssName('user-item') + '"><div class="' + goog.getCssName('user-icon') + ' ' + goog.getCssName('circle-button') + ' ' + goog.getCssName('user-icon-users') + '"></div><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-role') + ' ' + goog.getCssName('sub-item') + ' ' + goog.getCssName('super-item') + '" type="text" value="' + soy.$$escapeHtml(opt_data.userrole) + '" label="Role.." /><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-function') + ' ' + goog.getCssName('sub-item') + '" value="' + soy.$$escapeHtml(opt_data.userfunction) + '" label="Function..." /><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-name') + ' ' + goog.getCssName('sub-item') + '" value="' + soy.$$escapeHtml(opt_data.username) + '" label="Name..." /><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-email') + ' ' + goog.getCssName('sub-item') + '" value="' + soy.$$escapeHtml(opt_data.useremail) + '" label="E-Mail..." /><div class="' + goog.getCssName('user-controls') + '"><div class="' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('save-button') + ' ' + goog.getCssName('circle-button') + '" style="float:right"></div><div class="' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('delete-button') + ' ' + goog.getCssName('circle-button') + '" style="float:right"></div><div style="clear:both"></div></div><div class="' + goog.getCssName('transparent-overlay') + '"></div></div>';
+};

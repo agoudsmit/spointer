@@ -14,7 +14,7 @@ goog.require('spo.ds.Team');
  * Team List abstraction.
  * @constructor
  * @extends {pstj.ds.List}
- * @param {string} gid The ID of the team to retrieve the teams for.
+ * @param {string} gid The ID of the game to retrieve the teams for.
  */
 spo.ds.TeamList = function(gid) {
   goog.base(this);

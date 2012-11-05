@@ -177,13 +177,15 @@ spo.ui.Header.prototype.setSearchFiledState = function(text, handler) {
 
 /**
  * Setups the links in the header.
- * @param {string=} back_link    The link url.
+ * @param {function|string=} back_link    The link url.
  * @param {string=} back_text    The inner html of the link.
- * @param {string=} forward_link The link url.
+ * @param {function|string=} forward_link The link url.
  * @param {string=} forward_text The inner html of the link.
  */
 spo.ui.Header.prototype.setLinks = function(back_link, back_text, forward_link,
   forward_text) {
+
+  // Setup links
   if (goog.isString(back_link)) {
     this.backLink_.innerHTML = '<a href="#' + back_link + '">' + back_text +
       '</a>';

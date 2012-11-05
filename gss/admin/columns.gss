@@ -52,3 +52,23 @@
 .game-description-edit {
   width: 100%;
 }
+
+.team-list {
+  float: left;
+  width: 33.33%;
+  border-right: 1px solid white;
+  min-height: 100%;
+  padding: 15px;
+  background-color: SOFT_BLUE;
+}
+
+.team-item {
+  border-bottom: 1px solid white;
+  margin: 5px 0 5px 0;
+  cursor: pointer;
+}
+
+.team-item.active {
+  color: OUTLINE_COLOR;
+}
+

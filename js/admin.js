@@ -10,6 +10,7 @@ goog.require('spo.ds.Resource');
 goog.require('spo.template');
 goog.require('spo.ui.Header');
 goog.require('spo.control.Game');
+goog.require('spo.control.Teams');
 
 /**
  * Entry point for the admin view
@@ -73,6 +74,25 @@ admin = function() {
     }
     var gamed = new spo.control.Game(contentElement, gid, edit);
     setActiveControl(gamed);
+  }));
+
+  /** The team/user edit view */
+  Router.route('/teams/:id{/:tid}',
+    /** @type {function(string, ...[string]): ?} */ (function(fragment, id, tid) {
+    var gid = /** @type {!string} */ id;
+
+    if (!goog.isString(gid)) {
+      throw Error('Cannot create game control without game id.');
+    }
+
+    if (currentView instanceof spo.control.Teams) {
+      if (currentView.getId() == gid) {
+        currentView.setSelectedTeam(tid);
+        return;
+      }
+    }
+    var teamcontrol = new spo.control.Teams(contentElement, gid, tid);
+    setActiveControl(teamcontrol);
   }));
 
   Router.setEnabled(true);
