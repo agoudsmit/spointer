@@ -63,6 +63,8 @@ spo.ds.TeamList.gameMap_ = {
   // gameid: list
 };
 
+
+
 /**
  * Public method abstracting the list obtaining. It works internally by
  * creating a deferred object for each list (by gameid) and returnuing it.
@@ -83,7 +85,24 @@ spo.ds.TeamList.getList = function(gameid) {
             spo.ds.TeamList.gameMap_[gameid]);
         }
       });
-
   }
   return spo.ds.TeamList.defMap_[gameid];
+};
+
+spo.ds.TeamList.hasList = function(gameid) {
+  return !!spo.ds.TeamList.defMap_[gameid];
+};
+
+spo.ds.TeamList.tearDown = function(gameid) {
+
+  if (spo.ds.TeamList.defMap_[gameid]) {
+    spo.ds.TeamList.defMap_[gameid].cancel();
+    delete spo.ds.TeamList.defMap_[gameid];
+  }
+
+  if (spo.ds.TeamList.gameMap_[gameid]) {
+    spo.ds.TeamList.gameMap_[gameid].dispose();
+    delete spo.ds.TeamList.gameMap_[gameid];
+  }
+
 };

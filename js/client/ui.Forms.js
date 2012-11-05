@@ -73,6 +73,11 @@ spo.ui.Forms.prototype.enableScneario = function() {
   goog.dom.getElement('scenario').click();
 };
 
+
+spo.ui.Forms.prototype.getIoResult = function() {
+  return this.io_.getResponseJson();
+};
+
 /**
  * Enables the upload team list file selector.
  */

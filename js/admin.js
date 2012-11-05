@@ -95,6 +95,51 @@ admin = function() {
     setActiveControl(teamcontrol);
   }));
 
+
+  // Enable tearing down data structures.
+  spo.ds.Resource.getInstance().registerResourceHandler('/game/teardown/:id',
+    function(response) {
+      // The game ID to tear down
+      var gid = response['content']['id'];
+
+      // Hack: because it is much easier to just make reload of the data
+      // intead of tearing down and rebuilding when the user is inside the view
+      // just force reload.
+      if (currentView instanceof spo.control.Game &&
+        currentView.getId() == gid) {
+        window.location.reload(true);
+      }
+      if (currentView instanceof spo.control.Teams &&
+        currentView.getId() == gid) {
+        window.location.reload(true);
+      }
+
+      // Finally, if we do not look at one of the affected controls,
+      // tear down the data.
+      //
+      // find the list of teams for this game;
+      // If there is a defered created, cancel it.
+      if (spo.ds.TeamList.hasList(id)) {
+        spo.ds.TeamList.defMap_[id].cancel();
+        // if there is a list, iterater over it
+        if (spo.ds.TeamList.gameMap_[id]) {
+          // the team list was loaded, iterate over the items on it, get the ID
+          // of the team and tear down any user lists matching the current ID.
+          var list = spo.ds.TeamList.gameMap_[id];
+          var len = list.getCount();
+          var tid;
+          for (var i = 0; i < len; i++) {
+            tid = list.getByIndex(i).getId();
+            if (spo.ds.UserList.hasList(tid)) {
+              spo.ds.UserList.tearDown(tid);
+            }
+          }
+          // Finally tear down the team list as well.
+          list.tearDown(gid);
+        }
+      }
+  });
+
   Router.setEnabled(true);
 
 };

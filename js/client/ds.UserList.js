@@ -31,8 +31,13 @@ spo.ds.UserList.prototype.loadData = function(content) {
   spo.ds.Resource.getInstance().registerResourceHandler('/player/update/' +
     this.teamId_, goog.bind(function(response) {
       console.log('Update list in place', response['content']);
-      return;
       this.update(new spo.ds.User(response['content']));
+    }, this));
+
+  spo.ds.Resource.getInstance().registerResourceHandler('/player/remove/' +
+    this.teamId_, goog.bind(function(response) {
+      console.log('Delete list in place', response);
+      this.deleteNode(new spo.ds.User(response['content']));
     }, this));
 };
 
@@ -86,4 +91,19 @@ spo.ds.UserList.getList = function(teamid) {
       });
   }
   return spo.ds.UserList.dmap_[teamid];
+};
+
+spo.ds.UserList.hasList = function(teamid) {
+  return !!spo.ds.UserList.dmap_[teamid];
+};
+
+spo.ds.UserList.tearDown = function(teamid) {
+  if (spo.ds.UserList.dmap_[teamid]) {
+    spo.ds.UserList.dmap_[teamid].cancel();
+    delete spo.ds.UserList.dmap_[teamid];
+  }
+  if (spo.ds.UserList.lmap_[teamid]) {
+    spo.ds.UserList.lmap_[teamid].dispose();
+    delete spo.ds.UserList.lmap_[teamid];
+  }
 };

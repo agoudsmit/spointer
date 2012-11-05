@@ -44,8 +44,12 @@ spo.control.Users.prototype.handleControlAction_ = function(ev) {
     }, function(resp) {
       console.log('The response on save', resp);
     });
-  } else {
-    // handle delete
+  } else if (action == spo.control.Action.DELETE) {
+    spo.ds.Resource.getInstance().get({
+      'url': '/player/remove/' + id
+    }, function(resp) {
+      console.log('The response on delete', resp);
+    })
   }
 };
 

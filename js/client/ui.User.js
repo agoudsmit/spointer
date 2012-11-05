@@ -93,7 +93,7 @@ spo.ui.User.prototype.onRecordUpdate_ = function(ev) {
   var model = this.getModel();
   this.name_.setValue(model.getProp(spo.ds.User.Property.NAME));
   this.role_.setValue(model.getProp(spo.ds.User.Property.ROLE));
-  this.mail_.setValue(model.getProp(spo.ds.user.Property.EMAIL));
+  this.mail_.setValue(model.getProp(spo.ds.User.Property.EMAIL));
   this.func_.setValue(model.getProp(spo.ds.User.Property.FUNCTION));
   this.exitEditMode_();
 };

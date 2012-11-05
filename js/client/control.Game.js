@@ -44,6 +44,13 @@ spo.control.Game = function(container, gameid, edit) {
 };
 goog.inherits(spo.control.Game, spo.control.Base);
 
+/**
+ * Getter for the current game id controlled.
+ * @return {string} The game id.
+ */
+spo.control.Game.prototype.getId = function() {
+  return this.gameId_;
+}
 
 /**
  * If the game is in edit mode (i.e. editable content)
@@ -311,7 +318,12 @@ spo.control.Game.prototype.setupListeners_ = function() {
  */
 spo.control.Game.prototype.handleFormUploadFinish_ = function(e) {
   if (e.type = spo.control.EventType.SUCCESS) {
+
+    console.log(e.target.getIoResult());
     this.view_.getChildAt(1).setNotification('Upload completed!');
+    // setTimeout(function() {
+    //   window.location.reload(true);
+    // }, 1500);
   } else {
     this.view_.getChildAt(1).setNotification('Upload failed!');
   }
