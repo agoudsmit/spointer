@@ -1,5 +1,5 @@
 /**
- * @fileoverview Provide the entry point for /admin path
+ * @fileoverview Provide the entry point for /admin path.
  */
 goog.provide('admin');
 
@@ -11,6 +11,7 @@ goog.require('spo.template');
 goog.require('spo.ui.Header');
 goog.require('spo.control.Game');
 goog.require('spo.control.Teams');
+
 
 /**
  * Entry point for the admin view

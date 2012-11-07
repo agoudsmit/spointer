@@ -17,7 +17,7 @@
 
 #change this accoring to your project name/dirname.
 APPDIR=$(shell basename `pwd`)
-NS=admin
+NS=login
 BUILDDIR=build
 
 all: css tpl deps

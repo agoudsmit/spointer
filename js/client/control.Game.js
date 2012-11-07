@@ -128,6 +128,13 @@ spo.control.Game.prototype.init = function() {
 
 };
 
+/**
+ * If the game control should be disabled (i.e. the game is viewed
+ * but is locked by another user).
+ * @type {boolean}
+ * @private
+ */
+spo.control.Game.prototype.disabled_ = false;
 
 /**
  * Load the data returned by the deferred requests
@@ -140,7 +147,18 @@ spo.control.Game.prototype.load_ = function(lists) {
   this.playerslist_ = lists[2];
   this.cteamList_ = lists[3];
   this.cplayerslist_ = lists[4];
+
   this.loadView();
+
+  spo.ds.Resource.getInstance().get({
+    'url': '/game/lock/' + this.gameId_
+  }, goog.bind(function(resp) {
+    if (resp['status'] != 'ok') {
+      this.view_.getChildAt(1).setNotification(
+        'Game is locked by nother user!');
+      this.disabled_ = true;
+    }
+  }, this));
 };
 
 /**
@@ -319,7 +337,7 @@ spo.control.Game.prototype.setupListeners_ = function() {
 spo.control.Game.prototype.handleFormUploadFinish_ = function(e) {
   if (e.type = spo.control.EventType.SUCCESS) {
 
-    console.log(e.target.getIoResult());
+    console.log(e.formResponse);
     this.view_.getChildAt(1).setNotification('Upload completed!');
     // setTimeout(function() {
     //   window.location.reload(true);
@@ -336,6 +354,11 @@ spo.control.Game.prototype.handleFormUploadFinish_ = function(e) {
  */
 spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
   var action = e.getAction();
+  if (this.disabled_) {
+    this.view_.getChildAt(1).setNotification(
+      'Game is locked, actions will not be performed!');
+    return;
+  }
   if (action == spo.control.Action.UPLOAD_SCENARIO) {
     this.hiddenForms_.enableScneario();
   } else if (action == spo.control.Action.UPLOAD_TEAMLIST) {
@@ -351,16 +374,26 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
   } else if (action == spo.control.Action.EDIT) {
     if (this.editMode_ != true) {
       // request edit mode
-      spo.ds.Resource.getInstance().get({
-        'url': '/game/lock/' + this.gameId_
-      }, goog.bind(function(resp) {
-        if (resp['status'] = 'ok') {
-          this.setEditState_(true);
-        } else {
-          this.view_.getChildAt(1).setNotification('Game is locked already!')
-        }
-      }, this));
+      this.setEditState_(true);
+      // spo.ds.Resource.getInstance().get({
+      //   'url': '/game/lock/' + this.gameId_
+      // }, goog.bind(function(resp) {
+      //   if (resp['status'] = 'ok') {
+      //     this.setEditState_(true);
+      //   } else {
+      //     this.view_.getChildAt(1).setNotification('Game is locked already!')
+      //   }
+      // }, this));
     }
+  } else if (action == spo.control.Action.DELETE) {
+    console.log('Sending XHR');
+    spo.ds.Resource.getInstance().get({
+      'url': '/game/remove/' + this.gameId_
+    }, function(resp) {
+      if (resp['status'] == 'ok') {
+        spo.admin.Router.getInstance().navigate('/games');
+      }
+    });
   }
 };
 

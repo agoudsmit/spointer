@@ -4,9 +4,11 @@
  */
 
 goog.provide('spo.ui.Forms');
+goog.provide('spo.ui.Forms.FormEvent');
 
 goog.require('goog.async.Delay');
 goog.require('goog.dom');
+goog.require('goog.events.Event');
 goog.require('goog.net.EventType');
 goog.require('goog.net.IframeIo');
 goog.require('goog.ui.Component');
@@ -73,11 +75,6 @@ spo.ui.Forms.prototype.enableScneario = function() {
   goog.dom.getElement('scenario').click();
 };
 
-
-spo.ui.Forms.prototype.getIoResult = function() {
-  return this.io_.getResponseJson();
-};
-
 /**
  * Enables the upload team list file selector.
  */
@@ -92,11 +89,10 @@ spo.ui.Forms.prototype.enableTeam = function() {
  */
 spo.ui.Forms.prototype.notify_ = function(e) {
   var target = /** @type {!goog.net.IframeIo} */ (e.target);
-  if (target.isSuccess()) {
-    this.dispatchEvent(spo.control.EventType.SUCCESS);
-  } else {
-    this.dispatchEvent(spo.control.EventType.FAILURE);
-  }
+
+  this.dispatchEvent(new spo.ui.Forms.FormEvent(
+    (target.isSuccess() ? spo.control.EventType.SUCCESS :
+      spo.control.EventType.FAILURE), this, target.getResponseText()));
 };
 
 /**
@@ -107,3 +103,18 @@ spo.ui.Forms.prototype.notify_ = function(e) {
 spo.ui.Forms.prototype.handleFileChange_ = function(e) {
   this.io_.sendFromForm(e.target.parentNode);
 };
+
+/**
+ * Form event to dispatch, that will contain the server response
+ * on the form submition.
+ * @constructor
+ * @extends {goog.events.Event}
+ * @param {spo.control.EventType} type The type of the event to fire.
+ * @param {spo.ui.Forrms} target The firing form.
+ * @param {string} response The response from the server.
+ */
+spo.ui.Forms.FormEvent = function(type, target, response) {
+  goog.base(this, type, target);
+  this.formResponse = response;
+};
+goog.inherits(spo.ui.Forms.FormEvent, goog.events.Event);

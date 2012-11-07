@@ -124,6 +124,11 @@ spo.ui.GameControls.prototype.handleNamedAction_ = function(action) {
         this.dispatchEvent(new spo.control.Event(this,
           spo.control.Action.EDIT));
         break;
+      case 'delete':
+        console.log('Dispatch delete event');
+        this.dispatchEvent(new spo.control.Event(this,
+          spo.control.Action.DELETE));
+        break;
     }
   }
 };

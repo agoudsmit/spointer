@@ -51,6 +51,12 @@ spo.ds.GameList.prototype.loadData = function(content) {
       this.update(new spo.ds.Game(response['content']));
     }, this));
 
+  spo.ds.Resource.getInstance().registerResourceHandler('/game/remove/:id',
+    goog.bind(function(resp) {
+      console.log('Removing game in place.', resp);
+      this.deleteNode(resp['content']['id']);
+    }, this));
+
   // Resolve the deferred now that we have the data.
   spo.ds.GameList.deferred_.callback(this);
 

@@ -5,6 +5,7 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.ui.Component');
 goog.require('pstj.date.utils');
+goog.require('pstj.ds.ListItem.EventType');
 goog.require('spo.admin.Router');
 goog.require('spo.ds.Game');
 goog.require('spo.template');
@@ -140,5 +141,8 @@ goog.scope(function() {
       this.onMouseUp_);
     this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK,
       this.showGameDetails_);
+
+    this.getHandler().listen(this.getModel(),
+      pstj.ds.ListItem.EventType.DELETE, this.dispose);
   };
 });

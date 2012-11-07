@@ -13,6 +13,7 @@ goog.require('goog.dom.forms');
 goog.require('goog.events.EventType');
 goog.require('goog.format.EmailAddress');
 goog.require('goog.net.XhrIo');
+goog.require('goog.net.IframeIo');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.Component.EventType');
 goog.require('goog.ui.CustomButton');
@@ -60,6 +61,10 @@ spo.screen.Login = function() {
   } else {
     throw Error('No URLs provided for the login system');
   }
+
+  this.io_ = new goog.net.IframeIo();
+  this.getHandler().listen(this.io_, goog.net.EventType.COMPLETE,
+    this.onIOComplete_);
 };
 goog.inherits(spo.screen.Login, goog.ui.Component);
 
@@ -186,6 +191,15 @@ spo.screen.Login.prototype.createDom = function() {
     /** @type {Element} */ (goog.dom.htmlToDocumentFragment(html)));
 };
 
+
+spo.screen.Login.prototype.onIOComplete_ = function(ev) {
+
+  // FIXME: This should not be here for client!
+  if (~this.io_.getResponseText().indexOf('ok')) {
+    window.location.href = "http://localhost:3000/closure/apps/158/admin.html"
+  }
+};
+
 /**
  * @inheritDoc
  */
@@ -270,7 +284,7 @@ spo.screen.Login.prototype.handleSubmit_ = function(ev) {
       query.toString());
     this.dialog_.setVisible(true);
   } else {
-    if (form) form.submit();
+    if (form) this.io_.sendFromForm(form);
   }
 };
 
