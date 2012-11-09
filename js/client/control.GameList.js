@@ -126,13 +126,11 @@ spo.control.LiveList.prototype.handleListAddition_ = function(ev) {
 spo.control.LiveList.prototype.show_ = function() {
   if (!this.inited_) {
     this.init();
-  }
-  else {
+  } else {
     this.view_.enterDocument();
     spo.ui.Header.getInstance().setLinks();
   }
   this.enableSearch_(true);
-
 };
 
 /**
@@ -169,8 +167,8 @@ spo.control.LiveList.prototype.filterOutList_ = function(indexes) {
   var cindex;
   for (var i = 0; i < all; i++) {
     cindex = i + 1;
-    this.view_.getChildAt(cindex).getElement().style.display = (goog.array.indexOf(
-      indexes, i) == -1) ? 'block' : 'none';
+    this.view_.getChildAt(cindex).getElement().style.display = (
+      goog.array.indexOf(indexes, i) == -1) ? 'block' : 'none';
   }
 };
 
@@ -219,7 +217,7 @@ spo.control.LiveList.prototype.hide_ = function() {
 spo.control.LiveList.prototype.addGame_ = function(gameRecord, position) {
   var gameView = new spo.ui.Game();
   gameView.setModel(gameRecord);
-  //Add +1 for the "new game" child
+  //Add +1 to compensate for the "new game" child.
   this.view_.addChildAt(gameView, (goog.isNumber(position) ? position :
     this.list_.getIndexByItem(gameRecord) + 1),
     true);
@@ -231,19 +229,13 @@ spo.control.LiveList.prototype.addGame_ = function(gameRecord, position) {
  * initial data to show.
  */
 spo.control.LiveList.prototype.loadView = function() {
-  //data = data['games'];
+  // Add the 'add new' widget at 0.
   this.view_.render(this.container_);
+  this.view_.addChildAt((new spo.ui.NewGame()), 0, true);
 
-  var renderElement = this.view_.getContentElement();
-
-  var newGame = new spo.ui.NewGame();
-  this.view_.addChildAt(newGame, 0, true);
-
+  // Add all games in the order they are provided by the server.
   var len = this.list_.getCount();
-
   for (var i = 0; i < len; i++) {
-    var g = this.list_.getByIndex(i);
-    var gi = this.list_.getIndexByItem(g);
     this.addGame_(this.list_.getByIndex(i));
   }
 
