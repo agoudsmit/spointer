@@ -5,18 +5,24 @@ goog.provide('admin');
 
 goog.require('goog.dom');
 goog.require('spo.admin.Router');
+goog.require('spo.control.Game');
 goog.require('spo.control.LiveList');
+goog.require('spo.control.Teams');
 goog.require('spo.ds.Resource');
+goog.require('spo.ds.STP');
 goog.require('spo.template');
 goog.require('spo.ui.Header');
-goog.require('spo.control.Game');
-goog.require('spo.control.Teams');
+goog.require('spo.widget.SystemClock');
 
 
 /**
  * Entry point for the admin view
  */
 admin = function() {
+  // Init server clock;
+  spo.ds.STP.getInstance().setServerTime(goog.global['SERVER_TIME']);
+
+
   var screen = goog.dom.getElement('screen');
   screen.innerHTML = spo.template.admin({});
 
@@ -34,7 +40,7 @@ admin = function() {
   /**
    * Enable switching active screen with callback. This is if we want to perform
    * something nice for the eye without distorting the view and logic
-   * @param {!spo.control.Base} app The screen to enable next
+   * @param {!spo.control.Base} app The screen to enable next.
    */
   function setActiveControl(app) {
     if (currentView != null) {
@@ -52,7 +58,7 @@ admin = function() {
   /** Never serve empty url, all URI should point to a meaningful state of the
    app */
   Router.route('', function() {
-    setTimeout(function(){
+    setTimeout(function() {
       Router.navigate('/games');
     }, 0);
   });
@@ -62,6 +68,7 @@ admin = function() {
     // Assume game list
     header.setViewName('dashboard');
     header.setGameName();
+    spo.ui.Header.getInstance().setClockInstance(new spo.widget.SystemClock());
     setActiveControl(gamesScreen);
   });
 
@@ -79,7 +86,8 @@ admin = function() {
 
   /** The team/user edit view */
   Router.route('/teams/:id{/:tid}',
-    /** @type {function(string, ...[string]): ?} */ (function(fragment, id, tid) {
+    /** @type {function(string, ...[string]): ?} */ (function(fragment,
+      id, tid) {
     var gid = /** @type {!string} */ id;
 
     if (!goog.isString(gid)) {
