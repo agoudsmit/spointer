@@ -78,6 +78,32 @@ spo.ui.Header.prototype.forwardLink_;
 spo.ui.Header.prototype.searchField_;
 
 /**
+ * The clock to visualize in the date/time section.
+ * @type {pstj.ui.Clock}
+ * @private
+ */
+spo.ui.Header.prototype.clock_;
+
+/**
+ * The clock element to decorate by the ui clocks.
+ * @type {Element}
+ * @private
+ */
+spo.ui.Header.prototype.clockElement_;
+
+/**
+ * Sets the clock instance to be visualized in the header.
+ * @param {pstj.ui.Clock} clock The clock instance to use.
+ */
+spo.ui.Header.prototype.setClockInstance = function(clock) {
+  if (goog.isDefAndNotNull(this.clock_)) {
+    goog.dispose(this.clock_);
+  }
+  this.clock_ = clock;
+  this.clock_.decorate(this.clockElement_);
+};
+
+/**
  * @inheritDoc
  */
 spo.ui.Header.prototype.decorateInternal = function(element) {
@@ -106,6 +132,9 @@ spo.ui.Header.prototype.decorateInternal = function(element) {
     'search-input'), element);
   this.searchField_ = new goog.ui.LabelInput();
   this.searchField_.decorate(searchField);
+
+  this.clockElement_ = goog.dom.getElementByClass(goog.getCssName('date-time'),
+    this.getElement());
 
   this.keyHandler_.attach(this.searchField_.getElement());
 };
