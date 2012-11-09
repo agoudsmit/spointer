@@ -51,7 +51,8 @@ spo.control.Action = {
   MANAGE_CONTROLS: 2,
   EDIT: 3,
   STOP: 4,
-  PLAY_PAUSE: 5,
+  PLAY: 5,
   DELETE: 6,
-  SAVE: 7
+  SAVE: 7,
+  PAUSE: 8
 };

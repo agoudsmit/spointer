@@ -324,6 +324,7 @@ spo.control.Game.prototype.setupListeners_ = function() {
       if (this.editMode_ && this.view_.getChildAt(1).isSafeToClose()) {
         this.setEditState_(false);
       }
+      this.updatePauseControl_();
     });
 };
 
@@ -373,17 +374,7 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
     }
   } else if (action == spo.control.Action.EDIT) {
     if (this.editMode_ != true) {
-      // request edit mode
       this.setEditState_(true);
-      // spo.ds.Resource.getInstance().get({
-      //   'url': '/game/lock/' + this.gameId_
-      // }, goog.bind(function(resp) {
-      //   if (resp['status'] = 'ok') {
-      //     this.setEditState_(true);
-      //   } else {
-      //     this.view_.getChildAt(1).setNotification('Game is locked already!')
-      //   }
-      // }, this));
     }
   } else if (action == spo.control.Action.DELETE) {
     console.log('Sending XHR');
@@ -394,7 +385,34 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
         spo.admin.Router.getInstance().navigate('/games');
       }
     });
+  } else if (action == spo.control.Action.PAUSE ||
+      action == spo.control.Action.PLAY) {
+    this.syncGameStateToServer_(action);
   }
+};
+
+/**
+ * Set game state on the server and chekc for errors.
+ * @param  {spo.control.Action} action The action to execute.
+ */
+spo.control.Game.prototype.syncGameStateToServer_ = function(action) {
+  var state;
+  if (action == spo.control.Action.PAUSE) {
+    state = 2;
+  } else if (action == spo.control.Action.PLAY) {
+    state = 1;
+  }
+  spo.ds.Resource.getInstance().get({
+    'url': '/game/update/' + this.gameId_,
+    'data': {
+      'state_id': state
+    }
+  }, goog.bind(function(resp) {
+    if (resp['status'] != 'ok') {
+      this.view_.getChildAt(1).setNotification('Error: ' +
+        resp['error']);
+    }
+  }, this));
 };
 
 /**
@@ -413,11 +431,9 @@ spo.control.Game.prototype.setEnabled = function(enable, fn) {
  * @inheritDoc
  */
 spo.control.Game.prototype.disposeInternal = function() {
-  if (this.editMode_) {
-    spo.ds.Resource.getInstance().get({
-      'url': '/game/unlock/' + this.gameId_
-    });
-  }
+  spo.ds.Resource.getInstance().get({
+    'url': '/game/unlock/' + this.gameId_
+  });
   this.view_.exitDocument();
   this.view_.dispose();
   // Should be disposed as it is a child of the main view
