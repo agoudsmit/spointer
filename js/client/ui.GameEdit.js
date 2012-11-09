@@ -5,6 +5,7 @@ goog.require('goog.async.Delay');
 goog.require('goog.dom');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.CustomButton');
+goog.require('goog.ui.InputDatePicker');
 goog.require('goog.ui.Textarea');
 goog.require('spo.ds.Game');
 goog.require('spo.template');
@@ -66,9 +67,12 @@ spo.ui.GameEdit.prototype.createDom = function() {
   this.decorateInternal(
     /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
     spo.template.gameEdit({
-      description: this.getModel().getProp(spo.ds.Game.Property.DESCRIPTION)
+      description: this.getModel().getProp(spo.ds.Game.Property.DESCRIPTION),
+      gamestartdate: this.getModel().getFormatedStartDate(),
+      date_format: spo.ds.Game.Formatting.DATE_ONLY
     }))));
 };
+
 
 /**
  * Ceck if the form has been utilized to save data already.
@@ -89,6 +93,23 @@ spo.ui.GameEdit.prototype.decorateInternal = function(el) {
   this.addChild(this.ta_);
   this.ta_.decorate(goog.dom.getElementByClass(goog.getCssName(
     'game-description-edit'), this.getElement()));
+
+  // Setup date picker.
+  var date_el = goog.dom.getElementByClass(goog.getCssName('game-date-picker'),
+      this.getElement());
+  console.log('dateel', date_el);
+  this.datePicker_ = new goog.ui.InputDatePicker(spo.ds.Game.DateFormatter,
+      spo.ds.Game.DateParser);
+  this.datePicker_.getDatePicker().setShowToday(false);
+  this.datePicker_.getDatePicker().setShowWeekNum(false);
+  this.datePicker_.getDatePicker().setAllowNone(false);
+  this.datePicker_.getDatePicker().setShowOtherMonths(false);
+
+  this.addChild(this.datePicker_);
+  this.datePicker_.setPopupParentElement(date_el.parentElement);
+  this.datePicker_.decorate(date_el);
+
+
 
   // Setup save button
   this.saveBtn_ = new goog.ui.CustomButton('',

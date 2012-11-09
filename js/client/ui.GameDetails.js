@@ -38,6 +38,7 @@ spo.ui.GameDetails.prototype.createDom = function() {
   this.decorateInternal(
     /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
     spo.template.gameSettings({
+      gamestartdate: this.getModel().getFormatedStartDate(),
       description: this.getModel().getProp(spo.ds.Game.Property.DESCRIPTION)
     }))));
 };

@@ -43,6 +43,7 @@ spo.ui.GameControls.prototype.decorateInternal = function(element) {
 };
 
 spo.ui.GameControls.prototype.setPlayState = function(play) {
+  console.log('Game is playable', play)
   if (play) {
     this.getChildAt(0).getElement().style.display = 'block';
     this.getChildAt(1).getElement().style.display = 'none';
@@ -125,9 +126,20 @@ spo.ui.GameControls.prototype.handleNamedAction_ = function(action) {
           spo.control.Action.EDIT));
         break;
       case 'delete':
-        console.log('Dispatch delete event');
         this.dispatchEvent(new spo.control.Event(this,
           spo.control.Action.DELETE));
+        break;
+      case 'pause':
+        this.dispatchEvent(new spo.control.Event(this,
+          spo.control.Action.PAUSE));
+        break;
+      case 'play':
+        this.dispatchEvent(new spo.control.Event(this,
+          spo.control.Action.PLAY));
+        break;
+      case 'stop':
+        this.dispatchEvent(new spo.control.Event(this,
+          spo.control.Action.STOP));
         break;
     }
   }
