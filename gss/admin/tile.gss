@@ -105,4 +105,8 @@ input:focus {
   color: ERROR_COLOR;
 }
 
-
+.lock-state {
+  width: 20px;
+  height: 20px;
+  background-image: url(../assets/lock-icon.png);
+}
