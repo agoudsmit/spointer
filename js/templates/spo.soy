@@ -110,8 +110,7 @@
     <div class="{css header}">
       <!-- put here the header widget -->
     </div>
-    <div class="{css content}">
-    </div>
+    <div class="{css content}"></div>
   </div>
 {/template}
 
@@ -136,17 +135,23 @@
  * @param starttime The start time, parsed as human readable item.
  * @param playercount The number of active players in the game.
  * @param status The current status of the game.
+ * @param locked The locked state, true if the game is locked.
  */
 {template .gameTile}
-  <div class="{css tile-item} {css scroll-list-item}">
-    <div class="{css tile-inner-container}">
-      <div class="{css tile-body}">
-        <div class="{css game-name}">{$name}</div>
-        <div>Users: {$playercount}</div>
-        <div>Game started: {$starttime}</div>
-        <div>Current time: <span class="{css game-time}"></span></div>
-        <div>State: <span class="{css game-status}">{$status}</span></div>
-      </div>
+  <div class="{css tile-inner-container}">
+    <div class="{css tile-body}">
+      <div class="{css game-name}">{$name}</div>
+      <div>Users: {$playercount}</div>
+      <div>Game started: {$starttime}</div>
+      <div>Current time: <span class="{css game-time}"></span></div>
+      <div>State: <span class="{css game-status}">{$status}</span></div>
+      <div class="{css lock-state}" style="display:
+        {if $locked == true}
+          block
+        {else}
+          none
+        {/if}
+      ;"></div>
     </div>
   </div>
 {/template}
@@ -195,6 +200,7 @@
 
 /**
  * @param description The game record to present.
+ * @param gamestartdate The start date of the game as string.
  */
 {template .gameSettings}
   <div class="{css column-one}">
@@ -202,9 +208,9 @@
     <div class="{css detail-heading}">Game description</div>
     <div class="{css game-description}">{$description}</div>
     <div class="{css hr}"></div>
-    <div class="{css detail-heading}">Game date <span class="{css game-date}"></span></div>
+    <div class="{css detail-heading}">Game start date <span class="{css game-date}">{$gamestartdate}</span></div>
     <div class="{css hr}"></div>
-    <div class="{css detail-heading}">Game time <span class="{css game-time}"></span></div>
+    <div class="{css detail-heading}">Game start time <span class="{css game-time}"></span></div>
     <div class="{css hr}"></div>
     <div class="{css detail-heading}">Game speed</div>
     <div>One day passes in <span class="{css detail-heading}"></span> minute(s)</div>
@@ -214,6 +220,8 @@
 
 /**
  * @param description The game record to present.
+ * @param date_format The format to use for date.
+ * @param gamestartdate The start date of the game as string.
  */
 {template .gameEdit}
   <div class="{css column-one}">
@@ -221,9 +229,9 @@
     <div class="{css detail-heading}">Game description</div>
     <textarea class="{css game-description-edit}">{$description}</textarea>
     <div class="{css hr}"></div>
-    <div class="{css detail-heading}">Game date <span class="{css game-date}"></span></div>
+    <div class="{css detail-heading}">Game start date <input class="{css game-date-picker}" label="{$date_format}" value="{$gamestartdate}" /></div>
     <div class="{css hr}"></div>
-    <div class="{css detail-heading}">Game time <span class="{css game-time}"></span></div>
+    <div class="{css detail-heading}">Game start time <span class="{css game-time}"></span></div>
     <div class="{css hr}"></div>
     <div class="{css detail-heading}">Change game time</div>
     <div>One day passes in <span class="{css detail-heading}"></span> minute(s)</div>
