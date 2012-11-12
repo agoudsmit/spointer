@@ -27,68 +27,9 @@ spo.control.LiveList = function(container) {
   this.hiddenChildrenIndexes_ = [];
   this.view_ = new pstj.ui.ScrollList(195);
   this.view_.setScrollInsideTheWidget(false);
-
-  // Listen for action on the new game.
-  this.getHandler().listen(this.view_, goog.ui.Component.EventType.ACTION,
-    this.handleChildAction_);
 };
 goog.inherits(spo.control.LiveList, spo.control.Base);
 
-/**
- * Contains the strings used by this component.
- * @enum {string}
- */
-spo.control.LiveList.Strings = {
-  CANNOT_BE_EMPTY: 'The value cannot be empty!'
-};
-
-/**
- * This should be called when an internal ACTION was detected (i.e. ACTION
- * event that is coming from a child).
- * @param  {goog.events.Event} e The ACTION event detected from a child.
- * @private
- */
-spo.control.LiveList.prototype.handleChildAction_ = function(e) {
-  var target = e.target;
-  // If this is the create game child action
-  if (target == this.view_.getChildAt(0)) {
-    e.stopPropagation();
-    this.requestNewGame_(/** @type {!spo.ui.NewGame} */(target));
-  }
-};
-
-/**
- * Handles the requests for creating a new game on the server.
- * @param  {!spo.ui.NewGame} widget The new game widget.
- * @private
- */
-spo.control.LiveList.prototype.requestNewGame_ = function(widget) {
-
-  var value = widget.getValue();
-  widget.setEnabled(false);
-
-  if (goog.string.isEmpty(value)) {
-    widget.setError(spo.control.LiveList.Strings.CANNOT_BE_EMPTY);
-    setTimeout(function() {
-      widget.resetWidget();
-    }, 2000);
-  } else {
-    spo.ds.Resource.getInstance().get({
-      'url': '/game/create',
-      'data': {
-        'name': value
-      }
-    }, function(response) {
-      if (response['status'] == 'ok') widget.resetWidget();
-      else {
-        widget.setError(response['error']);
-        setTimeout(function() {
-          widget.resetWidget();
-        }, 2000);
-      }
-    });
-  }
-};
 
 /**
  * Init the controler.
@@ -217,6 +158,7 @@ spo.control.LiveList.prototype.hide_ = function() {
 spo.control.LiveList.prototype.addGame_ = function(gameRecord, position) {
   var gameView = new spo.ui.Game();
   gameView.setModel(gameRecord);
+
   //Add +1 to compensate for the "new game" child.
   this.view_.addChildAt(gameView, (goog.isNumber(position) ? position :
     this.list_.getIndexByItem(gameRecord) + 1),
