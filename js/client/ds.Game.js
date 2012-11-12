@@ -41,10 +41,15 @@ spo.ds.Game.prototype.getProp = function(property) {
     return +(new Date(timestring));
   }
 
-  // Handle the speed, the server saves it as seconds, but we work with
-  // milliseconds, thus we have to multiply it by 1000;
+  // Speed cap:
+  // Speed should be from 1 to 1440 (24 hours to pass for one minute is
+  // max speed).
+  // this is for 60000 between 60000 and 86400000 milliseconds should pass.
   if (property == spo.ds.Game.Property.SPEED) {
-    return goog.base(this, 'getProp', property) * 1000;
+    var speed = goog.base(this, 'getProp', property);
+    if (speed < 1) speed = 1;
+    if (speed > 1440) speed = 1440;
+    return speed;
   }
 
   return goog.base(this, 'getProp', property);
