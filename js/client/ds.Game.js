@@ -32,12 +32,21 @@ spo.ds.Game.prototype.isPaused = function() {
  * @inheritDoc
  */
 spo.ds.Game.prototype.getProp = function(property) {
+  // Handle the case of date/time JSON proeprties.
   if (property == spo.ds.Game.Property.START_TIME ||
     property == spo.ds.Game.Property.SAVED_GAME_TIME ||
     property == spo.ds.Game.Property.SAVED_REAL_TIME) {
     var timestring = goog.base(this, 'getProp', property);
-    return new Date(timestring);
+    // Return the date as milliseconds as is the specs.
+    return +(new Date(timestring));
   }
+
+  // Handle the speed, the server saves it as seconds, but we work with
+  // milliseconds, thus we have to multiply it by 1000;
+  if (property == spo.ds.Game.Property.SPEED) {
+    return goog.base(this, 'getProp', property) * 1000;
+  }
+
   return goog.base(this, 'getProp', property);
 };
 
