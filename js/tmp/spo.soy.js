@@ -47,7 +47,7 @@ spo.template.gameTile = function(opt_data) {
 
 
 spo.template.createGame = function(opt_data) {
-  return '<div class="' + goog.getCssName('tile-item') + ' ' + goog.getCssName('scroll-list-item') + '"><div class="' + goog.getCssName('tile-inner-container') + '"><div class="' + goog.getCssName('tile-body') + '"><div class="' + goog.getCssName('input') + '"><input id="gamename" name="gamename" type="text" label="' + soy.$$escapeHtml(opt_data.hint) + '" /></div><div class="' + goog.getCssName('error') + ' ' + goog.getCssName('bold') + '"></div><div class="' + goog.getCssName('bottom-right') + '"><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('text-button') + '">Confirm</div></div></div></div></div>';
+  return '<div class="' + goog.getCssName('tile-item') + ' ' + goog.getCssName('scroll-list-item') + '"><div class="' + goog.getCssName('tile-inner-container') + '"><div class="' + goog.getCssName('tile-body') + '"><div class="' + goog.getCssName('input') + '"><input id="gamename" name="gamename" type="text" label="Add new game" /></div><div class="' + goog.getCssName('error') + ' ' + goog.getCssName('bold') + '"></div><div class="' + goog.getCssName('bottom-right') + '"><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('text-button') + '">Confirm</div></div></div></div></div>';
 };
 
 
@@ -62,7 +62,7 @@ spo.template.gameSettings = function(opt_data) {
 
 
 spo.template.gameEdit = function(opt_data) {
-  return '<div class="' + goog.getCssName('column-one') + '"><div class="' + goog.getCssName('notification-area') + '">&nbsp;</div><div class="' + goog.getCssName('detail-heading') + '">Game description</div><textarea class="' + goog.getCssName('game-description-edit') + '">' + soy.$$escapeHtml(opt_data.description) + '</textarea><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start date <input class="' + goog.getCssName('game-date-picker') + '" label="' + soy.$$escapeHtml(opt_data.date_format) + '" value="' + soy.$$escapeHtml(opt_data.gamestartdate) + '" /></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start time <span class="' + goog.getCssName('game-time') + '"></span></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Change game time</div><div>One day passes in <span class="' + goog.getCssName('detail-heading') + '"></span> minute(s)</div><div class="' + goog.getCssName('goog-slider') + '"></div><div class="' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + '">Save</div></div>';
+  return '<div class="' + goog.getCssName('column-one') + '"><div class="' + goog.getCssName('notification-area') + '">&nbsp;</div><div class="' + goog.getCssName('detail-heading') + '">Game description</div><textarea class="' + goog.getCssName('game-description-edit') + '">' + soy.$$escapeHtml(opt_data.description) + '</textarea><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start date <input class="' + goog.getCssName('game-date-picker') + '" label="' + soy.$$escapeHtml(opt_data.date_format) + '" value="' + soy.$$escapeHtml(opt_data.gamestartdate) + '" /></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start time <span class="' + goog.getCssName('game-time') + '"></span></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Change game time</div><div>One day passes in <span class="' + goog.getCssName('detail-heading') + '"></span> minute(s)</div><div class="' + goog.getCssName('goog-slider') + '"><div class="' + goog.getCssName('custom-scroll-bar-line') + '"></div><div class="' + goog.getCssName('goog-slider-thumb') + '"></div></div><div class="' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + '">Save</div></div>';
 };
 
 
@@ -73,11 +73,11 @@ spo.template.gameControls = function(opt_data) {
 
 spo.template.simplelist = function(opt_data) {
   var output = '<div class="' + goog.getCssName('simple-list') + '"><div class="' + goog.getCssName('simple-list-title') + '">' + soy.$$escapeHtml(opt_data.title) + '</div><ul class="' + goog.getCssName('simple-list-list') + '">';
-  var nameList372 = opt_data.teams;
-  var nameListLen372 = nameList372.length;
-  for (var nameIndex372 = 0; nameIndex372 < nameListLen372; nameIndex372++) {
-    var nameData372 = nameList372[nameIndex372];
-    output += '<li>' + soy.$$escapeHtml(nameData372) + '</li>';
+  var nameList374 = opt_data.teams;
+  var nameListLen374 = nameList374.length;
+  for (var nameIndex374 = 0; nameIndex374 < nameListLen374; nameIndex374++) {
+    var nameData374 = nameList374[nameIndex374];
+    output += '<li>' + soy.$$escapeHtml(nameData374) + '</li>';
   }
   output += '</ul></div>';
   return output;
@@ -101,4 +101,9 @@ spo.template.Users = function(opt_data) {
 
 spo.template.User = function(opt_data) {
   return '<div class="' + goog.getCssName('user-item') + '"><div class="' + goog.getCssName('user-icon') + ' ' + goog.getCssName('circle-button') + ' ' + goog.getCssName('user-icon-users') + '"></div><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-role') + ' ' + goog.getCssName('sub-item') + ' ' + goog.getCssName('super-item') + '" type="text" value="' + soy.$$escapeHtml(opt_data.userrole) + '" label="Role.." /><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-function') + ' ' + goog.getCssName('sub-item') + '" value="' + soy.$$escapeHtml(opt_data.userfunction) + '" label="Function..." /><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-name') + ' ' + goog.getCssName('sub-item') + '" value="' + soy.$$escapeHtml(opt_data.username) + '" label="Name..." /><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-email') + ' ' + goog.getCssName('sub-item') + '" value="' + soy.$$escapeHtml(opt_data.useremail) + '" label="E-Mail..." /><div class="' + goog.getCssName('user-controls') + '"><div class="' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('save-button') + ' ' + goog.getCssName('circle-button') + '" style="float:right"></div><div class="' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('delete-button') + ' ' + goog.getCssName('circle-button') + '" style="float:right"></div><div style="clear:both"></div></div><div class="' + goog.getCssName('transparent-overlay') + '"></div></div>';
+};
+
+
+spo.template.NewTeam = function(opt_data) {
+  return '<div class="' + goog.getCssName('new-user-container') + '"><div class="' + goog.getCssName('new-user-error-container') + ' ' + goog.getCssName('bold') + ' ' + goog.getCssName('error') + '"></div><div class="' + goog.getCssName('new-user-input-container') + '" style="float:left"><input label="add new team" type="text" /></div><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('text-button') + '" style="float:left;">Add</div></div>';
 };
