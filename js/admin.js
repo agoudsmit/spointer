@@ -16,11 +16,12 @@ goog.require('spo.widget.SystemClock');
 
 
 /**
- * Entry point for the admin view
+ * Entry point for the administrator view
  */
 admin = function() {
-  // Init server clock;
-  spo.ds.STP.getInstance().setServerTime(goog.global['SERVER_TIME']);
+  // Initialize server clock, multiply by 1k as the server time is provided
+  // in seconds.
+  spo.ds.STP.getInstance().setServerTime(goog.global['SERVER_TIME'] * 1000);
 
 
   var screen = goog.dom.getElement('screen');
@@ -112,7 +113,7 @@ admin = function() {
       var gid = response['content']['id'];
 
       // Hack: because it is much easier to just make reload of the data
-      // intead of tearing down and rebuilding when the user is inside the view
+      // instead of tearing down and rebuilding when the user is inside the view
       // just force reload.
       if (currentView instanceof spo.control.Game &&
         currentView.getId() == gid) {
@@ -127,14 +128,14 @@ admin = function() {
       // tear down the data.
       //
       // find the list of teams for this game;
-      // If there is a defered created, cancel it.
-      if (spo.ds.TeamList.hasList(id)) {
-        spo.ds.TeamList.defMap_[id].cancel();
-        // if there is a list, iterater over it
-        if (spo.ds.TeamList.gameMap_[id]) {
+      // If there is a deferred created, cancel it.
+      if (spo.ds.TeamList.hasList(gid)) {
+        spo.ds.TeamList.defMap_[gid].cancel();
+        // if there is a list, iterator over it
+        if (spo.ds.TeamList.gameMap_[gid]) {
           // the team list was loaded, iterate over the items on it, get the ID
           // of the team and tear down any user lists matching the current ID.
-          var list = spo.ds.TeamList.gameMap_[id];
+          var list = spo.ds.TeamList.gameMap_[gid];
           var len = list.getCount();
           var tid;
           for (var i = 0; i < len; i++) {
@@ -154,7 +155,7 @@ admin = function() {
 };
 
 /**
- * Auto invoke the admin panel loading. Do not wait for onload event
+ * Auto invoke the administrator panel loading. Do not wait for "on load" event
  * because of the history handling.
  * TODO: Notify PlastronJS developer for the issue of body overriding when
  * call is made to MVC#setEnable after the load event has fired.
