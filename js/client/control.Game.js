@@ -11,6 +11,7 @@ goog.require('spo.control.EventType');
 goog.require('spo.ds.ControlTeam');
 goog.require('spo.ds.ControlTeamList');
 goog.require('spo.ds.Game');
+goog.require('spo.ds.GameList');
 goog.require('spo.ds.Resource');
 goog.require('spo.ds.Team');
 goog.require('spo.ds.TeamList');
@@ -50,7 +51,7 @@ goog.inherits(spo.control.Game, spo.control.Base);
  */
 spo.control.Game.prototype.getId = function() {
   return this.gameId_;
-}
+};
 
 /**
  * If the game is in edit mode (i.e. editable content)
@@ -73,7 +74,7 @@ spo.control.Game.prototype.gameId_;
 spo.control.Game.prototype.hiddenForms_;
 
 /**
- * @type {spo.ds.GameList}
+ * @type {spo.ds.GameList} The game list used by the controller.
  * @private
  */
 spo.control.Game.prototype.gamelist_;
