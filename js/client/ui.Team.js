@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Provides the UI for a team record in the team list view.
+ */
+
 goog.provide('spo.ui.Team');
 
 goog.require('goog.dom');
@@ -8,6 +12,8 @@ goog.require('spo.ds.Team');
 goog.require('spo.template');
 
 /**
+ * Provides the team record item.
+ *
  * @constructor
  * @extends {goog.ui.Component}
  */
@@ -17,7 +23,8 @@ spo.ui.Team = function() {
 goog.inherits(spo.ui.Team, goog.ui.Component);
 
 /**
- * The state of the component.
+ * Flag for the state of the component.
+ *
  * @type {boolean}
  * @private
  */
@@ -28,10 +35,10 @@ spo.ui.Team.prototype.active_ = false;
  */
 spo.ui.Team.prototype.createDom = function() {
   this.decorateInternal(
-    goog.dom.htmlToDocumentFragment(
+    /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
       spo.template.Team({
         teamName: this.getModel().getProp(spo.ds.Team.Property.NAME)
-      })));
+      }))));
 };
 
 /**
@@ -44,6 +51,7 @@ spo.ui.Team.prototype.enterDocument = function() {
 
 /**
  * Changes the state of the component.
+ *
  * @param {boolean} active True if the component is to be marked as active.
  */
 spo.ui.Team.prototype.setActive = function(active) {
@@ -55,6 +63,7 @@ spo.ui.Team.prototype.setActive = function(active) {
 
 /**
  * Handler for the state change.
+ *
  * @private
  */
 spo.ui.Team.prototype.onStateChange_ = function() {
@@ -66,7 +75,8 @@ spo.ui.Team.prototype.onStateChange_ = function() {
 };
 
 /**
- * Handles the clicks.
+ * Handles the clicks on the widget. No logic is implemented here,
+ * instead the event is 'translated' to action event and dispatched further.
  *
  * @param  {goog.events.Event} ev The clikc event.
  * @private

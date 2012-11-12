@@ -1,5 +1,6 @@
 /**
- * @fileoverview  Provides implementation for user requirement.
+ * @fileoverview  Provides implementation for user requirement. It is the
+ * default time clock.
  */
 
 goog.provide('spo.widget.SystemClock');
