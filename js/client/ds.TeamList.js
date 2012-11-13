@@ -12,6 +12,7 @@ goog.require('spo.ds.Team');
 
 /**
  * Team List abstraction.
+ *
  * @constructor
  * @extends {pstj.ds.List}
  * @param {string} gid The ID of the game to retrieve the teams for.
@@ -25,6 +26,7 @@ goog.inherits(spo.ds.TeamList, pstj.ds.List);
 /**
  * Loads the data into the list once it is available. The data should be of
  * form {content: [record1, record2,... recordN]}.
+ *
  * @param  {*} content The content of the server result.
  */
 spo.ds.TeamList.prototype.loadData = function(content) {
@@ -37,6 +39,7 @@ spo.ds.TeamList.prototype.loadData = function(content) {
 
 /**
  * Returns the query params for the server to load this particular resource.
+ *
  * @return {*} The url for the component's resource.
  */
 spo.ds.TeamList.prototype.getQuery = function() {
@@ -47,6 +50,7 @@ spo.ds.TeamList.prototype.getQuery = function() {
 
 /**
  * Provides the map gameid -> deferred
+ *
  * @type {Object}
  * @private
  */
@@ -56,6 +60,7 @@ spo.ds.TeamList.defMap_ = {
 
 /**
  * Provides the map gameid -> TeamList
+ *
  * @type {Object}
  * @private
  */
@@ -68,6 +73,7 @@ spo.ds.TeamList.gameMap_ = {
 /**
  * Public method abstracting the list obtaining. It works internally by
  * creating a deferred object for each list (by gameid) and returnuing it.
+ *
  * @param  {string} gameid The game id to return deferred for.
  * @return {!goog.async.Deferred} The deferred object that matches this gameid.
  */
@@ -89,20 +95,28 @@ spo.ds.TeamList.getList = function(gameid) {
   return spo.ds.TeamList.defMap_[gameid];
 };
 
+/**
+ * Checks if a list for this ID has been requested already.
+ *
+ * @param  {number} gameid The game ID to query.
+ * @return {boolean} True if the list has been requested at least once.
+ */
 spo.ds.TeamList.hasList = function(gameid) {
   return !!spo.ds.TeamList.defMap_[gameid];
 };
 
+/**
+ * Removes traces from the requested game id.
+ *
+ * @param  {number} gameid The game ID to wipe out.
+ */
 spo.ds.TeamList.tearDown = function(gameid) {
-
   if (spo.ds.TeamList.defMap_[gameid]) {
     spo.ds.TeamList.defMap_[gameid].cancel();
     delete spo.ds.TeamList.defMap_[gameid];
   }
-
   if (spo.ds.TeamList.gameMap_[gameid]) {
     spo.ds.TeamList.gameMap_[gameid].dispose();
     delete spo.ds.TeamList.gameMap_[gameid];
   }
-
 };

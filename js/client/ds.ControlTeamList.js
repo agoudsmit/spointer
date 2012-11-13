@@ -12,6 +12,7 @@ goog.require('spo.ds.ControlTeam');
 
 /**
  * Team List abstraction.
+ *
  * @constructor
  * @extends {pstj.ds.List}
  * @param {string} gid The ID of the team to retrieve the teams for.
@@ -25,6 +26,7 @@ goog.inherits(spo.ds.ControlTeamList, pstj.ds.List);
 /**
  * Loads the data into the list once it is available. The data should be of
  * form {content: [record1, record2,... recordN]}.
+ *
  * @param  {*} content The content of the server result.
  */
 spo.ds.ControlTeamList.prototype.loadData = function(content) {
@@ -37,6 +39,7 @@ spo.ds.ControlTeamList.prototype.loadData = function(content) {
 
 /**
  * Returns the query structure the server can understands to get the resource.
+ *
  * @return {*} The url structure.
  */
 spo.ds.ControlTeamList.prototype.getQuery = function() {
@@ -47,6 +50,7 @@ spo.ds.ControlTeamList.prototype.getQuery = function() {
 
 /**
  * Provides the map gameid -> deferred
+ *
  * @type {Object}
  * @private
  */
@@ -56,6 +60,7 @@ spo.ds.ControlTeamList.defMap_ = {
 
 /**
  * Provides the map gameid -> TeamList
+ *
  * @type {Object}
  * @private
  */
@@ -66,6 +71,7 @@ spo.ds.ControlTeamList.gameMap_ = {
 /**
  * Public method abstracting the list obtaining. It works internally by
  * creating a deferred object for each list (by gameid) and returnuing it.
+ *
  * @param  {string} gameid The game id to return deferred for.
  * @return {!goog.async.Deferred} The deferred object that matches this gameid.
  */

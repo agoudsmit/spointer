@@ -57,12 +57,12 @@ spo.template.uploadForms = function(opt_data) {
 
 
 spo.template.gameSettings = function(opt_data) {
-  return '<div class="' + goog.getCssName('column-one') + '"><div class="' + goog.getCssName('notification-area') + '">&nbsp;</div><div class="' + goog.getCssName('detail-heading') + '">Game description</div><div class="' + goog.getCssName('game-description') + '">' + soy.$$escapeHtml(opt_data.description) + '</div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start date <span class="' + goog.getCssName('game-date') + '">' + soy.$$escapeHtml(opt_data.gamestartdate) + '</span></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start time <span class="' + goog.getCssName('game-time') + '"></span></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game speed</div><div>One day passes in <span class="' + goog.getCssName('detail-heading') + '"></span> minute(s)</div></div>';
+  return '<div class="' + goog.getCssName('column-one') + '"><div class="' + goog.getCssName('notification-area') + '">&nbsp;</div><div class="' + goog.getCssName('detail-heading') + '">Game description</div><div class="' + goog.getCssName('game-description') + '">' + soy.$$escapeHtml(opt_data.description) + '</div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start date <span class="' + goog.getCssName('game-date') + '">' + soy.$$escapeHtml(opt_data.gamestartdate) + '</span></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start time <span class="' + goog.getCssName('game-time') + '">' + soy.$$escapeHtml(opt_data.gamestarttime) + '</span></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game speed</div><div>One day passes in <span class="' + goog.getCssName('detail-heading') + ' ' + goog.getCssName('in-minutes') + '">' + soy.$$escapeHtml(opt_data.minutes) + '</span> minute(s)</div></div>';
 };
 
 
 spo.template.gameEdit = function(opt_data) {
-  return '<div class="' + goog.getCssName('column-one') + '"><div class="' + goog.getCssName('notification-area') + '">&nbsp;</div><div class="' + goog.getCssName('detail-heading') + '">Game description</div><textarea class="' + goog.getCssName('game-description-edit') + '">' + soy.$$escapeHtml(opt_data.description) + '</textarea><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start date <input class="' + goog.getCssName('game-date-picker') + '" label="' + soy.$$escapeHtml(opt_data.date_format) + '" value="' + soy.$$escapeHtml(opt_data.gamestartdate) + '" /></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start time <span class="' + goog.getCssName('game-time') + '"></span></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Change game time</div><div>One day passes in <span class="' + goog.getCssName('detail-heading') + '"></span> minute(s)</div><div class="' + goog.getCssName('goog-slider') + '"><div class="' + goog.getCssName('custom-scroll-bar-line') + '"></div><div class="' + goog.getCssName('goog-slider-thumb') + '"></div></div><div class="' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + '">Save</div></div>';
+  return '<div class="' + goog.getCssName('column-one') + '"><div class="' + goog.getCssName('notification-area') + '">&nbsp;</div><div class="' + goog.getCssName('detail-heading') + '">Game description</div><textarea class="' + goog.getCssName('game-description-edit') + '">' + soy.$$escapeHtml(opt_data.description) + '</textarea><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start date <input class="' + goog.getCssName('game-date-picker') + '" label="' + soy.$$escapeHtml(opt_data.date_format) + '" value="' + soy.$$escapeHtml(opt_data.gamestartdate) + '" /></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Game start time <input class="' + goog.getCssName('game-time') + '" label="' + soy.$$escapeHtml(opt_data.time_format) + '" value="' + soy.$$escapeHtml(opt_data.gamestarttime) + '" /></div><div class="' + goog.getCssName('hr') + '"></div><div class="' + goog.getCssName('detail-heading') + '">Change game time</div><div>One day passes in <span class="' + goog.getCssName('detail-heading') + ' ' + goog.getCssName('in-minutes') + '">' + soy.$$escapeHtml(opt_data.minutes) + '</span> minute(s)</div><div class="' + goog.getCssName('goog-slider') + '"><div class="' + goog.getCssName('custom-scroll-bar-line') + '"></div><div class="' + goog.getCssName('goog-slider-thumb') + '"></div></div><div class="' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + '">Save</div></div>';
 };
 
 
@@ -73,11 +73,11 @@ spo.template.gameControls = function(opt_data) {
 
 spo.template.simplelist = function(opt_data) {
   var output = '<div class="' + goog.getCssName('simple-list') + '"><div class="' + goog.getCssName('simple-list-title') + '">' + soy.$$escapeHtml(opt_data.title) + '</div><ul class="' + goog.getCssName('simple-list-list') + '">';
-  var nameList374 = opt_data.teams;
-  var nameListLen374 = nameList374.length;
-  for (var nameIndex374 = 0; nameIndex374 < nameListLen374; nameIndex374++) {
-    var nameData374 = nameList374[nameIndex374];
-    output += '<li>' + soy.$$escapeHtml(nameData374) + '</li>';
+  var nameList388 = opt_data.teams;
+  var nameListLen388 = nameList388.length;
+  for (var nameIndex388 = 0; nameIndex388 < nameListLen388; nameIndex388++) {
+    var nameData388 = nameList388[nameIndex388];
+    output += '<li>' + soy.$$escapeHtml(nameData388) + '</li>';
   }
   output += '</ul></div>';
   return output;

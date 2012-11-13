@@ -12,6 +12,8 @@ goog.require('goog.dom.classes');
 goog.require('goog.ui.ButtonRenderer');
 
 /**
+ * Provides custom renderer for the text buttons.
+ *
  * @constructor
  * @extends {goog.ui.ButtonRenderer}
  */
@@ -26,12 +28,14 @@ goog.addSingletonGetter(spo.ui.ButtonRenderer);
  * Because the button is actually a DIV element, the states are
  * composed as css class combinations: eg. baseclass-* where * is
  * the state (focused, hovered, active etc).
+ *
  * @type {string}
  */
 spo.ui.ButtonRenderer.CSS_CLASS = goog.getCssName('form-button');
 
 /**
  * Returns the Aria role of the button.
+ *
  * @return {goog.dom.a11y.Role.<string>|undefined} Basic button artia role.
  */
 spo.ui.ButtonRenderer.prototype.getAriaRole = function() {
@@ -40,6 +44,7 @@ spo.ui.ButtonRenderer.prototype.getAriaRole = function() {
 
 /**
  * Sets the value for the button text.
+ *
  * @param {Element} el    The button element.
  * @param {string} value The new text value of the button.
  */
@@ -50,10 +55,11 @@ spo.ui.ButtonRenderer.prototype.setValue = function(el, value) {
 /**
  * Simply forvide this for now, if we need to change content this might
  * change as well
+ *
  * @param  {Element} element The element that is assigned to the component
- * i.e. component.getElement().
+ *                           i.e. component.getElement().
  * @return {Element} The element to consider as content element, i.e. if we
- * want to put content where should it go.
+ *                       want to put content where should it go.
  */
 spo.ui.ButtonRenderer.prototype.getContentElement = function(element) {
   return element;
@@ -61,10 +67,11 @@ spo.ui.ButtonRenderer.prototype.getContentElement = function(element) {
 
 /**
  * Called internally when decorateInternal is called on the button component.
+ *
  * @param  {goog.ui.Control} control The custom button component instance
- * to work with.
+ *                                   to work with.
  * @param  {Element} element The HTML element that we want to make the root of
- * the component.
+ *                           the component.
  * @return {Element} The decorated element. basically the same element.
  */
 spo.ui.ButtonRenderer.prototype.decorate = function(control, element) {
@@ -75,6 +82,7 @@ spo.ui.ButtonRenderer.prototype.decorate = function(control, element) {
 
 /**
  * Returns the basic css class for this component, see CSS_CLASS description.
+ *
  * @return {string} The related CSS class.
  */
 spo.ui.ButtonRenderer.prototype.getCssClass = function() {

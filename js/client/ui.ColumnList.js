@@ -4,7 +4,9 @@ goog.require('goog.ui.Component');
 goog.require('spo.template');
 
 /**
- * Contains simple logic to display the teams/players/control list etc lists.
+ * Contains simple logic to display the teams/players/control list and other
+ * simple lists with columns.
+ *
  * @constructor
  * @extends {goog.ui.Component}
  * @param {goog.dom.DomHelper=} odh Optional dom helper.
@@ -21,11 +23,12 @@ goog.inherits(spo.ui.ColumnList, goog.ui.Component);
  * @inheritDoc
  */
 spo.ui.ColumnList.prototype.createDom = function() {
-  this.decorateInternal(goog.dom.htmlToDocumentFragment(
+  this.decorateInternal(
+    /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
     spo.template.simplelist({
       title: this.title_ || '',
       teams: this.getModel()
-    })));
+    }))));
 };
 
 /**

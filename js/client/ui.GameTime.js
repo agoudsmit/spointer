@@ -6,6 +6,10 @@ goog.require('spo.ds.Game');
 goog.require('spo.ds.STP');
 
 /**
+ * Provides the game time clock for each game. Internally it works by
+ * calculating the game time on each update taking into account the server time
+ * and the game speed.
+ *
  * @constructor
  * @extends {pstj.ui.Clock}
  * @param {goog.dom.DomHelper=} odh Optional dom helper.
@@ -21,6 +25,7 @@ goog.inherits(spo.ui.GameTime, pstj.ui.Clock);
  * @inheritDoc
  */
 spo.ui.GameTime.prototype.setTime = function(time) {
+  // If the g
   if (this.getModel().getProp(spo.ds.Game.Property.START_TIME) == 0) {
     this.getContentElement().innerHTML = 'N/A';
     return;
@@ -28,25 +33,23 @@ spo.ui.GameTime.prototype.setTime = function(time) {
 
   if (this.getModel().isPaused()) {
     this.getContentElement().innerHTML = pstj.date.utils.renderTime(
-      this.getModel().getProp(spo.ds.Game.Property.SAVED_GAME_TIME) * 1000,
-    this.format_);
+      this.getModel().getProp(spo.ds.Game.Property.SAVED_GAME_TIME),
+        this.format_);
     return;
   }
 
-  //time = (time / 1000) << 0;
-  var current_server_time = spo.ds.STP.getInstance().getServerTime();
-
-  var last_saved_game_time = this.getModel().getProp(
+  var serverNow = spo.ds.STP.getInstance().getServerTime();
+  var savedgametime = this.getModel().getProp(
     spo.ds.Game.Property.SAVED_GAME_TIME);
 
-  var time_of_last_save = this.getModel().getProp(
+  var savets = this.getModel().getProp(
     spo.ds.Game.Property.SAVED_REAL_TIME);
 
-  var delta = current_server_time - time_of_last_save;
+  var delta = serverNow - savets;
   var delta_game_time = delta * this.getModel().getProp(
     spo.ds.Game.Property.SPEED);
 
-  var game_current_time = (last_saved_game_time + delta_game_time) * 1000;
-  this.getContentElement().innerHTML = pstj.date.utils.renderTime(time,
-    this.format_);
+  var gametimeNow = (savedgametime + delta_game_time);
+  this.getContentElement().innerHTML = pstj.date.utils.renderTime(
+    gametimeNow, this.format_);
 };

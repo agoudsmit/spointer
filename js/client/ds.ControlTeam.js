@@ -8,6 +8,7 @@ goog.require('pstj.ds.ListItem');
 
 /**
  * Adds customization for name handling specifically for players teams.
+ *
  * @constructor
  * @extends {pstj.ds.ListItem}
  * @param {*} data The control team list from the server.
@@ -19,6 +20,7 @@ goog.inherits(spo.ds.ControlTeam, pstj.ds.ListItem);
 
 /**
  * Provides the names for the object literal.
+ *
  * @enum {string}
  */
 spo.ds.ControlTeam.Property = {

@@ -11,6 +11,7 @@ goog.require('pstj.ds.ListItem');
 
 /**
  * Provides specification for the Game records.
+ *
  * @constructor
  * @extends {pstj.ds.ListItem}
  * @param {*} data The object literal that fits this record type.
@@ -22,6 +23,7 @@ goog.inherits(spo.ds.Game, pstj.ds.ListItem);
 
 /**
  * Checks if the game is paused.
+ *
  * @return {boolean} True is the game is paused, false othrewise.
  */
 spo.ds.Game.prototype.isPaused = function() {
@@ -57,6 +59,7 @@ spo.ds.Game.prototype.getProp = function(property) {
 
 /**
  * Gets a formatted version of the start date (for game details)
+ *
  * @return {string} The formmated date as per the spo.ds.Game.Formatting rules.
  */
 spo.ds.Game.prototype.getFormatedStartDate = function() {
@@ -67,6 +70,7 @@ spo.ds.Game.prototype.getFormatedStartDate = function() {
 
 /**
  * Provides the names for the object literal.
+ *
  * @enum {string}
  */
 spo.ds.Game.Property = {
@@ -93,12 +97,14 @@ spo.ds.Game.Formatting = {
 
 /**
  * The formatter fot use when using those dates.
+ *
  * @type {goog.i18n.DateTimeFormat}
  */
 spo.ds.Game.DateFormatter = new goog.i18n.DateTimeFormat("MM'/'dd'/'yyyy");
 
 /**
  * The parser to use when parsing date time from game edits.
+ *
  * @type {goog.i18n.DateTimeParse}
  */
 spo.ds.Game.DateParser = new goog.i18n.DateTimeParse(

@@ -14,6 +14,8 @@ goog.require('spo.ds.Game');
 goog.require('spo.ds.Resource');
 
 /**
+ * Provides the game list infrastructure.
+ *
  * @constructor
  * @extends {pstj.ds.List}
  */
@@ -28,6 +30,7 @@ goog.inherits(spo.ds.GameList, pstj.ds.List);
 /**
  * Load the data from server. The methods expects the content part of
  * the reply.
+ *
  * @param  {Array} content The content list.
  */
 spo.ds.GameList.prototype.loadData = function(content) {
@@ -51,6 +54,7 @@ spo.ds.GameList.prototype.loadData = function(content) {
       this.update(new spo.ds.Game(response['content']));
     }, this));
 
+  // Register for game removes.
   spo.ds.Resource.getInstance().registerResourceHandler('/game/remove/:id',
     goog.bind(function(resp) {
       console.log('Removing game in place.', resp);
@@ -64,9 +68,10 @@ spo.ds.GameList.prototype.loadData = function(content) {
 
 /**
  * Helper function that adds a new record item from data chunk/raw data.
+ *
  * @param {*} chunk The raw data chunk.
  * @param {boolean=} reverse If the addition should happen in the beginning of
- * the list.
+ *                           the list.
  * @private
  */
 spo.ds.GameList.prototype.addFromRawData_ = function(chunk, reverse) {
@@ -75,6 +80,7 @@ spo.ds.GameList.prototype.addFromRawData_ = function(chunk, reverse) {
 
 /**
  * Getter for the query params.
+ *
  * @return {*} The query object to use to load the list.
  */
 spo.ds.GameList.prototype.getQuery = function() {
@@ -83,6 +89,7 @@ spo.ds.GameList.prototype.getQuery = function() {
 
 /**
  * The deferred object that the static method will always return.
+ *
  * @type {goog.async.Deferred}
  * @private
  */
@@ -90,6 +97,7 @@ spo.ds.GameList.deferred_ = new goog.async.Deferred();
 
 /**
  * The list instance, that will be returned on the deferened addCallback fn.
+ *
  * @type {spo.ds.GameList}
  * @private
  */
@@ -97,6 +105,7 @@ spo.ds.GameList.instance_ = null;
 
 /**
  * Initialize the data store by populating it.
+ *
  * @private
  */
 spo.ds.GameList.init_ = function() {
@@ -117,6 +126,7 @@ spo.ds.GameList.init_ = function() {
  * The static method to obtain the list.
  * It returns a deferred object and the consumers should add listeners to it.
  * For more information see goog.async.Deferred.
+ *
  * @return {goog.async.Deferred} The deferred object to add listeners to.
  */
 spo.ds.GameList.getList = function() {

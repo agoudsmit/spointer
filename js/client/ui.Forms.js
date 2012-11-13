@@ -15,6 +15,8 @@ goog.require('goog.ui.Component');
 goog.require('spo.template');
 
 /**
+ * Hidden forms needed for file uploads.
+ *
  * @constructor
  * @extends {goog.ui.Component}
  * @param {goog.dom.DomHelper=} odh Optional dom helper.
@@ -84,6 +86,7 @@ spo.ui.Forms.prototype.enableTeam = function() {
 
 /**
  * Dispatch a control notification event.
+ *
  * @param  {goog.net.EventType} e The network event.
  * @private
  */
@@ -97,6 +100,7 @@ spo.ui.Forms.prototype.notify_ = function(e) {
 
 /**
  * Handles the changes in the inputs of the different upload forms.
+ *
  * @param  {goog.events.Event} e The change event.
  * @private
  */
@@ -107,6 +111,7 @@ spo.ui.Forms.prototype.handleFileChange_ = function(e) {
 /**
  * Form event to dispatch, that will contain the server response
  * on the form submition.
+ *
  * @constructor
  * @extends {goog.events.Event}
  * @param {spo.control.EventType} type The type of the event to fire.

@@ -3,7 +3,8 @@ goog.provide('spo.ds.User');
 goog.require('pstj.ds.ListItem');
 
 /**
- * The uer record type.
+ * The user record type. Provides the known properties as strings.
+ *
  * @constructor
  * @extends {pstj.ds.ListItem}
  * @param {*} data The user record literal object.
@@ -15,6 +16,7 @@ goog.inherits(spo.ds.User, pstj.ds.ListItem);
 
 /**
  * The known properties on this data record's object literal.
+ *
  * @enum {string}
  */
 spo.ds.User.Property = {

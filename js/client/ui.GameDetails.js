@@ -2,6 +2,7 @@ goog.provide('spo.ui.GameDetails');
 
 goog.require('goog.async.Delay');
 goog.require('goog.ui.Component');
+goog.require('pstj.date.utils');
 goog.require('spo.ds.Game');
 goog.require('spo.template');
 
@@ -39,7 +40,11 @@ spo.ui.GameDetails.prototype.createDom = function() {
     /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
     spo.template.gameSettings({
       gamestartdate: this.getModel().getFormatedStartDate(),
-      description: this.getModel().getProp(spo.ds.Game.Property.DESCRIPTION)
+      gamestarttime: pstj.date.utils.renderTime(this.getModel().getProp(
+        spo.ds.Game.Property.START_TIME), 'hh:xx'),
+      description: this.getModel().getProp(spo.ds.Game.Property.DESCRIPTION),
+      minutes: this.speedToDays_(this.getModel().getProp(
+        spo.ds.Game.Property.SPEED))
     }))));
 };
 
@@ -56,7 +61,6 @@ spo.ui.GameDetails.prototype.decorateInternal = function(el) {
  * @inheritDoc
  */
 spo.ui.GameDetails.prototype.disposeInternal = function() {
-  this.delay_.stop();
   goog.dispose(this.delay_);
   delete this.delay_;
   delete this.notificationArea_;
@@ -78,4 +82,24 @@ spo.ui.GameDetails.prototype.setNotification = function(notice) {
   this.delay_.stop();
   this.notificationArea_.innerHTML = notice;
   this.delay_.start();
+};
+
+/**
+ * Calculates the minutes it takes in the real life for one day to pass in
+ * the game.
+ * @param  {number} speed The speed of the game.
+ * @return {string} Number of minutes that takes in the real life for one day
+ *                         to pass in the game.
+ */
+spo.ui.GameDetails.prototype.speedToDays_ = function(speed) {
+  if (speed < 1) speed = 1;
+  if (speed > 1440) speed = 1440;
+  var inMinutes = 1440 / speed;
+  console.log(inMinutes);
+  if (inMinutes ==  1) return '1';
+  if (inMinutes < 60) return 'more than ' + (inMinutes << 0);
+  if (inMinutes == 1440) return "24 hours and 0"
+  var hours = inMinutes / 60 << 0;
+  var minutes = inMinutes % 60 << 0;
+  return '' + hours + ' hours and ' + minutes;
 };

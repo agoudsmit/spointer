@@ -1,12 +1,15 @@
 // TODO: Fix mem leaks/dispose
 goog.provide('spo.ui.GameEdit');
 
-goog.require('goog.async.Delay');
 goog.require('goog.dom');
-goog.require('goog.ui.Component');
+goog.require('spo.ui.GameDetails');
 goog.require('goog.ui.CustomButton');
 goog.require('goog.ui.InputDatePicker');
+goog.require('goog.ui.LabelInput');
+goog.require('goog.ui.Slider');
+goog.require('goog.ui.SliderBase.Orientation');
 goog.require('goog.ui.Textarea');
+goog.require('pstj.date.utils');
 goog.require('spo.ds.Game');
 goog.require('spo.template');
 goog.require('spo.ui.ButtonRenderer');
@@ -18,36 +21,40 @@ goog.require('spo.ui.ButtonRenderer');
  */
 spo.ui.GameEdit = function(odh) {
   goog.base(this, odh);
-  this.delay_ = new goog.async.Delay(this.clearNotification, 1500, this);
+
+  this.speedSlider_ = new goog.ui.Slider();
+  this.speedSlider_.setOrientation(goog.ui.Slider.Orientation.HORIZONTAL);
+  this.speedSlider_.setMinimum(1);
+  this.speedSlider_.setMaximum(1440);
+
+  this.gameTimeInput_ = new goog.ui.LabelInput();
+
+  this.datePicker_ = new goog.ui.InputDatePicker(spo.ds.Game.DateFormatter,
+    spo.ds.Game.DateParser);
+  this.datePicker_.getDatePicker().setShowToday(false);
+  this.datePicker_.getDatePicker().setShowWeekNum(false);
+  this.datePicker_.getDatePicker().setAllowNone(false);
+  this.datePicker_.getDatePicker().setShowOtherMonths(false);
+
+  this.saveBtn_ = new goog.ui.CustomButton('',
+    spo.ui.ButtonRenderer.getInstance());
 };
-goog.inherits(spo.ui.GameEdit, goog.ui.Component);
+goog.inherits(spo.ui.GameEdit, spo.ui.GameDetails);
 
-
-/**
- * Contains the notification area element.
- * @type {Element}
- * @private
- */
-spo.ui.GameEdit.prototype.notificationArea_;
-
-/**
- * Holds the delayed function to clear the notifications.
- * @type {goog.async.Delay}
- * @private
- */
-spo.ui.GameEdit.prototype.delay_;
 
 /**
  * Indicates if the form has been used already and it is safe to close/dispose
  * it.
+ *
  * @type {boolean}
  * @private
  */
 spo.ui.GameEdit.prototype.used_ = false;
 
 /**
- * POinter to text area - used to resize the area accroding to text size
+ * Pointer to text area - used to resize the area accroding to text size
  * FIXME: this seem to not be working at all...
+ *
  * @type {goog.ui.Textarea}
  * @private
  */
@@ -55,10 +62,45 @@ spo.ui.GameEdit.prototype.ta_;
 
 /**
  * Pointer to the 'save' button.
+ *
  * @type {goog.ui.CustomButton}
- * @private
+ * @privat
  */
 spo.ui.GameEdit.prototype.saveBtn_;
+
+
+/**
+ * The slider to configure the speed of the game.
+ *
+ * @private
+ * @type {goog.ui.Slider}
+ */
+spo.ui.GameEdit.prototype.speedSlider_;
+
+/**
+ * The time input for the game start time.
+ *
+ * @type {goog.ui.LabelInput}
+ * @private
+ */
+spo.ui.GameEdit.prototype.gameTimeInput_;
+
+
+/**
+ * The date picker for the game start time.
+ *
+ * @type {goog.ui.InputDatePicker}
+ * @private
+ */
+spo.ui.GameEdit.prototype.datePicker_;
+
+/**
+ * The DOM element in which to display the minutes it takes for one day to pass.
+ *
+ * @type {Element}
+ * @private
+ */
+spo.ui.GameEdit.prototype.minutesElement_;
 
 /**
  * @inheritDoc
@@ -69,7 +111,12 @@ spo.ui.GameEdit.prototype.createDom = function() {
     spo.template.gameEdit({
       description: this.getModel().getProp(spo.ds.Game.Property.DESCRIPTION),
       gamestartdate: this.getModel().getFormatedStartDate(),
-      date_format: spo.ds.Game.Formatting.DATE_ONLY
+      date_format: spo.ds.Game.Formatting.DATE_ONLY,
+      time_format: 'hh:mm',
+      gamestarttime: pstj.date.utils.renderTime(this.getModel().getProp(
+        spo.ds.Game.Property.START_TIME), 'hh:xx'),
+      minutes: this.speedToDays_(this.getModel().getProp(
+        spo.ds.Game.Property.SPEED))
     }))));
 };
 
@@ -87,6 +134,7 @@ spo.ui.GameEdit.prototype.isSafeToClose = function() {
  */
 spo.ui.GameEdit.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
+
   // Setup text area
   this.ta_ = new goog.ui.Textarea();
   this.ta_.setMinHeight(50);
@@ -97,33 +145,37 @@ spo.ui.GameEdit.prototype.decorateInternal = function(el) {
   // Setup date picker.
   var date_el = goog.dom.getElementByClass(goog.getCssName('game-date-picker'),
       this.getElement());
-  console.log('dateel', date_el);
-  this.datePicker_ = new goog.ui.InputDatePicker(spo.ds.Game.DateFormatter,
-      spo.ds.Game.DateParser);
-  this.datePicker_.getDatePicker().setShowToday(false);
-  this.datePicker_.getDatePicker().setShowWeekNum(false);
-  this.datePicker_.getDatePicker().setAllowNone(false);
-  this.datePicker_.getDatePicker().setShowOtherMonths(false);
-
   this.addChild(this.datePicker_);
   this.datePicker_.setPopupParentElement(date_el.parentElement);
   this.datePicker_.decorate(date_el);
 
-
+  // Setup time input label
+  this.addChild(this.gameTimeInput_);
+  this.gameTimeInput_.decorate(goog.dom.getElementByClass(goog.getCssName(
+    'game-time'), this.getElement()));
 
   // Setup save button
-  this.saveBtn_ = new goog.ui.CustomButton('',
-    spo.ui.ButtonRenderer.getInstance());
   this.addChild(this.saveBtn_);
   this.saveBtn_.decorate(goog.dom.getElementByClass(goog.getCssName(
     'text-button'), el));
-
-  // Setup listener for save button
   this.getHandler().listenOnce(this.saveBtn_,
     goog.ui.Component.EventType.ACTION, this.saveGame_);
 
-  this.notificationArea_ = goog.dom.getElementByClass(goog.getCssName(
-    'notification-area'), this.getElement());
+  // Setup slider
+  this.addChild(this.speedSlider_);
+  this.speedSlider_.decorate(goog.dom.getElementByClass(goog.getCssName(
+    'goog-slider'), this.getElement()));
+  this.speedSlider_.setValue(1400);
+    //this.getModel().getProp(
+    //spo.ds.Game.Property.SPEED));
+  this.getHandler().listen(this.speedSlider_,
+    goog.ui.Component.EventType.CHANGE, function() {
+      this.minutesElement_.innerHTML = this.speedToDays_(
+        this.speedSlider_.getValue());
+    });
+
+  this.minutesElement_ = goog.dom.getElementByClass(goog.getCssName(
+    'in-minutes'), this.getElement());
 };
 
 /**
@@ -133,19 +185,32 @@ spo.ui.GameEdit.prototype.decorateInternal = function(el) {
  * control should catch the update event and close this edit view.
  * FIXME: if the save is successfull, but nothing changed the UPDATE event will
  * not fire in the DS, thus this view will not close. Add cancel button.
+ *
  * @private
  */
 spo.ui.GameEdit.prototype.saveGame_ = function() {
+  var time = this.gameTimeInput_.getValue();
+  var date = this.datePicker_.getInputValue();
+  var start_date = new Date(date + ' ' + time);
+  if (start_date.toString() == 'Invalid Date') {
+    this.setNotification('The date/time of the game start is invalid.');
+    return;
+  }
   this.used_ = true;
   this.saveBtn_.setEnabled(false);
   this.saveBtn_.setValue('Saving');
   this.ta_.setEnabled(false);
+  this.speedSlider_.setEnabled(false);
+  this.gameTimeInput_.setEnabled(false);
+  this.datePicker_.getElement().disabled = true;
   var desc = this.ta_.getValue();
-  var data = this.getModel().getRawData();
-  data[spo.ds.Game.Property.DESCRIPTION] = desc;
+  //var data = this.getModel().getRawData();
+  //data[spo.ds.Game.Property.DESCRIPTION] = desc;
   spo.ds.Resource.getInstance().get({
     'url': '/game/update/' + this.getModel().getId(),
     'data': {
+      'speed': this.speedSlider_.getValue(),
+      'game_started_date': +(start_date),
       'description': desc
     }
   }, goog.bind(this.onServerResponse_, this));
@@ -167,14 +232,14 @@ spo.ui.GameEdit.prototype.onServerResponse_ = function(resp) {
  * @inheritDoc
  */
 spo.ui.GameEdit.prototype.disposeInternal = function() {
-  this.delay_.stop();
-  goog.dispose(this.delay_);
-  delete this.delay_;
-  delete this.notificationArea_;
   goog.base(this, 'disposeInternal');
+  delete this.notificationArea_;
   delete this.used_;
   delete this.ta_;
   delete this.saveBtn_;
+  delete this.speedSlider_;
+  delete this.gameTimeInput_;
+  delete this.datePicker_;
 };
 
 /**
@@ -182,21 +247,4 @@ spo.ui.GameEdit.prototype.disposeInternal = function() {
  */
 spo.ui.GameEdit.prototype.focusFirstElement = function() {
   this.ta_.getElement().focus();
-};
-
-/**
- * Clears the notification area for the game.
- */
-spo.ui.GameEdit.prototype.clearNotification = function() {
-  this.notificationArea_.innerHTML = '&nbsp';
-};
-
-/**
- * Sets the notification string for the notification area.
- * @param {string} notice The notification to display.
- */
-spo.ui.GameEdit.prototype.setNotification = function(notice) {
-  this.delay_.stop();
-  this.notificationArea_.innerHTML = notice;
-  this.delay_.start();
 };

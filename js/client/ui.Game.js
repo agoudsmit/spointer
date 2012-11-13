@@ -13,6 +13,7 @@ goog.require('spo.ui.GameTime');
 /**
  * Provides a widget view for a game record. It is only used to activate
  * games and to show information.
+ *
  * @constructor
  * @extends {goog.ui.Component}
  * @param {goog.dom.DomHelper=} odh Optional dom helper.
@@ -50,6 +51,7 @@ spo.ui.Game.prototype.cssClassPressed_ = goog.getCssName('depressed');
 
 /**
  * The live game time clock instance for this game view.
+ *
  * @type {spo.ui.GameTime}
  * @private
  */
@@ -58,6 +60,7 @@ spo.ui.Game.prototype.gameTimeUi_;
 /**
  * Constructs the view. This is extracted because it has to be called on
  * model updates.
+ *
  * @private
  */
 spo.ui.Game.prototype.constructInternalView_ = function() {
@@ -129,6 +132,7 @@ spo.ui.Game.prototype.disposeInternal = function() {
  * Helper function to prettify the status. Purely cosmetic.
  * @return {string} The string that matches the game status. Strings defined
  * on the widget are used.
+ *
  * @private
  */
 spo.ui.Game.prototype.getPrintStatus_ = function() {
@@ -143,6 +147,7 @@ spo.ui.Game.prototype.getPrintStatus_ = function() {
  * This widget class should be able to use navigation, i.e set new route
  * on the state and thus is used for navigating the game -> game details
  * screens.
+ *
  * @private
  */
 spo.ui.Game.prototype.showGameDetails_ = function() {
@@ -157,6 +162,7 @@ spo.ui.Game.prototype.showGameDetails_ = function() {
  * and releases it outside the widget (and thus not triggering the mouse up)
  * is deprecated, a MOUSEOUT event listener should be used instead.
  * TODO: change the listenOnce from mouseup to MOUSEOUT.
+ *
  * @private
  * @param  {goog.events.Event} ev The MOUSEDOWN event.
  */
@@ -173,6 +179,7 @@ spo.ui.Game.prototype.onMouseDown_ = function(ev) {
  * releasing the mouse button start move and go outside the bounding rectangle
  * of the widget it will stay in this state, so one need to call this
  * when the mouse moves out.
+ *
  * @param  {goog.events.Event} ev The MOUSEUP event.
  * @private
  */

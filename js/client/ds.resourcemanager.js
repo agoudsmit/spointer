@@ -10,13 +10,15 @@ goog.require('goog.json.NativeJsonProcessor');
 goog.require('goog.net.XhrIo');
 
 /**
- * This class should only be accessed as instance (getInstance())
+ * This class should only be accessed as instance (getInstance()).
+ *
  * @constructor
  */
 spo.ds.Resource = function() {};
 
 /**
  * The main url where to send the post requests to.
+ *
  * @type {string}
  * @private
  */
@@ -25,6 +27,7 @@ spo.ds.Resource.MAIN_URL_ = '/InterACT/dispatcher';
 /**
  * The JSON processor to use. Here we use the native one and expect the
  * host to have it. Not etsted on IE8.
+ *
  * @type {goog.json.Processor}
  * @private
  */
@@ -33,9 +36,10 @@ spo.ds.Resource.JSON_PROCESSOR_ = new goog.json.NativeJsonProcessor();
 /**
  * A default callback to use when no callback is provided by the user.
  * This is same as if the packet has come from the websocket (preliminary work).
+ *
  * @param  {*} response The response from the server. We need a bit of
- * processing anyway, because of the possibility of an error as we are the
- * sender.
+ *                      processing anyway, because of the possibility of an
+ *                      error as we are the sender.
  * @private
  */
 spo.ds.Resource.defaultCallback_ = function(response) {
@@ -52,6 +56,7 @@ spo.ds.Resource.defaultCallback_ = function(response) {
 /**
  * List of URLs (fragments of url as in packet) that are known to be listened
  * for by a data structure.
+ *
  * @type {Array.<RegExp>}
  * @private
  */
@@ -60,6 +65,7 @@ spo.ds.Resource.urlhandlers_ = [];
 /**
  * List of handlers/function that are known to match (by index) the listened url
  * from the list of urls.
+ *
  * @type {Array.<Function>}
  * @private
  */
@@ -68,8 +74,9 @@ spo.ds.Resource.handlers_ = [];
 /**
  * Register a new websocket resource/route/url with a handler that is interested
  *  in it.
- * @param  {!string} url     The url / resource to listen for.
- * @param  {!function(*): void} handler The hadler of the resource
+ *
+ * @param {!string} url The url / resource to listen for.
+ * @param {!function(*): void} handler The hadler of the resource.
  */
 spo.ds.Resource.prototype.registerResourceHandler = function(url, handler) {
   var route = new RegExp('^' + goog.string.regExpEscape(url)
@@ -87,10 +94,12 @@ spo.ds.Resource.prototype.registerResourceHandler = function(url, handler) {
  * Gets data from the server. The method is designed to work with single
  * requests only, however the server can handle multiple requests and this
  * implementation is embeding the requests in a query array for this.
+ *
  * @param  {*}   data The data structure that the server can proocess.
  * @param  {function(*): void} cb   The function that will handle the data
- * that is returned by the server. Currently the server returns an array
- * of responses, we only utilize the first one.
+ *                             that is returned by the server. Currently the
+ *                             server returns an array of responses, we only
+ *                             utilize the first one.
  */
 spo.ds.Resource.prototype.get = function(data, cb) {
   // Set the timestamp as it is needed on the server but not used anymore
@@ -103,9 +112,10 @@ spo.ds.Resource.prototype.get = function(data, cb) {
 
 /**
  * Port from jquery.
+ *
  * @param {!Array.<string>} arr
  * @param {!string} key
- * @param {*} value [description]
+ * @param {*} value .
  * @private
  */
 spo.ds.Resource.prototype.add_ = function(arr, key, value) {
@@ -116,6 +126,7 @@ spo.ds.Resource.prototype.add_ = function(arr, key, value) {
 
 /**
  * Port from jquery.
+ *
  * @private
  * @param  {!Array.<string>} arr
  * @param  {string} prefix
@@ -144,6 +155,7 @@ spo.ds.Resource.prototype.buildParams_ = function(arr, prefix, data) {
 /**
  * Encodes Literal object data to PHP understandable multitude of post params
  * as url encoded string.
+ *
  * @private
  * @param  {*} data Any literal object data.
  * @return {string} The encoded string.
@@ -161,6 +173,7 @@ spo.ds.Resource.prototype.encode_ = function(data) {
 
 /**
  * Sends the request using the XHR transport.
+ *
  * @param  {*}   query The query data.
  * @param  {function(*): void} callback The function to call wth the result.
  * @private
@@ -176,6 +189,7 @@ spo.ds.Resource.prototype.sendRequest_ = function(query, callback) {
  * Function that handles the response internally because of the wrapping made
  * on the server side to support multiple queries. The response is unwrapped
  * and passed to the original callback.
+ *
  * @param {Function} cb The original handler for the data.
  * @param {goog.events.Event} e The goog.net.EventType.COMPLETE event.
  * @private
