@@ -270,7 +270,7 @@ spo.control.Game.prototype.setEditState_ = function(enable) {
   this.editMode_ = enable;
   var oldView = this.view_.getChildAt(1);
   if (oldView instanceof spo.ui.GameEdit && enable) return;
-  if (oldView instanceof spo.ui.GameDetails && !enable) return;
+
   var newView;
   if (enable) {
     newView = new spo.ui.GameEdit();
