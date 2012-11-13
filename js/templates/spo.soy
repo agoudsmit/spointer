@@ -200,6 +200,8 @@
 /**
  * @param description The game record to present.
  * @param gamestartdate The start date of the game as string.
+ * @param gamestarttime The start time of the game as string.
+ * @param minutes The minutes that takes for one day to pass.
  */
 {template .gameSettings}
   <div class="{css column-one}">
@@ -209,10 +211,10 @@
     <div class="{css hr}"></div>
     <div class="{css detail-heading}">Game start date <span class="{css game-date}">{$gamestartdate}</span></div>
     <div class="{css hr}"></div>
-    <div class="{css detail-heading}">Game start time <span class="{css game-time}"></span></div>
+    <div class="{css detail-heading}">Game start time <span class="{css game-time}">{$gamestarttime}</span></div>
     <div class="{css hr}"></div>
     <div class="{css detail-heading}">Game speed</div>
-    <div>One day passes in <span class="{css detail-heading}"></span> minute(s)</div>
+    <div>One day passes in <span class="{css detail-heading} {css in-minutes}">{$minutes}</span> minute(s)</div>
   </div>
 {/template}
 
@@ -221,6 +223,9 @@
  * @param description The game record to present.
  * @param date_format The format to use for date.
  * @param gamestartdate The start date of the game as string.
+ * @param time_format The time format to use.
+ * @param gamestarttime The time of start of game.
+ * @param minutes The minutes it takles for one day to pass.
  */
 {template .gameEdit}
   <div class="{css column-one}">
@@ -230,10 +235,10 @@
     <div class="{css hr}"></div>
     <div class="{css detail-heading}">Game start date <input class="{css game-date-picker}" label="{$date_format}" value="{$gamestartdate}" /></div>
     <div class="{css hr}"></div>
-    <div class="{css detail-heading}">Game start time <span class="{css game-time}"></span></div>
+    <div class="{css detail-heading}">Game start time <input class="{css game-time}" label="{$time_format}" value="{$gamestarttime}" /></div>
     <div class="{css hr}"></div>
     <div class="{css detail-heading}">Change game time</div>
-    <div>One day passes in <span class="{css detail-heading}"></span> minute(s)</div>
+    <div>One day passes in <span class="{css detail-heading} {css in-minutes}">{$minutes}</span> minute(s)</div>
     <div class="{css goog-slider}">
       <div class="{css custom-scroll-bar-line}"></div>
       <div class="{css goog-slider-thumb}"></div>
