@@ -20,10 +20,11 @@ goog.require('spo.ui.ButtonRenderer');
  *
  * @constructor
  * @extends {goog.ui.Component}
- * @param {goog.dom.DomHelper=} odh Optional dom helper for the component.
+ * @param {number} gameid The ID of the game the widget will create teams for.
  */
-spo.ui.NewTeam = function(odh) {
-  goog.base(this, odh);
+spo.ui.NewTeam = function(gameid) {
+  goog.base(this);
+  this.gameId_ = gameid;
   this.input_ = new goog.ui.LabelInput();
   this.button_ = new goog.ui.CustomButton('',
     spo.ui.ButtonRenderer.getInstance());
@@ -31,6 +32,15 @@ spo.ui.NewTeam = function(odh) {
     this);
 };
 goog.inherits(spo.ui.NewTeam, goog.ui.Component);
+
+/**
+ * The ID of the game the team list belongs to, used to create new games
+ * with the proper game id.
+ *
+ * @type {number}
+ * @private
+ */
+spo.ui.NewTeam.prototype.gameId_;
 
 /**
  * The input field in the widget.
@@ -110,6 +120,7 @@ spo.ui.NewTeam.prototype.disposeInternal = function() {
   delete this.cleanMessage_delayed_;
 
   goog.base(this, 'disposeInternal');
+  delete this.gameId_;
   delete this.input_;
   delete this.button_;
 };
@@ -174,6 +185,7 @@ spo.ui.NewTeam.prototype.getCreatePacket = function(name) {
   return {
     'url': '/team/create',
     'data': {
+      'game_id': this.gameId_,
       'name': name
     }
   }
