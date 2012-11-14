@@ -341,9 +341,11 @@ spo.control.Game.prototype.handleFormUploadFinish_ = function(e) {
 
     console.log(e.formResponse);
     this.view_.getChildAt(1).setNotification('Upload completed!');
-    // setTimeout(function() {
-    //   window.location.reload(true);
-    // }, 1500);
+    // FIXME: the websocket should send the teardown signal and not from here.
+    var response = e.formResponse;
+    setTimeout(function() {
+      spo.ds.Resource.getInstance().wsShim(response);
+    }, 1500);
   } else {
     this.view_.getChildAt(1).setNotification('Upload failed!');
   }

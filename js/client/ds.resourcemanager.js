@@ -215,6 +215,24 @@ spo.ds.Resource.prototype.handleResponse_ = function(cb, e) {
 };
 
 /**
+ * Shim to work around the lack of ws implementation on the server side
+ * as of now, so we instead will pass the packets here.
+ *
+ * @param {*} packet The server response, should be a string or a literal
+ * object.
+ */
+spo.ds.Resource.prototype.wsShim = function(packet) {
+  if (goog.isString(packet)) {
+    try {
+      packet = spo.ds.Resource.JSON_PROCESSOR_.parse(packet);
+    } catch (e) {
+      console.log('Cannot parse =>', packet);
+    }
+  }
+  spo.ds.Resource.defaultCallback_(packet);
+};
+
+/**
  * Makes the Resource object globally available.
  */
 goog.addSingletonGetter(spo.ds.Resource);
