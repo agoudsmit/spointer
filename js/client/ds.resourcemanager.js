@@ -219,14 +219,14 @@ spo.ds.Resource.prototype.handleResponse_ = function(cb, e) {
  * as of now, so we instead will pass the packets here.
  *
  * @param {*} packet The server response, should be a string or a literal
- * object.
+ *                   object.
  */
 spo.ds.Resource.prototype.wsShim = function(packet) {
   if (goog.isString(packet)) {
     try {
       packet = spo.ds.Resource.JSON_PROCESSOR_.parse(packet);
     } catch (e) {
-      console.log('Cannot parse =>', packet);
+      console.log('Error in package');
     }
   }
   spo.ds.Resource.defaultCallback_(packet);
