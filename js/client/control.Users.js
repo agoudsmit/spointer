@@ -16,9 +16,16 @@ goog.require('spo.control.EventType');
  */
 spo.control.Users = function(container) {
   goog.base(this, container);
-  this.view_ = null;
 };
 goog.inherits(spo.control.Users, spo.control.Base);
+
+/**
+ * The main UI for this control.
+ *
+ * @type {spo.ui.Users}
+ * @private
+ */
+spo.control.Users.prototype.view_;
 
 /**
  * Sets the active team with its corresponding user list. This control can
@@ -41,9 +48,9 @@ spo.control.Users.prototype.setList = function(team, userlist) {
  * @private
  */
 spo.control.Users.prototype.clean_ = function() {
-  if (goog.isDefAndNotNull(this.view_)) {
-    goog.dispose(this.view_);
-  }
+  this.getHandler().unlisten(this.view_, spo.control.EventType.CONTROL_ACTION,
+    this.handleControlAction_);
+  goog.dispose(this.view_);
 };
 
 /**
@@ -97,11 +104,13 @@ spo.control.Users.prototype.loadView = function() {
 
   var len = this.list_.getCount();
   var user;
+
   for (var i = 0; i < len; i++) {
     user = new spo.ui.User();
     user.setModel(this.list_.getByIndex(i));
     this.view_.addChild(user, true);
   }
+
   this.getHandler().listen(this.view_, spo.control.EventType.CONTROL_ACTION,
     this.handleControlAction_);
 };
