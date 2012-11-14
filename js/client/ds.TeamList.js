@@ -9,6 +9,7 @@ goog.provide('spo.ds.TeamList');
 goog.require('goog.async.Deferred');
 goog.require('pstj.ds.List');
 goog.require('spo.ds.Team');
+goog.require('spo.ds.Resource');
 
 /**
  * Team List abstraction.
@@ -120,3 +121,15 @@ spo.ds.TeamList.tearDown = function(gameid) {
     delete spo.ds.TeamList.gameMap_[gameid];
   }
 };
+
+/**
+ * Subscribe for updates on team lists.
+ */
+spo.ds.Resource.getInstance().registerResourceHandler('/team/create',
+  function(response) {
+    var content = response['content'];
+    var gameid = content['game_id'];
+    if (spo.ds.TeamList.gameMap_[gameid]) {
+      spo.ds.TeamList.gameMap_[gameid].add(new spo.ds.Team(content), true);
+    }
+  });
