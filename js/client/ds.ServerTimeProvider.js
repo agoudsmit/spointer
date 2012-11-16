@@ -23,6 +23,9 @@ spo.ds.STP.prototype.getDelta = function() {
 /**
  * Returns the current server time as milliseconds from 1970 UTC.
  *
+ * @param {number=} time Current time in milliseconds to calculate server time
+ *                       against. If not provided current client time will be
+ *                       used.
  * @return {number} The current time on the server as calculated by the
  *                      initially provided delta in milliseconds.
  */

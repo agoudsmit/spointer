@@ -15,8 +15,10 @@ goog.require('spo.template');
 goog.require('spo.ui.ButtonRenderer');
 
 /**
+ * Provides the Edit widget for a game record.
+ *
  * @constructor
- * @extends {goog.ui.Component}
+ * @extends {spo.ui.GameDetails}
  * @param {goog.dom.DomHelper=} odh Optional dom helper.
  */
 spo.ui.GameEdit = function(odh) {
@@ -64,7 +66,7 @@ spo.ui.GameEdit.prototype.ta_;
  * Pointer to the 'save' button.
  *
  * @type {goog.ui.CustomButton}
- * @privat
+ * @private
  */
 spo.ui.GameEdit.prototype.saveBtn_;
 
@@ -136,7 +138,7 @@ spo.ui.GameEdit.prototype.decorateInternal = function(el) {
   goog.base(this, 'decorateInternal', el);
 
   // Setup text area
-  this.ta_ = new goog.ui.Textarea();
+  this.ta_ = new goog.ui.Textarea('');
   this.ta_.setMinHeight(50);
   this.addChild(this.ta_);
   this.ta_.decorate(goog.dom.getElementByClass(goog.getCssName(

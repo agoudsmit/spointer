@@ -16,6 +16,7 @@ goog.require('spo.ds.Resource');
 goog.require('spo.ds.Team');
 goog.require('spo.ds.TeamList');
 goog.require('spo.ui.Forms');
+goog.require('spo.ui.Forms.FormEvent');
 goog.require('spo.ui.GameControls');
 goog.require('spo.ui.GameDetails');
 goog.require('spo.ui.GameEdit');
@@ -32,9 +33,7 @@ goog.require('spo.ui.GameEdit');
 spo.control.Game = function(container, gameid, edit) {
   goog.base(this, container);
 
-  if (edit == 'edit') {
-    this.editMode_ = true;
-  }
+  if (edit == 'edit') this.editMode_ = true;
 
   this.gameId_ = gameid;
   this.view_ = new pstj.ui.CustomScrollArea();
@@ -105,8 +104,8 @@ spo.control.Game.prototype.cplayerslist_;
 spo.control.Game.prototype.init = function() {
   this.inited_ = true;
   var gamesdef = spo.ds.GameList.getList();
-  var teamsdef = spo.ds.TeamList.getList(this.gameId_);
-  var cteamsdef = spo.ds.ControlTeamList.getList(this.gameId_);
+  var teamsdef = spo.ds.TeamList.map.getList(this.gameId_);
+  var cteamsdef = spo.ds.ControlTeamList.map.getList(this.gameId_);
   var playersdef = new goog.async.Deferred();
   var cplayersdef = new goog.async.Deferred();
   goog.async.DeferredList.gatherResults(
@@ -192,9 +191,7 @@ spo.control.Game.prototype.loadView = function() {
   spo.ui.Header.getInstance().setViewName('game details');
   spo.ui.Header.getInstance().setGameName(
     dsGame.getProp(spo.ds.Game.Property.NAME).toString());
-  console.log('takoa...', this.gameId_)
-  console.log('Setting the links now...')
-  spo.ui.Header.getInstance().setLinks('/games','dashboard', '/teams/' +
+  spo.ui.Header.getInstance().setLinks('/games', 'dashboard', '/teams/' +
     this.gameId_, 'manage users/teams');
 
 
@@ -264,7 +261,9 @@ spo.control.Game.prototype.loadView = function() {
  * This method should be called to switch between edit and view state of the
  * games details only after it was initially rendered, regardless of the initial
  * state.
+ *
  * @param {boolean} enable True if the view should be switched to edit state.
+ * @private
  */
 spo.control.Game.prototype.setEditState_ = function(enable) {
   this.editMode_ = enable;
@@ -333,13 +332,11 @@ spo.control.Game.prototype.setupListeners_ = function() {
 
 /**
  * Hanlder for the upload of files finish action.
- * @param  {spo.control.Event} e The SUCCESS/FAILURE event from control.
+ * @param  {spo.ui.Forms.FormEvent} e The SUCCESS/FAILURE event from control.
  * @private
  */
 spo.control.Game.prototype.handleFormUploadFinish_ = function(e) {
   if (e.type = spo.control.EventType.SUCCESS) {
-
-    console.log(e.formResponse);
     this.view_.getChildAt(1).setNotification('Upload completed!');
     // FIXME: the websocket should send the teardown signal and not from here.
     var response = e.formResponse;
@@ -380,7 +377,6 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
       this.setEditState_(true);
     }
   } else if (action == spo.control.Action.DELETE) {
-    console.log('Sending XHR');
     spo.ds.Resource.getInstance().get({
       'url': '/game/remove/' + this.gameId_
     }, function(resp) {
@@ -391,11 +387,15 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
   } else if (action == spo.control.Action.PAUSE ||
       action == spo.control.Action.PLAY) {
     this.syncGameStateToServer_(action);
+  } else if (action == spo.control.Action.STOP) {
+
   }
 };
 
 /**
  * Set game state on the server and chekc for errors.
+ *
+ * @private
  * @param  {spo.control.Action} action The action to execute.
  */
 spo.control.Game.prototype.syncGameStateToServer_ = function(action) {

@@ -105,5 +105,5 @@ spo.template.User = function(opt_data) {
 
 
 spo.template.NewTeam = function(opt_data) {
-  return '<div class="' + goog.getCssName('new-user-container') + '"><div class="' + goog.getCssName('new-user-error-container') + ' ' + goog.getCssName('bold') + ' ' + goog.getCssName('error') + '"></div><div class="' + goog.getCssName('new-user-input-container') + '" style="float:left"><input label="add new team" type="text" /></div><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('text-button') + '" style="float:left;">Add</div></div>';
+  return '<div class="' + goog.getCssName('new-user-container') + '"><div class="' + goog.getCssName('new-user-error-container') + ' ' + goog.getCssName('bold') + ' ' + goog.getCssName('error') + '"></div><div><div class="' + goog.getCssName('new-user-input-container') + '" style="float:left"><input label="add new team" type="text" /></div><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('text-button') + '" style="float:left;">Add</div><div style="clear:both"></div></div></div>';
 };

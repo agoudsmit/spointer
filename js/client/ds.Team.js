@@ -26,5 +26,6 @@ goog.inherits(spo.ds.Team, pstj.ds.ListItem);
 spo.ds.Team.Property = {
   ID: 'id',
   NAME: 'name',
-  DESCRIPTION: 'description'
+  DESCRIPTION: 'description',
+  MEMBERS: 'members' // number
 };

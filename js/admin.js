@@ -13,6 +13,8 @@ goog.require('spo.ds.STP');
 goog.require('spo.template');
 goog.require('spo.ui.Header');
 goog.require('spo.widget.SystemClock');
+goog.require('spo.ds.TeamList');
+goog.require('spo.ds.UserList');
 
 
 /**
@@ -129,24 +131,21 @@ admin = function() {
       //
       // find the list of teams for this game;
       // If there is a deferred created, cancel it.
-      if (spo.ds.TeamList.hasList(gid)) {
-        spo.ds.TeamList.defMap_[gid].cancel();
-        // if there is a list, iterator over it
-        if (spo.ds.TeamList.gameMap_[gid]) {
-          // the team list was loaded, iterate over the items on it, get the ID
-          // of the team and tear down any user lists matching the current ID.
-          var list = spo.ds.TeamList.gameMap_[gid];
-          var len = list.getCount();
-          var tid;
-          for (var i = 0; i < len; i++) {
-            tid = list.getByIndex(i).getId();
-            if (spo.ds.UserList.hasList(tid)) {
-              spo.ds.UserList.tearDown(tid);
-            }
+      if (spo.ds.TeamList.map.hasList(gid)) {
+        spo.ds.TeamList.map.cancel(gid);
+        // the team list was loaded, iterate over the items on it, get the ID
+        // of the team and tear down any user lists matching the current ID.
+        var list = spo.ds.TeamList.map.getDirect(gid);
+        var len = list.getCount();
+        var tid;
+        for (var i = 0; i < len; i++) {
+          tid = list.getByIndex(i).getId();
+          if (spo.ds.UserList.hasList(tid)) {
+            spo.ds.UserList.tearDown(tid);
           }
-          // Finally tear down the team list as well.
-          list.tearDown(gid);
         }
+        // Finally tear down the team list as well.
+        spo.ds.TeamList.map.tearDown(gid);
       }
   });
 

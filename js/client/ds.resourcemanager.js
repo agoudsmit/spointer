@@ -48,7 +48,8 @@ spo.ds.Resource.defaultCallback_ = function(response) {
     goog.array.forEach(spo.ds.Resource.urlhandlers_, function(url, i) {
       var args = url.exec(fragment);
       if (!args) return;
-      spo.ds.Resource.handlers_[i](response);
+      goog.array.insertAt(args, response);
+      spo.ds.Resource.handlers_[i].apply(null, args);
     });
   }
 };
@@ -96,14 +97,14 @@ spo.ds.Resource.prototype.registerResourceHandler = function(url, handler) {
  * implementation is embeding the requests in a query array for this.
  *
  * @param  {*}   data The data structure that the server can proocess.
- * @param  {function(*): void} cb   The function that will handle the data
+ * @param  {function(*): void=} cb   The function that will handle the data
  *                             that is returned by the server. Currently the
  *                             server returns an array of responses, we only
  *                             utilize the first one.
  */
 spo.ds.Resource.prototype.get = function(data, cb) {
   // Set the timestamp as it is needed on the server but not used anymore
-  data['time_stamp'] = 0;
+  // data['time_stamp'] = 0;
   var query = {
     'queries': [data]
   };
@@ -175,7 +176,7 @@ spo.ds.Resource.prototype.encode_ = function(data) {
  * Sends the request using the XHR transport.
  *
  * @param  {*}   query The query data.
- * @param  {function(*): void} callback The function to call wth the result.
+ * @param  {function(*): void=} callback The function to call wth the result.
  * @private
  */
 spo.ds.Resource.prototype.sendRequest_ = function(query, callback) {

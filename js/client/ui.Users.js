@@ -26,8 +26,8 @@ goog.inherits(spo.ui.Users, goog.ui.Component);
  */
 spo.ui.Users.prototype.createDom = function() {
   this.decorateInternal(
-  /** @type {Element} */ goog.dom.htmlToDocumentFragment(
-      spo.template.Users({
-        teamname: this.getModel().getProp(spo.ds.Team.Property.NAME)
-      })));
+  /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
+        spo.template.Users({
+          teamname: this.getModel().getProp(spo.ds.Team.Property.NAME)
+        }))));
 };

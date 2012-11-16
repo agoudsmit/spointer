@@ -115,11 +115,16 @@ spo.ui.Forms.prototype.handleFileChange_ = function(e) {
  * @constructor
  * @extends {goog.events.Event}
  * @param {spo.control.EventType} type The type of the event to fire.
- * @param {spo.ui.Forrms} target The firing form.
- * @param {string} response The response from the server.
+ * @param {spo.ui.Forms} target The firing form.
+ * @param {?string} response The response from the server.
  */
 spo.ui.Forms.FormEvent = function(type, target, response) {
   goog.base(this, type, target);
   this.formResponse = response;
 };
 goog.inherits(spo.ui.Forms.FormEvent, goog.events.Event);
+
+/**
+ * @type {?string}
+ */
+spo.ui.Forms.FormEvent.prototype.formResponse;

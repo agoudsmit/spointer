@@ -20,7 +20,8 @@ goog.require('spo.ui.ButtonRenderer');
  *
  * @constructor
  * @extends {goog.ui.Component}
- * @param {number} gameid The ID of the game the widget will create teams for.
+ * @param {pstj.ds.RecordID} gameid The ID of the game the widget will create
+ *                                  teams for.
  */
 spo.ui.NewTeam = function(gameid) {
   goog.base(this);
@@ -37,7 +38,7 @@ goog.inherits(spo.ui.NewTeam, goog.ui.Component);
  * The ID of the game the team list belongs to, used to create new games
  * with the proper game id.
  *
- * @type {number}
+ * @type {pstj.ds.RecordID}
  * @private
  */
 spo.ui.NewTeam.prototype.gameId_;
@@ -73,8 +74,8 @@ spo.ui.NewTeam.prototype.cleanMessage_delayed_;
  */
 spo.ui.NewTeam.prototype.createDom = function() {
   this.decorateInternal(
-    /** @type {Element} */ goog.dom.htmlToDocumentFragment(
-    spo.template.NewTeam({})));
+    /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
+        spo.template.NewTeam({}))));
 };
 
 /**

@@ -12,7 +12,7 @@ goog.require('spo.control.EventType');
  *
  * @constructor
  * @extends {spo.control.Base}
- * @param {Element} container The element to render in.
+ * @param {!Element} container The element to render in.
  */
 spo.control.Users = function(container) {
   goog.base(this, container);
@@ -32,8 +32,8 @@ spo.control.Users.prototype.view_;
  * be used continuously for the management of users of different teams in the
  * same game.
  *
- * @param {spo.ds.Team} team The team to work with.
- * @param {spo.ds.UserList} userlist The user list to display (should be
+ * @param {pstj.ds.ListItem} team The team to work with.
+ * @param {pstj.ds.List} userlist The user list to display (should be
  *                                   matching the team).
  */
 spo.control.Users.prototype.setList = function(team, userlist) {

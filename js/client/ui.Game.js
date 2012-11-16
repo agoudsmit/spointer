@@ -112,9 +112,9 @@ spo.ui.Game.prototype.enterDocument = function() {
     this.showGameDetails_);
 
   // Setup model events
-  this.getHandler().listen(this.getModel(),
+  this.getHandler().listen(/** @type {pstj.ds.ListItem} */ (this.getModel()),
     pstj.ds.ListItem.EventType.DELETE, this.dispose);
-  this.getHandler().listen(this.getModel(),
+  this.getHandler().listen(/** @type {pstj.ds.ListItem} */ (this.getModel()),
     pstj.ds.ListItem.EventType.UPDATE, this.constructInternalView_);
 };
 

@@ -10,10 +10,9 @@ goog.require('spo.ui.NewTeam');
  *
  * @constructor
  * @extends {spo.ui.NewTeam}
- * @param {goog.dom.DomHelper=} odh An optional DOM helper.
  */
-spo.ui.NewGame = function(odh) {
-  goog.base(this, odh);
+spo.ui.NewGame = function() {
+  goog.base(this, 0);
 };
 goog.inherits(spo.ui.NewGame, spo.ui.NewTeam);
 

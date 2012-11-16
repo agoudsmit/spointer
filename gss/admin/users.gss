@@ -77,3 +77,11 @@
 .active .transparent-overlay {
   display: none;
 }
+
+.new-user-input-container {
+  width: 80%;
+}
+
+.new-user-container .text-button {
+  margin: 5px;
+}

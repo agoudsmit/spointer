@@ -100,10 +100,11 @@ spo.ui.User.prototype.enterDocument = function() {
     this.enterEditMode_);
 
   // Bind the data model events.
-  this.getHandler().listen(this.getModel(), pstj.ds.ListItem.EventType.UPDATE,
-    this.onRecordUpdate_);
-  this.getHandler().listen(this.getModel(), pstj.ds.ListItem.EventType.DELETE,
-    this.onRecordDelete_);
+  this.getHandler().listen(
+    /** @type {pstj.ds.ListItem} */ (this.getModel()),
+    pstj.ds.ListItem.EventType.UPDATE, this.onRecordUpdate_);
+  this.getHandler().listen(/** @type {pstj.ds.ListItem} */ (this.getModel()),
+    pstj.ds.ListItem.EventType.DELETE, this.onRecordDelete_);
 };
 
 /**

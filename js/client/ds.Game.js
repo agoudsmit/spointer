@@ -63,7 +63,8 @@ spo.ds.Game.prototype.getProp = function(property) {
  * @return {string} The formmated date as per the spo.ds.Game.Formatting rules.
  */
 spo.ds.Game.prototype.getFormatedStartDate = function() {
-  var starttime = this.getProp(spo.ds.Game.Property.START_TIME);
+  var starttime = /** @type {number} */ (this.getProp(
+    spo.ds.Game.Property.START_TIME));
   return pstj.date.utils.renderTime(starttime,
     spo.ds.Game.Formatting.DATE_ONLY);
 };

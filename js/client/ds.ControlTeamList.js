@@ -2,95 +2,60 @@
  * @fileoverview Provides the team list abstraction.
  * To use it simply require the namespace and then require the list
  * with the game id, ex:
- * spo.ds.ControlTeamList.getList("1").addListener(function(the_team_list){...});.
+ * spo.ds.ControlTeamList.getList("1").addListener(function(the_team_list){
+ *   ...});.
  */
 goog.provide('spo.ds.ControlTeamList');
 
-goog.require('goog.async.Deferred');
-goog.require('pstj.ds.List');
 goog.require('spo.ds.ControlTeam');
+goog.require('spo.ds.List');
+goog.require('spo.ds.MapList');
 
 /**
  * Team List abstraction.
  *
  * @constructor
- * @extends {pstj.ds.List}
- * @param {string} gid The ID of the team to retrieve the teams for.
+ * @extends {spo.ds.List}
+ * @param {string} contolr_team_id The ID of the team to retrieve the teams for.
  */
-spo.ds.ControlTeamList = function(gid) {
-  goog.base(this);
-  this.gameId_ = gid;
+spo.ds.ControlTeamList = function(contolr_team_id) {
+  goog.base(this, contolr_team_id);
 };
-goog.inherits(spo.ds.ControlTeamList, pstj.ds.List);
+goog.inherits(spo.ds.ControlTeamList, spo.ds.List);
 
-/**
- * Loads the data into the list once it is available. The data should be of
- * form {content: [record1, record2,... recordN]}.
- *
- * @param  {*} content The content of the server result.
- */
+/** @inheritDoc */
 spo.ds.ControlTeamList.prototype.loadData = function(content) {
   var teams = content['controlTeams'];
-
   for (var i = 0; i < teams.length; i++) {
     this.add(new spo.ds.ControlTeam(teams[i]));
   }
 };
 
-/**
- * Returns the query structure the server can understands to get the resource.
- *
- * @return {*} The url structure.
- */
+/** @inheritDoc */
 spo.ds.ControlTeamList.prototype.getQuery = function() {
   return {
-    'url': '/control_teams/' + this.gameId_
+    'url': '/control_teams/' + this.id_
   };
 };
 
 /**
- * Provides the map gameid -> deferred
+ * The prefix to match when constructing web socket listeners for resources.
+ * Eg:
+ * /control_team + /create
+ * /control_team + /update/:id
+ * /control_team + /remove/:id
+ * The middle one is not automatic.
  *
- * @type {Object}
- * @private
+ * @type {string}
  */
-spo.ds.ControlTeamList.defMap_ = {
-  // gameid: deferred
-};
+spo.ds.ControlTeamList.path = '/control_team';
 
 /**
- * Provides the map gameid -> TeamList
+ * The mapped map list instance that can feed mapped list of this list type.
  *
- * @type {Object}
- * @private
+ * @type {spo.ds.MapList}
  */
-spo.ds.ControlTeamList.gameMap_ = {
-  // gameid: list
-};
+spo.ds.ControlTeamList.map = new spo.ds.MapList(spo.ds.ControlTeamList,
+  spo.ds.ControlTeam, 'game_id');
 
-/**
- * Public method abstracting the list obtaining. It works internally by
- * creating a deferred object for each list (by gameid) and returnuing it.
- *
- * @param  {string} gameid The game id to return deferred for.
- * @return {!goog.async.Deferred} The deferred object that matches this gameid.
- */
-spo.ds.ControlTeamList.getList = function(gameid) {
-  if (!spo.ds.ControlTeamList.defMap_[gameid]) {
-    spo.ds.ControlTeamList.defMap_[gameid] = new goog.async.Deferred();
-    spo.ds.ControlTeamList.gameMap_[gameid] = new spo.ds.ControlTeamList(
-      gameid);
-    spo.ds.Resource.getInstance().get(
-      spo.ds.ControlTeamList.gameMap_[gameid].getQuery(), function(response) {
-        if (response['status'] != 'ok') {
-          spo.ds.ControlTeamList.defMap_[gameid].errback(/** error? */);
-        } else {
-          spo.ds.ControlTeamList.gameMap_[gameid].loadData(response['content']);
-          spo.ds.ControlTeamList.defMap_[gameid].callback(
-            spo.ds.ControlTeamList.gameMap_[gameid]);
-        }
-      });
 
-  }
-  return spo.ds.ControlTeamList.defMap_[gameid];
-};

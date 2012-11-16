@@ -28,7 +28,7 @@ spo.ds.ControlTeam.Property = {
   NAME: 'name',
   DESCRIPTION: 'description',
   INTEL: 'intelligence',
-  ROTW: 'rest_of_the_world',
+  WORLD: 'rest_of_the_world',
   MEETINGS: 'validation_meetings',
   MESSAGES: 'validation_messages',
   PRESS: 'worldpress'
