@@ -13,6 +13,7 @@ spo.ds.List = function(id) {
   goog.base(this);
   this.id_ = id;
 };
+goog.inherits(spo.ds.List, pstj.ds.List);
 
 /**
  * The ID of the list.
