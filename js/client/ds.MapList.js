@@ -13,10 +13,11 @@ goog.require('spo.ds.Resource');
  * @param {function(new:pstj.ds.ListItem): undefined} listItemConstructor The
  *                                                    constructor for the list
  *                                                    item.
- * @param {string} contetx_prefix The prefixed namespace to look for the data
+ * @param {string} content_prefix The prefixed namespace to look for the data
  *                                when processing a reply.
  */
-spo.ds.MapList = function(listConstructor, listItemConstructor, content_prefix) {
+spo.ds.MapList = function(listConstructor, listItemConstructor,
+  content_prefix) {
   this.lconstructor_ = listConstructor;
   this.listItemConstructor_ = listItemConstructor;
   this.contentLoadPrefix_ = content_prefix;
@@ -36,7 +37,7 @@ spo.ds.MapList.prototype.setupPrefixes = function() {
   // Auto subscribe for updates from server.
   if (goog.isString(prefix)) {
     spo.ds.Resource.getInstance().registerResourceHandler(prefix + '/create',
-      function(response) {
+      goog.bind(function(response) {
         var content = response['content'];
         // Obtain reference to the ID of the holding list (i,e when it is
         // a team list the game_id path will be used to retrieve which list
@@ -46,29 +47,34 @@ spo.ds.MapList.prototype.setupPrefixes = function() {
           this.lmap_[uid].add(this.listItemConstructor_(content),
             true);
         }
-      });
+      }, this));
 
     spo.ds.Resource.getInstance().registerResourceHandler(prefix +
-      '/update/:id', function(response, fragment, uid) {
+      '/update/:id', goog.bind(function(response, fragment, uid) {
         uid = +uid;
-        for (var list in this.lmap_) {
+        var list;
+        for (var key in this.lmap_) {
+          list = this.lmap_[key];
           if (list.getById(uid) != null) {
-            list.update(new this.listItemConstructor_(response['content']));
+            list.getById(uid).update(new this.listItemConstructor_(
+              response['content']));
             return;
           }
         }
-      });
+      }, this));
 
     spo.ds.Resource.getInstance().registerResourceHandler(prefix +
-      '/remove/:id', function(response, fragment, uid) {
+      '/remove/:id', goog.bind(function(response, fragment, uid) {
         uid = +uid;
-        for (var list in this.lmap_) {
+        var list;
+        for (var key in this.lmap_) {
+          list = this.lmap_[key];
           if (list.getById(uid) != null) {
             list.deleteNode(uid);
             return;
           }
         }
-      });
+      }, this));
   }
 };
 
