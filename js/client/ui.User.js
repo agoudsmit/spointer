@@ -35,20 +35,44 @@ spo.ui.User = function() {
     spo.ui.ButtonRenderer.getInstance());
 
   this.getHandler().listen(this, goog.ui.Component.EventType.ACTION,
-    this.handleUserAction_);
-
-
-  this.role_ = new goog.ui.LabelInput();
-  this.func_ = new goog.ui.LabelInput();
-  this.name_ = new goog.ui.LabelInput();
-  this.mail_ = new goog.ui.LabelInput();
-
-  this.addChild(this.role_);
-  this.addChild(this.func_);
-  this.addChild(this.name_);
-  this.addChild(this.mail_);
+    this.handleUserAction);
+  this.createValueHolders();
 };
 goog.inherits(spo.ui.User, goog.ui.Component);
+
+goog.scope(function() {
+  var proto = spo.ui.User.prototype;
+
+  /** @protected */
+  proto.createValueHolders = function() {
+    this.role_ = new goog.ui.LabelInput();
+    this.func_ = new goog.ui.LabelInput();
+    this.name_ = new goog.ui.LabelInput();
+    this.mail_ = new goog.ui.LabelInput();
+
+    this.addChild(this.role_);
+    this.addChild(this.func_);
+    this.addChild(this.name_);
+    this.addChild(this.mail_);
+  };
+  /** @protected */
+  proto.decorateValueHolders = function() {
+        // Populate values as labeled inputs.
+    var values = goog.dom.getElementsByClass(goog.getCssName('form-values'),
+      this.getElement());
+    this.role_.decorate(values[0]);
+    this.func_.decorate(values[1]);
+    this.name_.decorate(values[2]);
+    this.mail_.decorate(values[3]);
+  };
+  /** @protected */
+  proto.setValuesOnValueHolders = function() {
+    this.name_.setValue(this.getModel().getProp(spo.ds.User.Property.NAME));
+    this.role_.setValue(this.getModel().getProp(spo.ds.User.Property.ROLE));
+    this.mail_.setValue(this.getModel().getProp(spo.ds.User.Property.EMAIL));
+    this.func_.setValue(this.getModel().getProp(spo.ds.User.Property.FUNCTION));
+  };
+});
 
 /**
  * Flag for the edit mode of the widget.
@@ -87,13 +111,8 @@ spo.ui.User.prototype.enterDocument = function() {
   this.addChild(this.delBtn_);
   this.delBtn_.decorate(actions[1]);
 
-  // Populate values as labeled inputs.
-  var values = goog.dom.getElementsByClass(goog.getCssName('form-values'),
-    this.getElement());
-  this.role_.decorate(values[0]);
-  this.func_.decorate(values[1]);
-  this.name_.decorate(values[2]);
-  this.mail_.decorate(values[3]);
+  this.decorateValueHolders();
+
 
   // Listen for 'edit' UI requests.
   this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK,
@@ -116,10 +135,7 @@ spo.ui.User.prototype.enterDocument = function() {
  */
 spo.ui.User.prototype.onRecordUpdate_ = function(ev) {
   ev.stopPropagation();
-  this.name_.setValue(this.getModel().getProp(spo.ds.User.Property.NAME));
-  this.role_.setValue(this.getModel().getProp(spo.ds.User.Property.ROLE));
-  this.mail_.setValue(this.getModel().getProp(spo.ds.User.Property.EMAIL));
-  this.func_.setValue(this.getModel().getProp(spo.ds.User.Property.FUNCTION));
+  this.setValuesOnValueHolders();
   this.exitEditMode_();
 };
 
@@ -140,8 +156,6 @@ spo.ui.User.prototype.onRecordDelete_ = function() {
  */
 spo.ui.User.prototype.getValues = function() {
   var res = {
-    'role': this.role_.getValue(),
-    'function': this.func_.getValue(),
     'name': this.name_.getValue()
   };
   var newmail = this.mail_.getValue();
@@ -157,9 +171,9 @@ spo.ui.User.prototype.getValues = function() {
  * the button action info control action and dispatches a new control event.
  *
  * @param  {goog.events.Event} ev The ACTION event from one of the button.
- * @private
+ * @protected
  */
-spo.ui.User.prototype.handleUserAction_ = function(ev) {
+spo.ui.User.prototype.handleUserAction = function(ev) {
   ev.stopPropagation();
   if (ev.target == this.delBtn_) {
     this.dispatchEvent(new spo.control.Event(this, spo.control.Action.DELETE));

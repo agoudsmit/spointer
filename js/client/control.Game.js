@@ -369,8 +369,7 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
       this.view_.getChildAt(1).setNotification('Game is being edited!');
       // Flash error!
     } else {
-      // FIXME: enable this when it is ready
-      //spo.admin.Router.getInstance().navigate('/control_users/' + this.gameId_);
+      spo.admin.Router.getInstance().navigate('/control_teams/' + this.gameId_);
     }
   } else if (action == spo.control.Action.EDIT) {
     if (this.editMode_ != true) {

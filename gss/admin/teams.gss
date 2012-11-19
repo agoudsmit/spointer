@@ -1,0 +1,5 @@
+.new-user-container {
+  margin-bottom: 8px;
+  padding: 5px;
+  background-color: LIGHER_BLUE;
+}

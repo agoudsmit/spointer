@@ -23,6 +23,6 @@ spo.ds.ControlUser.Property = {
   ID: 'id',
   EMAIL: 'email',
   NAME: 'name',
-  TEAMD: 'control_team_id',
+  TEAMID: 'control_team_id',
   INCOGNITO: 'is_incognito'
 };

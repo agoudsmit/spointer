@@ -144,7 +144,7 @@ spo.control.Teams.prototype.loadView = function() {
   this.view_.render(this.container_);
 
   var newteam = new spo.ui.NewTeam(this.gameId_);
-  var teamlistview = new spo.ui.TeamList();
+  var teamlistview = new spo.ui.TeamList('teams');
   this.view_.addChild(teamlistview, true);
   teamlistview.addChild(newteam, true);
 
@@ -254,6 +254,8 @@ spo.control.Teams.prototype.loadUsers = function(list) {
 spo.control.Teams.prototype.setupListeners_ = function() {
   this.getHandler().listen(this.view_.getChildAt(0),
     goog.ui.Component.EventType.ACTION, this.handleTeamClick);
+  this.getHandler().listen(this.getTeamListComponent_(),
+    goog.ui.Component.EventType.SELECT, this.handleTeamEdit);
   this.getHandler().listen(this.teamsList_, pstj.ds.List.EventType.ADD,
     this.handleAddTeam_);
 };
@@ -285,6 +287,20 @@ spo.control.Teams.prototype.handleTeamClick = function(ev) {
     num);
 };
 
+/**
+ * Handles the EDIT intention in the team list and setup the 'new' widget in
+ * edit mode.
+ *
+ * @param  {goog.events.Event} ev The SELECTE event.
+ * @protected
+ */
+spo.control.Teams.prototype.handleTeamEdit = function(ev) {
+  var teamid = ev.target.getModel().getId();
+  this.getTeamListComponent_().getChildAt(0).enterEditMode(teamid,
+    ev.target.getModel().getProp(spo.ds.Team.Property.NAME));
+};
+
+/** @inheritDoc */
 spo.control.Teams.prototype.setEnabled = function(enable, fn) {
   if (!enable) {
     goog.dispose(this);

@@ -1,10 +1,16 @@
 goog.provide('spo.control.ControlTeams');
 
 goog.require('goog.async.DeferredList');
+goog.require('goog.functions');
 goog.require('pstj.ui.CustomScrollArea');
+goog.require('spo.admin.Router');
+goog.require('spo.control.Base');
+goog.require('spo.control.ControlUsers');
 goog.require('spo.ds.ControlTeamList');
+goog.require('spo.ds.ControlUserList');
 goog.require('spo.ds.Game');
 goog.require('spo.ui.Header');
+goog.require('spo.ui.NewControlTeam');
 goog.require('spo.ui.Team');
 goog.require('spo.ui.TeamList');
 
@@ -15,8 +21,8 @@ goog.require('spo.ui.TeamList');
  *
  * @constructor
  * @extends {spo.control.Base}
- * @param {!element} container The container to render the control view in.
- * @param {pstj.ds.RecordID} gameid  The ID of the game whos teams will be
+ * @param {!Element} container The container to render the control view in.
+ * @param {!pstj.ds.RecordID} gameid  The ID of the game whos teams will be
  *                                   rendered.
  * @param {pstj.ds.RecordID=} selectedTeamId The ID of the selected team in the
  *                                          view.
@@ -24,16 +30,17 @@ goog.require('spo.ui.TeamList');
 spo.control.ControlTeams = function(container, gameid, selectedTeamId) {
   goog.base(this, container);
   this.gameid_ = gameid;
-  this.selectedTeamId_ selectedTeamId;
+  this.selectedTeamId_ = selectedTeamId;
 
-  this.view_ = pstj.ui.CustomScrollArea();
+  this.view_ = new pstj.ui.CustomScrollArea();
   this.view_.setScrollInsideTheWidget(false);
   this.loadUsers_cache_ = goog.bind(this.loadUsers, this);
   this.init();
 };
+goog.inherits(spo.control.ControlTeams, spo.control.Base);
 
 goog.scope(function() {
-  var proto = spo.cotrol.ControlTeams.prototype;
+  var proto = spo.control.ControlTeams.prototype;
 
   /**
    * The main view for the controller.
@@ -106,12 +113,22 @@ goog.scope(function() {
    * @return {pstj.dsRecordID} The recod id of the list item bound in the
    *                               control.
    */
-  proto.getId = function() { return this.gameid_; };
+  proto.getId = function() {
+    return this.gameid_;
+  };
+
+  /**
+   * If the instance is of a control team or regular team, internal use only.
+   *
+   * @return {boolean} True if it is a control team.
+   */
+  proto.isControl = goog.functions.TRUE;
 
   /**
    * @inheritDoc
    */
   proto.disposeInternal = function() {
+    this.view_.exitDocument();
     goog.dispose(this.userConstrolReferrence_);
     goog.dispose(this.view_);
     delete this.inited_;
@@ -121,6 +138,7 @@ goog.scope(function() {
     delete this.teamList_;
     delete this.userList_;
     delete this.userConstrolReferrence_;
+    delete this.loadUsers_cache_;
     delete this.view_;
     goog.base(this, 'disposeInternal');
   };
@@ -173,7 +191,7 @@ goog.scope(function() {
    * @protected
    */
   proto.getNewWidget = function() {
-    return spo.ui.NewControlTeam(this.getId());
+    return new spo.ui.NewControlTeam(this.getId());
   };
 
   /**
@@ -185,7 +203,8 @@ goog.scope(function() {
     var game = this.gameList_.getById(this.getId());
     this.setHeaderSettings();
     this.view_.render(this.container_);
-    var listview = new spo.ui.TeamList();
+    var listview = new spo.ui.TeamList(this.isControl() ? 'control teams' :
+      'teams');
     this.view_.addChild(listview, true);
     listview.addChild(this.getNewWidget(), true);
 
@@ -209,8 +228,10 @@ goog.scope(function() {
    * @protected
    */
   proto.setupListeners = function() {
-    this.getHandler().listen(this.view_.getChildAt(0),
+    this.getHandler().listen(this.getTeamListComponent(),
       goog.ui.Component.EventType.ACTION, this.handleTeamClick);
+    this.getHandler().listen(this.getTeamListComponent(),
+      goog.ui.Component.EventType.SELECT, this.handleTeamEdit);
     this.getHandler().listen(this.teamList_, pstj.ds.List.EventType.ADD,
       this.handleAddTeam_);
   };
@@ -227,6 +248,18 @@ goog.scope(function() {
       '/' + ev.target.getModel().getId());
   };
 
+  /**
+   * Handles the EDIT intention in the team list and setup the 'new' widget in
+   * edit mode.
+   *
+   * @param  {goog.events.Event} ev The SELECTE event.
+   * @protected
+   */
+  proto.handleTeamEdit = function(ev) {
+    var teamid = ev.target.getModel().getId();
+    this.getTeamListComponent().getChildAt(0).enterEditMode(teamid,
+      ev.target.getModel().getProp(spo.ds.Team.Property.NAME));
+  };
   /**
    * Handles the event of adding a new team to the list coming from the server.
    *

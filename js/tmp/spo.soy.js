@@ -85,12 +85,12 @@ spo.template.simplelist = function(opt_data) {
 
 
 spo.template.TeamList = function(opt_data) {
-  return '<div class="' + goog.getCssName('team-list') + '"><div class="' + goog.getCssName('detail-heading') + '">TEAMS</div></div>';
+  return '<div class="' + goog.getCssName('team-list') + '"><div class="' + goog.getCssName('detail-heading') + '">' + soy.$$escapeHtml(opt_data.header) + '</div></div>';
 };
 
 
 spo.template.Team = function(opt_data) {
-  return '<div class="' + goog.getCssName('team-item') + '">' + soy.$$escapeHtml(opt_data.teamName) + '</div>';
+  return '<div class="' + goog.getCssName('team-item') + '"><span class="' + goog.getCssName('live-update') + '">' + soy.$$escapeHtml(opt_data.teamName) + '</span><div class="' + goog.getCssName('team-edit-link') + '">Edit</div></div>';
 };
 
 
@@ -104,6 +104,16 @@ spo.template.User = function(opt_data) {
 };
 
 
+spo.template.ControlUser = function(opt_data) {
+  return '<div class="' + goog.getCssName('user-item') + '"><div class="' + goog.getCssName('user-icon') + ' ' + goog.getCssName('circle-button') + ' ' + goog.getCssName('user-icon-users') + '"></div><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-name') + ' ' + goog.getCssName('sub-item') + ' ' + goog.getCssName('super-item') + '" value="' + soy.$$escapeHtml(opt_data.name) + '" label="Name..." /><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('user-email') + ' ' + goog.getCssName('sub-item') + '" value="' + soy.$$escapeHtml(opt_data.mail) + '" label="E-Mail..." /><div class="' + goog.getCssName('user-controls') + '"><div class="' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('save-button') + ' ' + goog.getCssName('circle-button') + '" style="float:right"></div><div class="' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('delete-button') + ' ' + goog.getCssName('circle-button') + '" style="float:right"></div><div style="clear:both"></div></div><div class="' + goog.getCssName('transparent-overlay') + '"></div></div>';
+};
+
+
 spo.template.NewTeam = function(opt_data) {
   return '<div class="' + goog.getCssName('new-user-container') + '"><div class="' + goog.getCssName('new-user-error-container') + ' ' + goog.getCssName('bold') + ' ' + goog.getCssName('error') + '"></div><div><div class="' + goog.getCssName('new-user-input-container') + '" style="float:left"><input label="add new team" type="text" /></div><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('text-button') + '" style="float:left;">Add</div><div style="clear:both"></div></div></div>';
+};
+
+
+spo.template.NewControlTeam = function(opt_data) {
+  return '<div class="' + goog.getCssName('new-user-container') + '"><div class="' + goog.getCssName('new-user-error-container') + ' ' + goog.getCssName('bold') + ' ' + goog.getCssName('error') + '"></div><div><div class="' + goog.getCssName('new-user-input-container') + '" style="float:left"><input label="add new team" type="text" /></div><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('text-button') + '" style="float:left;">Add</div><div style="clear:both"></div><div class="' + goog.getCssName('new-control-user-checks') + '"><div class="' + goog.getCssName('checkbox') + '"><span class="' + goog.getCssName('decorate') + ' ' + goog.getCssName('goog-checkbox-unchecked') + '"></span>worldpress</div><div class="' + goog.getCssName('checkbox') + '"><span class="' + goog.getCssName('decorate') + ' ' + goog.getCssName('goog-checkbox-unchecked') + '"></span>validate meeting</div><div class="' + goog.getCssName('checkbox') + '"><span class="' + goog.getCssName('decorate') + ' ' + goog.getCssName('goog-checkbox-unchecked') + '"></span>inteligence</div><div class="' + goog.getCssName('checkbox') + '"><span class="' + goog.getCssName('decorate') + ' ' + goog.getCssName('goog-checkbox-unchecked') + '"></span>validate messages</div><div class="' + goog.getCssName('checkbox') + '"><span class="' + goog.getCssName('decorate') + ' ' + goog.getCssName('goog-checkbox-unchecked') + '"></span>rest of the world</div><div style="clear:both"></div></div></div>';
 };

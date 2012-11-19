@@ -4,6 +4,7 @@
 
 goog.provide('spo.ui.Team');
 
+goog.require('pstj.ds.ListItem.EventType')
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.ui.Component');
@@ -47,6 +48,19 @@ spo.ui.Team.prototype.createDom = function() {
 spo.ui.Team.prototype.enterDocument = function() {
   this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK,
     this.handleClick_);
+  this.getHandler().listen(this.getModel(), pstj.ds.ListItem.EventType.UPDATE,
+    this.handleRecordUpdate);
+};
+
+/**
+ * Handle the team name update.
+ *
+ * @param {goog.events.Event} ev The update event from the model.
+ */
+spo.ui.Team.prototype.handleRecordUpdate = function(ev) {
+  goog.dom.getElementByClass(goog.getCssName('live-update'),
+    this.getElement()).innerHTML = this.getModel().getProp(
+    spo.ds.Team.Property.NAME);
 };
 
 /**
@@ -83,5 +97,8 @@ spo.ui.Team.prototype.onStateChange_ = function() {
  */
 spo.ui.Team.prototype.handleClick_ = function(ev) {
   ev.stopPropagation();
-  this.dispatchEvent(goog.ui.Component.EventType.ACTION);
+  if (goog.dom.classes.has(ev.target, goog.getCssName('team-edit-link'))) {
+    this.dispatchEvent(goog.ui.Component.EventType.SELECT);
+  } else
+    this.dispatchEvent(goog.ui.Component.EventType.ACTION);
 };

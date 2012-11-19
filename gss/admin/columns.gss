@@ -66,6 +66,17 @@
   border-bottom: 1px solid white;
   margin: 5px 0 5px 0;
   cursor: pointer;
+  position: relative;
+}
+.team-item:hover .team-edit-link{
+  display: block;
+}
+
+.team-edit-link {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 10px;
 }
 
 .team-item.active {

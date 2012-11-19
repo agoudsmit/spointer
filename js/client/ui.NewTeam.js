@@ -60,6 +60,14 @@ spo.ui.NewTeam.prototype.input_;
 spo.ui.NewTeam.prototype.button_;
 
 /**
+ * An ID of a team when the submition is for editing a team.
+ *
+ * @type {pstj.ds.RecordID}
+ * @private
+ */
+spo.ui.NewTeam.prototype.teamid_;
+
+/**
  * A delayed derivate of the cleaning message method.
  * Used to allow reutilization of the method without binding it
  * every time and stoping the timer in case multiple messages occur.
@@ -76,6 +84,21 @@ spo.ui.NewTeam.prototype.createDom = function() {
   this.decorateInternal(
     /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
         spo.template.NewTeam({}))));
+};
+
+/**
+ * Make the widget enter edit mode. In edit mode values are added to the
+ * fields (those are being pre-populated) and an ID is supplied, which is used
+ * for the update request. After submition the widget exits the edit mode
+ * automatically.
+ *
+ * @param  {!pstj.ds.RecordID} teamid The ID of the team to update.
+ * @param  {string=} name The name of the team to edit.
+ */
+spo.ui.NewTeam.prototype.enterEditMode = function(teamid, name) {
+  this.teamid_ = teamid;
+  this.input_.setValue(name);
+  this.button_.setValue('Update');
 };
 
 /**
@@ -103,6 +126,8 @@ spo.ui.NewTeam.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   this.getHandler().listen(this.button_, goog.ui.Component.EventType.ACTION,
     this.handleButtonAction_);
+  this.getHandler().listen(this, goog.ui.Component.EventType.ACTION,
+    function(ev){ ev.stopPropagation()});
 };
 
 /**
@@ -164,30 +189,46 @@ spo.ui.NewTeam.prototype.cleanMessage_ = function() {
  * Handles the reply the server sends when new game creation is attempted.
  *
  * @param  {*} resp The server response (JSON object).
- * @private
+ * @protected
  */
-spo.ui.NewTeam.prototype.handleActionReply_ = function(resp) {
+spo.ui.NewTeam.prototype.handleActionReply = function(resp) {
   if (resp['status'] != 'ok') {
     this.setMessage_('Error:' + resp['error']);
   } else {
+    delete this.teamid_;
     this.input_.setValue('');
+    this.button_.setValue('Add');
     this.setEnabled(true);
   }
 };
 
 /**
- * Getter for the update/create packet structure.
+ * Getter for the create packet structure.
  *
  * @protected
- * @param  {string} name The name of the new item to create.
  * @return {Object} The object literal that is the packet for the update/create.
  */
-spo.ui.NewTeam.prototype.getCreatePacket = function(name) {
+spo.ui.NewTeam.prototype.getCreatePacket = function() {
   return {
     'url': '/team/create',
     'data': {
       'game_id': this.gameId_,
-      'name': name
+      'name': goog.string.trim(this.input_.getValue())
+    }
+  }
+};
+
+/**
+ * Getter for the update packet.
+ *
+ * @protected
+ * @return {Object} The object literal that is an update pakcet for the server.
+ */
+spo.ui.NewTeam.prototype.getUpdatePacket = function() {
+  return {
+    'url': '/team/update/' + this.teamid_,
+    'data': {
+      'name': goog.string.trim(this.input_.getValue())
     }
   }
 };
@@ -203,8 +244,14 @@ spo.ui.NewTeam.prototype.handleButtonAction_ = function(ev) {
   this.setEnabled(false);
   var value = goog.string.trim(this.input_.getValue());
   if (value != '') {
-    spo.ds.Resource.getInstance().get(this.getCreatePacket(value),
-      goog.bind(this.handleActionReply_, this));
+    // Edit mode
+    if (goog.isDef(this.teamid_)) {
+      spo.ds.Resource.getInstance().get(this.getUpdatePacket(),
+        goog.bind(this.handleActionReply, this));
+    } else {
+      spo.ds.Resource.getInstance().get(this.getCreatePacket(),
+        goog.bind(this.handleActionReply, this));
+    }
   } else {
     this.setMessage_('Error: Name cannot be empty.')
   }

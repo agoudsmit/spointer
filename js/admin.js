@@ -5,16 +5,18 @@ goog.provide('admin');
 
 goog.require('goog.dom');
 goog.require('spo.admin.Router');
+goog.require('spo.control.ControlTeams');
 goog.require('spo.control.Game');
 goog.require('spo.control.LiveList');
 goog.require('spo.control.Teams');
 goog.require('spo.ds.Resource');
 goog.require('spo.ds.STP');
+goog.require('spo.ds.TeamList');
+goog.require('spo.ds.UserList');
 goog.require('spo.template');
 goog.require('spo.ui.Header');
 goog.require('spo.widget.SystemClock');
-goog.require('spo.ds.TeamList');
-goog.require('spo.ds.UserList');
+
 
 
 /**
@@ -79,8 +81,8 @@ admin = function() {
   Router.route('/game/:id{/:edit}',
     /** @type {function(string, ...[string]): ?} */ (function(fragment,
       id, edit) {
-    var gid = /** @type {!string} */ id;
-    if (!goog.isString(gid)) {
+    var gid = /** @type {!number} */ +id;
+    if (isNaN(gid)) {
       throw Error('Cannot create game control without game id.');
     }
     var gamed = new spo.control.Game(contentElement, gid, edit);
@@ -91,22 +93,47 @@ admin = function() {
   Router.route('/teams/:id{/:tid}',
     /** @type {function(string, ...[string]): ?} */ (function(fragment,
       id, tid) {
-    var gid = /** @type {!string} */ id;
-
-    if (!goog.isString(gid)) {
-      throw Error('Cannot create game control without game id.');
+    // The IDs are numbers in the JSON, thus when comparing it is important
+    // that those will be of same type.
+    id = /** @type {!number} */ +id;
+    if (isNaN(id)) throw Error('Invalid game ID in URL');
+    if (goog.isString(tid)) {
+      tid = +tid;
+      if (isNaN(tid)) throw Error('The team id is not a valid ID');
     }
 
     if (currentView instanceof spo.control.Teams) {
-      if (currentView.getId() == gid) {
+      if (currentView.getId() == id && goog.isNumber(tid)) {
         currentView.setSelectedTeam(tid);
         return;
       }
     }
-    var teamcontrol = new spo.control.Teams(contentElement, gid, tid);
+    var teamcontrol = new spo.control.Teams(contentElement, id, tid);
     setActiveControl(teamcontrol);
   }));
 
+  /** The control team/user view */
+  Router.route('/control_teams/:id{/:tid}',
+    /** @type {function(string, ...[string]): ?} */ (function(fragment, gameid,
+    teamid) {
+    gameid = +gameid;
+    if (goog.isString(teamid)) {
+      teamid = +teamid;
+      if (isNaN(teamid)) throw Error('Unrecognized team ID');
+    }
+
+    if (isNaN(gameid))
+      throw Error('Cannot switch to team view without game ID');
+
+    if (currentView instanceof spo.control.ControlTeams) {
+      if (currentView.getId() == gameid) {
+        currentView.setSelectedTeam(teamid);
+        return;
+      }
+    }
+    var control = new spo.control.ControlTeams(contentElement, gameid, teamid);
+    setActiveControl(control);
+  }));
 
   // Enable tearing down data structures.
   spo.ds.Resource.getInstance().registerResourceHandler('/game/teardown/:id',
@@ -118,11 +145,11 @@ admin = function() {
       // instead of tearing down and rebuilding when the user is inside the view
       // just force reload.
       if (currentView instanceof spo.control.Game &&
-        currentView.getId() == gid) {
+        currentView.getId() == +gid) {
         window.location.reload(true);
       }
       if (currentView instanceof spo.control.Teams &&
-        currentView.getId() == gid) {
+        currentView.getId() == +gid) {
         window.location.reload(true);
       }
 

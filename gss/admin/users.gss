@@ -79,7 +79,7 @@
 }
 
 .new-user-input-container {
-  width: 80%;
+  width: 75%;
 }
 
 .new-user-container .text-button {

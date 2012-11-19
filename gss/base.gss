@@ -20,6 +20,7 @@
 }
 
 @def SOFT_BLUE rgba(73, 118, 147, 0.11);
+@def LIGHER_BLUE #f0f2f4;
 
 /** Define the icons that can be used with their active state. */
 

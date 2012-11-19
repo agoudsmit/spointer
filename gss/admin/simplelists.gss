@@ -6,3 +6,7 @@
 .simple-list-title {
   color: OUTLINE_COLOR;
 }
+
+.team-list .detail-heading {
+  text-transform: uppercase;
+}

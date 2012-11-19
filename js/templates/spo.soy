@@ -282,11 +282,11 @@
 {/template}
 
 /**
- *
+ * @param header The header title to use (wither TEAMS or Control teams).
  */
 {template .TeamList}
   <div class="{css team-list}">
-    <div class="{css detail-heading}">TEAMS</div>
+    <div class="{css detail-heading}">{$header}</div>
   </div>
 {/template}
 
@@ -294,7 +294,10 @@
  * @param teamName The name of the team.
  */
 {template .Team}
-  <div class="{css team-item}">{$teamName}</div>
+  <div class="{css team-item}">
+    <span class="{css live-update}">{$teamName}</span>
+    <div class="{css team-edit-link}">Edit</div>
+  </div>
 {/template}
 
 /**
@@ -330,6 +333,24 @@
 {/template}
 
 /**
+ * @param name The user's name.
+ * @param mail The user's e-mail.
+ */
+{template .ControlUser}
+  <div class="{css user-item}">
+    <div class="{css user-icon} {css circle-button} {css user-icon-users}"></div>
+    <input class="{css form-values} {css user-name} {css sub-item} {css super-item}" value="{$name}" label="Name..." />
+    <input class="{css form-values} {css user-email} {css sub-item}" value="{$mail}" label="E-Mail..." />
+    <div class="{css user-controls}">
+      <div class="{css form-button} {css goog-button} {css save-button} {css circle-button}" style="float:right"></div>
+      <div class="{css form-button} {css goog-button} {css delete-button} {css circle-button}" style="float:right"></div>
+      <div style="clear:both"></div>
+    </div>
+    <div class="{css transparent-overlay}"></div>
+  </div>
+{/template}
+
+/**
  *
  */
 {template .NewTeam}
@@ -345,4 +366,36 @@
  </div>
 {/template}
 
+/**
+ *
+ */
+{template .NewControlTeam}
+  <div class="{css new-user-container}">
+    <div class="{css new-user-error-container} {css bold} {css error}"></div>
+    <div>
+      <div class="{css new-user-input-container}" style="float:left">
+        <input label="add new team" type="text" />
+      </div>
+     <div class="{css goog-button} {css form-button} {css text-button}" style="float:left;">Add</div>
+    <div style="clear:both"></div>
+    <div class="{css new-control-user-checks}">
+      <div class="{css checkbox}">
+        <span class="{css decorate} {css goog-checkbox-unchecked}"></span>worldpress
+      </div>
+      <div class="{css checkbox}">
+        <span class="{css decorate} {css goog-checkbox-unchecked}"></span>validate meeting
+      </div>
+      <div class="{css checkbox}">
+        <span class="{css decorate} {css goog-checkbox-unchecked}"></span>inteligence
+      </div>
+      <div class="{css checkbox}">
+        <span class="{css decorate} {css goog-checkbox-unchecked}"></span>validate messages
+      </div>
+      <div class="{css checkbox}">
+        <span class="{css decorate} {css goog-checkbox-unchecked}"></span>rest of the world
+      </div>
+      <div style="clear:both"></div>
+   </div>
+ </div>
+{/template}
 {/namespace}

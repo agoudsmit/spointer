@@ -49,7 +49,7 @@ spo.control.Users.prototype.setList = function(team, userlist) {
  */
 spo.control.Users.prototype.clean_ = function() {
   this.getHandler().unlisten(this.view_, spo.control.EventType.CONTROL_ACTION,
-    this.handleControlAction_);
+    this.handleControlAction);
   goog.dispose(this.view_);
 };
 
@@ -67,11 +67,11 @@ spo.control.Users.prototype.disposeInternal = function() {
 /**
  * Handles the user action delegated from sub-components.
  *
- * @private
+ * @protected
  * @param  {spo.control.Event} ev The control event generated in a
  *                                sub-component.
  */
-spo.control.Users.prototype.handleControlAction_ = function(ev) {
+spo.control.Users.prototype.handleControlAction = function(ev) {
   var id = ev.target.getModel().getId();
   var action = ev.getAction();
   console.log('Received action and id:', action, id);
@@ -92,13 +92,34 @@ spo.control.Users.prototype.handleControlAction_ = function(ev) {
 };
 
 /**
+ * Assigns a new view instance - makes the control reusable for multiple
+ * subsequent views (of different teams).
+ *
+ * @protected
+ * @return {goog.ui.Component} The users view component.
+ */
+spo.control.Users.prototype.getNewView = function() {
+  this.view_ = new spo.ui.Users();
+};
+
+/**
+ * Creates a new user record view and returns it.
+ *
+ * @protected
+ * @return {goog.ui.Component} The user view (reflects one user record).
+ */
+spo.control.Users.prototype.getUserViewInstance = function() {
+  return new spo.ui.User();
+};
+
+/**
  * Loads the view into existence after the needed data has been retrieved.
  *
  * @protected
  */
 spo.control.Users.prototype.loadView = function() {
   this.clean_();
-  this.view_ = new spo.ui.Users();
+  this.getNewView();
   this.view_.setModel(this.team_);
   this.view_.render(this.container_);
 
@@ -106,12 +127,12 @@ spo.control.Users.prototype.loadView = function() {
   var user;
 
   for (var i = 0; i < len; i++) {
-    user = new spo.ui.User();
+    user = this.getUserViewInstance();
     user.setModel(this.list_.getByIndex(i));
     this.view_.addChild(user, true);
   }
 
   this.getHandler().listen(this.view_, spo.control.EventType.CONTROL_ACTION,
-    this.handleControlAction_);
+    this.handleControlAction);
 };
 
