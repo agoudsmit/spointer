@@ -27,7 +27,7 @@ goog.require('spo.ui.GameEdit');
  * @extends {spo.control.Base}
  * @param {!Element} container The element to render the view of the controler
  * in.
- * @param {!string} gameid The ID of the game to render.
+ * @param {!pstj.ds.RecordID} gameid The ID of the game to render.
  * @param {string} edit If the game should be in edit state.
  */
 spo.control.Game = function(container, gameid, edit) {
@@ -46,7 +46,7 @@ goog.inherits(spo.control.Game, spo.control.Base);
 
 /**
  * Getter for the current game id controlled.
- * @return {string} The game id.
+ * @return {pstj.ds.RecordID} The game id.
  */
 spo.control.Game.prototype.getId = function() {
   return this.gameId_;
@@ -60,7 +60,7 @@ spo.control.Game.prototype.getId = function() {
 spo.control.Game.prototype.editMode_ = false;
 /**
  * The Game ID that is viewed by this control.
- * @type {string}
+ * @type {pstj.ds.RecordID}
  * @private
  */
 spo.control.Game.prototype.gameId_;
@@ -387,7 +387,7 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
       action == spo.control.Action.PLAY) {
     this.syncGameStateToServer_(action);
   } else if (action == spo.control.Action.STOP) {
-
+    // FIXME: how do we stop a game??
   }
 };
 

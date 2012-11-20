@@ -16,7 +16,7 @@ goog.require('spo.ds.MapList');
  *
  * @constructor
  * @extends {spo.ds.List}
- * @param {string} contolr_team_id The ID of the team to retrieve the teams for.
+ * @param {!pstj.ds.RecordID} contolr_team_id The ID of the team to retrieve the teams for.
  */
 spo.ds.ControlTeamList = function(contolr_team_id) {
   goog.base(this, contolr_team_id);
@@ -48,7 +48,7 @@ spo.ds.ControlTeamList.prototype.getQuery = function() {
  *
  * @type {string}
  */
-spo.ds.ControlTeamList.path = '/control_team';
+//spo.ds.ControlTeamList.path = '/control_team';
 
 /**
  * The mapped map list instance that can feed mapped list of this list type.
@@ -56,6 +56,6 @@ spo.ds.ControlTeamList.path = '/control_team';
  * @type {spo.ds.MapList}
  */
 spo.ds.ControlTeamList.map = new spo.ds.MapList(spo.ds.ControlTeamList,
-  spo.ds.ControlTeam, 'game_id');
+  spo.ds.ControlTeam, 'game_id', '/control_team');
 
 

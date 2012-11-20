@@ -6,6 +6,7 @@ goog.provide('spo.ui.Users');
 
 goog.require('goog.dom');
 goog.require('goog.ui.Component');
+goog.require('pstj.ds.ListItem.EventType');
 goog.require('spo.ds.Team');
 goog.require('spo.template');
 
@@ -39,3 +40,18 @@ spo.ui.Users.prototype.createDom = function() {
           teamname: this.getTeamName()
         }))));
 };
+
+goog.scope(function() {
+  var proto = spo.ui.Users.prototype;
+  /** @inheritDoc */
+  proto.enterDocument = function() {
+    goog.base(this, 'enterDocument');
+    this.getHandler().listen(/** @type {!pstj.ds.ListItem} */ (this.getModel()),
+      pstj.ds.ListItem.EventType.UPDATE, this.updateHeading_);
+  };
+  /** @private */
+  proto.updateHeading_ = function() {
+    goog.dom.getElementByClass(goog.getCssName('detail-heading'),
+      this.getElement()).innerHTML = this.getTeamName();
+  };
+});

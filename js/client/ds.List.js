@@ -1,4 +1,5 @@
 goog.provide('spo.ds.List');
+goog.provide('spo.ds.ListItemInterface');
 
 goog.require('pstj.ds.List');
 
@@ -44,3 +45,4 @@ spo.ds.List.prototype.loadData = goog.abstractMethod;
  * @return {*} Object with an URL and data if needed.
  */
 spo.ds.List.prototype.getQuery = goog.abstractMethod;
+

@@ -7,9 +7,11 @@ goog.require('spo.ui.ControlUsers');
 goog.require('spo.ui.ControlUser');
 
 /**
+ * Provides modified version of the User control suited for the Control Users.
+ *
  * @constructor
  * @extends {spo.control.Users}
- * @param {Element} container Where to host the view of the control.
+ * @param {!Element} container Where to host the view of the control.
  */
 spo.control.ControlUsers = function(container) {
   goog.base(this, container);
@@ -24,23 +26,20 @@ goog.scope(function() {
   /** @inheritDoc */
   proto.handleControlAction = function(ev) {
     var id = ev.target.getModel().getId();
-    console.log('Received action and id:', ev.getAction(), id);
     if (ev.getAction() == Action.SAVE) {
       Resource.getInstance().get({
         'url': '/control_user/update/' + id,
         'data': ev.target.getValues()
-      }, function(resp) {
-        console.log('The response on save', resp);
       });
     } else if (ev.getAction() == Action.DELETE) {
       Resource.getInstance().get({
         'url': '/control_user/remove/' + id
-      }, function(resp) {
-        console.log('The response on delete', resp);
       });
     }
   };
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   proto.getUserViewInstance = function() {
     return new spo.ui.ControlUser();
   };

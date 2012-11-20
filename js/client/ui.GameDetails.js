@@ -95,7 +95,6 @@ spo.ui.GameDetails.prototype.speedToDays_ = function(speed) {
   if (speed < 1) speed = 1;
   if (speed > 1440) speed = 1440;
   var inMinutes = 1440 / speed;
-  console.log(inMinutes);
   if (inMinutes ==  1) return '1';
   if (inMinutes < 60) return 'more than ' + (inMinutes << 0);
   if (inMinutes == 1440) return "24 hours and 0"

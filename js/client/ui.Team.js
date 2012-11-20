@@ -46,10 +46,11 @@ spo.ui.Team.prototype.createDom = function() {
  * @inheritDoc
  */
 spo.ui.Team.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
   this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK,
     this.handleClick_);
-  this.getHandler().listen(this.getModel(), pstj.ds.ListItem.EventType.UPDATE,
-    this.handleRecordUpdate);
+  this.getHandler().listen(/** @type {!pstj.ds.ListItem} */ (this.getModel()),
+    pstj.ds.ListItem.EventType.UPDATE, this.handleRecordUpdate);
 };
 
 /**
@@ -97,7 +98,8 @@ spo.ui.Team.prototype.onStateChange_ = function() {
  */
 spo.ui.Team.prototype.handleClick_ = function(ev) {
   ev.stopPropagation();
-  if (goog.dom.classes.has(ev.target, goog.getCssName('team-edit-link'))) {
+  if (goog.dom.classes.has(
+    /** @type {!Element} */ (ev.target), goog.getCssName('team-edit-link'))) {
     this.dispatchEvent(goog.ui.Component.EventType.SELECT);
   } else
     this.dispatchEvent(goog.ui.Component.EventType.ACTION);

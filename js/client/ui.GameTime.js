@@ -39,6 +39,7 @@ spo.ui.GameTime.prototype.setTime = function(time) {
   }
 
   var serverNow = spo.ds.STP.getInstance().getServerTime();
+
   var savedgametime = this.getModel().getProp(
     spo.ds.Game.Property.SAVED_GAME_TIME);
 
@@ -50,6 +51,7 @@ spo.ui.GameTime.prototype.setTime = function(time) {
     spo.ds.Game.Property.SPEED);
 
   var gametimeNow = (savedgametime + delta_game_time);
+  // console.log('Server time:', serverNow, delta, delta_game_time, savedgametime)
   this.getContentElement().innerHTML = pstj.date.utils.renderTime(
     gametimeNow, this.format_);
 };

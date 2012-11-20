@@ -96,8 +96,9 @@ spo.ui.NewTeam.prototype.createDom = function() {
  * @param  {string=} name The name of the team to edit.
  */
 spo.ui.NewTeam.prototype.enterEditMode = function(teamid, name) {
+  var valname = (goog.isString(name) ? name : '');
   this.teamid_ = teamid;
-  this.input_.setValue(name);
+  this.input_.setValue(valname);
   this.button_.setValue('Update');
 };
 

@@ -95,20 +95,20 @@ admin = function() {
       id, tid) {
     // The IDs are numbers in the JSON, thus when comparing it is important
     // that those will be of same type.
-    id = /** @type {!number} */ +id;
-    if (isNaN(id)) throw Error('Invalid game ID in URL');
+    var lid = /** @type {!number} */ (+id);
+    if (isNaN(lid)) throw Error('Invalid game ID in URL');
     if (goog.isString(tid)) {
-      tid = +tid;
-      if (isNaN(tid)) throw Error('The team id is not a valid ID');
+      var ltid = +tid;
+      if (isNaN(ltid)) throw Error('The team id is not a valid ID');
     }
 
     if (currentView instanceof spo.control.Teams) {
-      if (currentView.getId() == id && goog.isNumber(tid)) {
-        currentView.setSelectedTeam(tid);
+      if (currentView.getId() == lid && goog.isNumber(ltid)) {
+        currentView.setSelectedTeam(ltid);
         return;
       }
     }
-    var teamcontrol = new spo.control.Teams(contentElement, id, tid);
+    var teamcontrol = new spo.control.Teams(contentElement, lid, ltid);
     setActiveControl(teamcontrol);
   }));
 
@@ -116,22 +116,22 @@ admin = function() {
   Router.route('/control_teams/:id{/:tid}',
     /** @type {function(string, ...[string]): ?} */ (function(fragment, gameid,
     teamid) {
-    gameid = +gameid;
+    var lgameid = +gameid;
     if (goog.isString(teamid)) {
-      teamid = +teamid;
-      if (isNaN(teamid)) throw Error('Unrecognized team ID');
+      var lteamid = +teamid;
+      if (isNaN(lteamid)) throw Error('Unrecognized team ID');
     }
 
-    if (isNaN(gameid))
+    if (isNaN(lgameid))
       throw Error('Cannot switch to team view without game ID');
 
     if (currentView instanceof spo.control.ControlTeams) {
-      if (currentView.getId() == gameid) {
-        currentView.setSelectedTeam(teamid);
+      if (currentView.getId() == lgameid && goog.isNumber(lteamid)) {
+        currentView.setSelectedTeam(lteamid);
         return;
       }
     }
-    var control = new spo.control.ControlTeams(contentElement, gameid, teamid);
+    var control = new spo.control.ControlTeams(contentElement, lgameid, lteamid);
     setActiveControl(control);
   }));
 
@@ -167,8 +167,8 @@ admin = function() {
         var tid;
         for (var i = 0; i < len; i++) {
           tid = list.getByIndex(i).getId();
-          if (spo.ds.UserList.hasList(tid)) {
-            spo.ds.UserList.tearDown(tid);
+          if (spo.ds.UserList.map.hasList(tid)) {
+            spo.ds.UserList.map.tearDown(tid);
           }
         }
         // Finally tear down the team list as well.

@@ -42,7 +42,7 @@ spo.ds.UserList.prototype.getQuery = function() {
  *
  * @type {string}
  */
-spo.ds.UserList.path = '/player';
+//spo.ds.UserList.path = '/player';
 
 /**
  * The mapped map list instance that can feed mapped list of this list type.
@@ -50,4 +50,4 @@ spo.ds.UserList.path = '/player';
  * @type {spo.ds.MapList}
  */
 spo.ds.UserList.map = new spo.ds.MapList(spo.ds.UserList, spo.ds.User,
-  'team_id');
+  'team_id', '/player');

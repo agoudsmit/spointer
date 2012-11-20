@@ -7,6 +7,7 @@ goog.require('spo.admin.Router');
 goog.require('spo.control.Base');
 goog.require('spo.control.ControlUsers');
 goog.require('spo.ds.ControlTeamList');
+goog.require('spo.ds.ControlTeam')
 goog.require('spo.ds.ControlUserList');
 goog.require('spo.ds.Game');
 goog.require('spo.ui.Header');
@@ -30,10 +31,12 @@ goog.require('spo.ui.TeamList');
 spo.control.ControlTeams = function(container, gameid, selectedTeamId) {
   goog.base(this, container);
   this.gameid_ = gameid;
-  this.selectedTeamId_ = selectedTeamId;
+  if (goog.isDef(selectedTeamId)) this.selectedTeamId_ = selectedTeamId;
 
   this.view_ = new pstj.ui.CustomScrollArea();
   this.view_.setScrollInsideTheWidget(false);
+
+  // Cache the bound function for performance reasons.
   this.loadUsers_cache_ = goog.bind(this.loadUsers, this);
   this.init();
 };
@@ -41,7 +44,7 @@ goog.inherits(spo.control.ControlTeams, spo.control.Base);
 
 goog.scope(function() {
   var proto = spo.control.ControlTeams.prototype;
-
+  var Prop = spo.ds.ControlTeam.Property;
   /**
    * The main view for the controller.
    *
@@ -110,7 +113,7 @@ goog.scope(function() {
   /**
    * Returns the ID of the game the control is bound to,
    *
-   * @return {pstj.dsRecordID} The recod id of the list item bound in the
+   * @return {pstj.ds.RecordID} The recod id of the list item bound in the
    *                               control.
    */
   proto.getId = function() {
@@ -119,6 +122,7 @@ goog.scope(function() {
 
   /**
    * If the instance is of a control team or regular team, internal use only.
+   * Override in the player team control.
    *
    * @return {boolean} True if it is a control team.
    */
@@ -128,6 +132,7 @@ goog.scope(function() {
    * @inheritDoc
    */
   proto.disposeInternal = function() {
+    // Call exit before disposing (see fix proposal in sizeable)
     this.view_.exitDocument();
     goog.dispose(this.userConstrolReferrence_);
     goog.dispose(this.view_);
@@ -142,6 +147,7 @@ goog.scope(function() {
     delete this.view_;
     goog.base(this, 'disposeInternal');
   };
+
   /**
    * Provides the initialization logic for the control.
    *
@@ -165,8 +171,8 @@ goog.scope(function() {
    * @private
    */
   proto.load_ = function(results) {
-    this.gameList_ = results[0];
-    this.teamList_ = results[1];
+    this.gameList_ = /** @type {spo.ds.List} */ (results[0]);
+    this.teamList_ = /** @type {spo.ds.List} */ (results[1]);
     this.loadView();
   };
 
@@ -257,8 +263,15 @@ goog.scope(function() {
    */
   proto.handleTeamEdit = function(ev) {
     var teamid = ev.target.getModel().getId();
+    var model = ev.target.getModel();
     this.getTeamListComponent().getChildAt(0).enterEditMode(teamid,
-      ev.target.getModel().getProp(spo.ds.Team.Property.NAME));
+      model.getProp(Prop.NAME),
+      model.getProp(Prop.PRESS),
+      model.getProp(Prop.MEETINGS),
+      model.getProp(Prop.INTEL),
+      model.getProp(Prop.MESSAGES),
+      model.getProp(Prop.WORLD)
+      );
   };
   /**
    * Handles the event of adding a new team to the list coming from the server.
@@ -270,8 +283,8 @@ goog.scope(function() {
     var data = ev.getNode();
     var team = new spo.ui.Team();
     team.setModel(data);
-    this.getTeamListComponent().addChild(team, this.teamList_.getIndexByItem(
-      data) + 1, true);
+    this.getTeamListComponent().addChildAt(team,
+      this.teamList_.getIndexByItem(data) + 1, true);
   };
 
   /**
@@ -309,7 +322,7 @@ goog.scope(function() {
    */
   proto.setUserControl = function() {
     this.userConstrolReferrence_ = new spo.control.ControlUsers(
-      /** @type {!Element} */ this.view_.getContentElement());
+      /** @type {!Element} */ (this.view_.getContentElement()));
   };
 
   /**
@@ -343,12 +356,12 @@ goog.scope(function() {
    * into the user control (subcontrol).
    *
    * @protected
-   * @param  {spo.ui.List} list The list of users to load.
+   * @param  {spo.ds.List} list The list of users to load.
    */
   proto.loadUsers = function(list) {
     this.userList_ = list;
-    this.userConstrolReferrence_.setList(this.teamList_.getById(this.getId()),
-      this.userList_);
+    this.userConstrolReferrence_.setList(this.teamList_.getById(
+      this.selectedTeamId_),    this.userList_);
   };
 
   /**

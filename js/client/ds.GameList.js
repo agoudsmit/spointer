@@ -43,21 +43,21 @@ spo.ds.GameList.prototype.loadData = function(content) {
   // Register for new games.
   spo.ds.Resource.getInstance().registerResourceHandler('/game/create',
     goog.bind(function(response) {
-      console.log('Adds new game in the beginning', response);
+      // console.log('Adds new game in the beginning', response);
       this.addFromRawData_(response['content'], true);
     }, this));
 
   // Register for updated games
   spo.ds.Resource.getInstance().registerResourceHandler('/game/update/:id',
     goog.bind(function(response) {
-      console.log('update game in place.', response);
+      // console.log('update game in place.', response);
       this.update(new spo.ds.Game(response['content']));
     }, this));
 
   // Register for game removes.
   spo.ds.Resource.getInstance().registerResourceHandler('/game/remove/:id',
     goog.bind(function(resp) {
-      console.log('Removing game in place.', resp);
+      // console.log('Removing game in place.', resp);
       this.deleteNode(resp['content']['id']);
     }, this));
 

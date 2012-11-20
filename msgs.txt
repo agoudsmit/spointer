@@ -1,0 +1,5 @@
+• Worldpress (WP) > ONLY sends messages to ALL users. [WP] can send message as [WP] or as CONTROL
+• Intelligence (Int) > Can receive intelligence requests from players, send email to player/team. Int can send message as [Int] and CONTROL
+• Validation messages [VMsg] > Validate/reject every message sent by players. [VMsg] can send message as CONTROL
+• Validation meetings [VM] > Validate/reject every meeting sent by players. [VM] can send message as CONTROL
+• Rest of the world > Can send and receive messages and meeting request (This group is there as a support. i.e. the game has team Russia and Iran but no team USA. Game players can still send a message or meeting to the USA via [Rest of the world] and then a control user will act as USA

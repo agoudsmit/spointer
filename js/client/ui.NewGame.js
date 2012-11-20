@@ -28,11 +28,11 @@ spo.ui.NewGame.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-spo.ui.NewGame.prototype.getCreatePacket = function(name) {
+spo.ui.NewGame.prototype.getCreatePacket = function() {
   return {
     'url': '/game/create',
     'data': {
-      'name': name
+      'name': goog.string.trim(this.input_.getValue())
     }
   }
 };

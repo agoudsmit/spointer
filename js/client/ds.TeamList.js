@@ -48,7 +48,7 @@ spo.ds.TeamList.prototype.getQuery = function() {
  *
  * @type {string}
  */
-spo.ds.TeamList.path = '/team';
+//spo.ds.TeamList.path = '/team';
 
 /**
  * The mapped map list instance that can feed mapped list of this list type.
@@ -56,4 +56,4 @@ spo.ds.TeamList.path = '/team';
  * @type {spo.ds.MapList}
  */
 spo.ds.TeamList.map = new spo.ds.MapList(spo.ds.TeamList, spo.ds.Team,
-  'game_id');
+  'game_id', '/team');

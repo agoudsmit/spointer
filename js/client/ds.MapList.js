@@ -7,20 +7,26 @@ goog.require('spo.ds.Resource');
  * Unified Map List.
  *
  * @constructor
- * @param {function(new:pstj.ds.List): undefined} listConstructor Constructor
+ * @param {function(new:spo.ds.List, !pstj.ds.RecordID): undefined} listConstructor Constructor
  *                                                that returns
  *                                                instance of list.
- * @param {function(new:pstj.ds.ListItem): undefined} listItemConstructor The
+ * @param {function(new:pstj.ds.ListItem, *): undefined} listItemConstructor The
  *                                                    constructor for the list
  *                                                    item.
  * @param {string} content_prefix The prefixed namespace to look for the data
  *                                when processing a reply.
+ * @param {string} path_prefix The path prefix to subscribe for create/update/
+ *                             remove events. Eg. /player will generate
+ *                             /player/create
+ *                             /player/update/:id
+ *                             /player/remove/:id
  */
 spo.ds.MapList = function(listConstructor, listItemConstructor,
-  content_prefix) {
+  content_prefix, path_prefix) {
   this.lconstructor_ = listConstructor;
   this.listItemConstructor_ = listItemConstructor;
   this.contentLoadPrefix_ = content_prefix;
+  this.pathPrefix_ = path_prefix;
   this.dmap_ = {};
   this.lmap_ = {};
   this.setupPrefixes();
@@ -32,11 +38,10 @@ spo.ds.MapList = function(listConstructor, listItemConstructor,
  * @protected
  */
 spo.ds.MapList.prototype.setupPrefixes = function() {
-  var prefix = this.lconstructor_.path;
 
   // Auto subscribe for updates from server.
-  if (goog.isString(prefix)) {
-    spo.ds.Resource.getInstance().registerResourceHandler(prefix + '/create',
+  if (goog.isString(this.pathPrefix_)) {
+    spo.ds.Resource.getInstance().registerResourceHandler(this.pathPrefix_ + '/create',
       goog.bind(function(response) {
         var content = response['content'];
         // Obtain reference to the ID of the holding list (i,e when it is
@@ -44,33 +49,32 @@ spo.ds.MapList.prototype.setupPrefixes = function() {
         // to update with a new item)
         var uid = content[this.contentLoadPrefix_];
         if (this.hasList(uid)) {
-          this.lmap_[uid].add(this.listItemConstructor_(content),
-            true);
+          this.lmap_[uid].add(new this.listItemConstructor_(content), true);
         }
       }, this));
 
-    spo.ds.Resource.getInstance().registerResourceHandler(prefix +
+    spo.ds.Resource.getInstance().registerResourceHandler(this.pathPrefix_ +
       '/update/:id', goog.bind(function(response, fragment, uid) {
-        uid = +uid;
+        var luid = +uid;
         var list;
         for (var key in this.lmap_) {
           list = this.lmap_[key];
-          if (list.getById(uid) != null) {
-            list.getById(uid).update(new this.listItemConstructor_(
+          if (list.getById(luid) != null) {
+            list.getById(luid).update(new this.listItemConstructor_(
               response['content']));
             return;
           }
         }
       }, this));
 
-    spo.ds.Resource.getInstance().registerResourceHandler(prefix +
+    spo.ds.Resource.getInstance().registerResourceHandler(this.pathPrefix_ +
       '/remove/:id', goog.bind(function(response, fragment, uid) {
-        uid = +uid;
+        var luid = +uid;
         var list;
         for (var key in this.lmap_) {
           list = this.lmap_[key];
-          if (list.getById(uid) != null) {
-            list.deleteNode(uid);
+          if (list.getById(luid) != null) {
+            list.deleteNode(luid);
             return;
           }
         }
@@ -114,7 +118,7 @@ spo.ds.MapList.prototype.getList = function(uid) {
 /**
  * Checks if a record with this id was previourly requested.
  *
- * @param  {pstj.dsRecordID}  uid The record ID to check against.
+ * @param  {pstj.ds.RecordID}  uid The record ID to check against.
  * @return {boolean} True if the mem cache knowns about the ID.
  */
 spo.ds.MapList.prototype.hasList = function(uid) {
@@ -126,7 +130,7 @@ spo.ds.MapList.prototype.hasList = function(uid) {
  *
  * @param  {pstj.ds.RecordID} uid The ID to look for.
  */
-spo.ds.MapList.prototype.teadDown = function(uid) {
+spo.ds.MapList.prototype.tearDown = function(uid) {
   if (this.dmap_[uid]) {
     this.dmap_[uid].cancel();
     delete this.dmap_[uid];

@@ -103,7 +103,6 @@ spo.control.LiveList.prototype.setFilter_ = function(str) {
  * @private
  */
 spo.control.LiveList.prototype.filterOutList_ = function(indexes) {
-  console.log('Filtered indexes', indexes);
   var all = this.list_.getCount();
   var cindex;
   for (var i = 0; i < all; i++) {

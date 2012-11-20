@@ -1,11 +1,11 @@
 goog.provide('spo.control.Users');
 
-goog.require('spo.control.Base');
-goog.require('spo.ui.User');
-goog.require('spo.ui.Users');
 goog.require('spo.control.Action');
+goog.require('spo.control.Base');
 goog.require('spo.control.Event');
 goog.require('spo.control.EventType');
+goog.require('spo.ui.User');
+goog.require('spo.ui.Users');
 
 /**
  * Provides the control for the User list (team edit view).
@@ -32,7 +32,7 @@ spo.control.Users.prototype.view_;
  * be used continuously for the management of users of different teams in the
  * same game.
  *
- * @param {pstj.ds.ListItem} team The team to work with.
+ * @param {pstj.ds.ListItem} team The team record to work with.
  * @param {pstj.ds.List} userlist The user list to display (should be
  *                                   matching the team).
  */
@@ -74,20 +74,15 @@ spo.control.Users.prototype.disposeInternal = function() {
 spo.control.Users.prototype.handleControlAction = function(ev) {
   var id = ev.target.getModel().getId();
   var action = ev.getAction();
-  console.log('Received action and id:', action, id);
   if (action == spo.control.Action.SAVE) {
     spo.ds.Resource.getInstance().get({
       'url': '/player/update/' + id,
       'data': ev.target.getValues()
-    }, function(resp) {
-      console.log('The response on save', resp);
     });
   } else if (action == spo.control.Action.DELETE) {
     spo.ds.Resource.getInstance().get({
       'url': '/player/remove/' + id
-    }, function(resp) {
-      console.log('The response on delete', resp);
-    })
+    });
   }
 };
 
@@ -96,7 +91,6 @@ spo.control.Users.prototype.handleControlAction = function(ev) {
  * subsequent views (of different teams).
  *
  * @protected
- * @return {goog.ui.Component} The users view component.
  */
 spo.control.Users.prototype.getNewView = function() {
   this.view_ = new spo.ui.Users();

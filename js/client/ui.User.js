@@ -102,6 +102,7 @@ spo.ui.User.prototype.createDom = function() {
  */
 spo.ui.User.prototype.enterDocument = function() {
 
+  goog.base(this, 'enterDocument');
   var actions = goog.dom.getElementsByClass(goog.getCssName('form-button'),
     this.getElement());
 
@@ -112,7 +113,6 @@ spo.ui.User.prototype.enterDocument = function() {
   this.delBtn_.decorate(actions[1]);
 
   this.decorateValueHolders();
-
 
   // Listen for 'edit' UI requests.
   this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK,

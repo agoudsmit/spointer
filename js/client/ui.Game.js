@@ -65,7 +65,7 @@ spo.ui.Game.prototype.gameTimeUi_;
  */
 spo.ui.Game.prototype.constructInternalView_ = function() {
   var model = this.getModel();
-  var s_time = model.getProp(spo.ds.Game.Property.START_TIME) * 1000;
+  var s_time = model.getProp(spo.ds.Game.Property.START_TIME);
   if (goog.isDef(this.gameTimeUi_)) {
     this.gameTimeUi_.exitDocument();
     goog.dispose(this.gameTimeUi_);

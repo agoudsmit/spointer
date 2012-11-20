@@ -41,7 +41,7 @@ spo.ds.ControlUserList.prototype.getQuery = function() {
  *
  * @type {string}
  */
-spo.ds.ControlUserList.path = '/control_user';
+//spo.ds.ControlUserList.path = '/control_user';
 
 /**
  * The mapped map list instance that can feed mapped list of this list type.
@@ -49,4 +49,4 @@ spo.ds.ControlUserList.path = '/control_user';
  * @type {spo.ds.MapList}
  */
 spo.ds.ControlUserList.map = new spo.ds.MapList(spo.ds.ControlUserList,
-  spo.ds.ControlUser, 'control_team_id');
+  spo.ds.ControlUser, 'control_team_id', '/control_user');
