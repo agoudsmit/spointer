@@ -85,7 +85,7 @@ compile: cssbuild
 	-c ../../compiler/compiler.jar \
 	-f --flagfile=js/build-options.ini \
 	-f --create_source_map=$(NS).build.js.map \
-	-f --output_wrapper="%output% ////@ sourceMappingURL=$(NS).build.js.map" \
+	-f --output_wrapper="(function() {%output%})();" \
 	--output_file=$(BUILDDIR)/$(NS).build.js
 	rm $(BUILDDIR)/cssmap-build.js
 
