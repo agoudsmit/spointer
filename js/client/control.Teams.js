@@ -11,6 +11,7 @@ goog.require('spo.ds.Team');
 goog.require('spo.ds.TeamList');
 goog.require('spo.ds.UserList');
 goog.require('spo.ui.Header');
+goog.require('spo.ui.HeaderGameTime');
 goog.require('spo.ui.NewTeam');
 
 /**
@@ -47,6 +48,9 @@ goog.scope(function() {
       'game details');
     spo.ui.Header.getInstance().setGameName(this.gameList_.getById(
       this.getId()).getProp(spo.ds.Game.Property.NAME).toString());
+    var gametime = new spo.ui.HeaderGameTime();
+    gametime.setModel(this.gameList_.getById(this.getId()));
+    spo.ui.Header.getInstance().setClockInstance(gametime);
   };
   /** @inheritDoc */
   proto.getNewWidget = function() {

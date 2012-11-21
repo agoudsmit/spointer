@@ -6,11 +6,12 @@ goog.require('pstj.ui.CustomScrollArea');
 goog.require('spo.admin.Router');
 goog.require('spo.control.Base');
 goog.require('spo.control.ControlUsers');
+goog.require('spo.ds.ControlTeam');
 goog.require('spo.ds.ControlTeamList');
-goog.require('spo.ds.ControlTeam')
 goog.require('spo.ds.ControlUserList');
 goog.require('spo.ds.Game');
 goog.require('spo.ui.Header');
+goog.require('spo.ui.HeaderGameTime');
 goog.require('spo.ui.NewControlTeam');
 goog.require('spo.ui.Team');
 goog.require('spo.ui.TeamList');
@@ -187,6 +188,10 @@ goog.scope(function() {
       'game details');
     spo.ui.Header.getInstance().setGameName(this.gameList_.getById(
       this.getId()).getProp(spo.ds.Game.Property.NAME).toString());
+
+    var gametime = new spo.ui.HeaderGameTime();
+    gametime.setModel(this.gameList_.getById(this.getId()));
+    spo.ui.Header.getInstance().setClockInstance(gametime);
   };
 
   /**

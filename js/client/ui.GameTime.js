@@ -25,33 +25,72 @@ goog.inherits(spo.ui.GameTime, pstj.ui.Clock);
  * @inheritDoc
  */
 spo.ui.GameTime.prototype.setTime = function(time) {
-  // If the g
+  // If game start time is not set, then the time cannot be calculated.
   if (this.getModel().getProp(spo.ds.Game.Property.START_TIME) == 0) {
-    this.getContentElement().innerHTML = 'N/A';
+    this.renderTime();
     return;
   }
 
+  // If the game is paused then is pointeless to calculate time, set it as
+  // the last saved game time on server.
   if (this.getModel().isPaused()) {
-    this.getContentElement().innerHTML = pstj.date.utils.renderTime(
-      this.getModel().getProp(spo.ds.Game.Property.SAVED_GAME_TIME),
-        this.format_);
+    this.renderTime(this.getModel().getProp(
+      spo.ds.Game.Property.SAVED_GAME_TIME));
     return;
   }
 
+  /****************************************
+    DESCRIBES THE SCENARIO OF CALCULATING GAME TIME !!!
+   *****************************************/
+
+  // Get the server time.
   var serverNow = spo.ds.STP.getInstance().getServerTime();
 
+  // Get the last saved game time.
   var savedgametime = this.getModel().getProp(
     spo.ds.Game.Property.SAVED_GAME_TIME);
 
+  // Get the time of last save on server.
   var savets = this.getModel().getProp(
     spo.ds.Game.Property.SAVED_REAL_TIME);
 
+  // Calculate the time elapsed between the last save on server and currenr time
+  // on server.
   var delta = serverNow - savets;
+
+  // Calculate how much milliseconds (time) ellapsed in game time compared to
+  // real time elapsed.
   var delta_game_time = delta * this.getModel().getProp(
     spo.ds.Game.Property.SPEED);
 
+  // Calculate the current game time based on the actual time elapsed.
   var gametimeNow = (savedgametime + delta_game_time);
-  // console.log('Server time:', serverNow, delta, delta_game_time, savedgametime)
-  this.getContentElement().innerHTML = pstj.date.utils.renderTime(
-    gametimeNow, this.format_);
+
+  // Set the time into the view.
+  this.renderTime(gametimeNow);
+  // this.getContentElement().innerHTML = pstj.date.utils.renderTime(
+  //   gametimeNow, this.format_);
 };
+
+
+/**
+ * Extracted custom rendered, allows for time calculation to be performed
+ * separately and thus tweak the visualization as much as needed.
+ *
+ * @protected
+ * @param  {string|number=} time The milliseconds UNIX representation of the time to
+ *                        visualize.
+ */
+spo.ui.GameTime.prototype.renderTime = function(time) {
+  if (!goog.isDef(time)) {
+    this.getContentElement().innerHTML = 'N/A';
+    return;
+  }
+  if (goog.isString(time)) {
+    this.getContentElement().innerHTML = time;
+    return;
+  }
+  this.getContentElement().innerHTML = pstj.date.utils.renderTime(time,
+    this.format_);
+};
+

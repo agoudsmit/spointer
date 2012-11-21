@@ -20,6 +20,8 @@ goog.require('spo.ui.Forms.FormEvent');
 goog.require('spo.ui.GameControls');
 goog.require('spo.ui.GameDetails');
 goog.require('spo.ui.GameEdit');
+goog.require('spo.ui.Header');
+goog.require('spo.ui.HeaderGameTime');
 
 /**
  * Provides the game details control.
@@ -39,7 +41,7 @@ spo.control.Game = function(container, gameid, edit) {
   this.view_ = new pstj.ui.CustomScrollArea();
   this.view_.setScrollInsideTheWidget(false);
 
-  // Init immediately, this view is disposable
+  // Initialize immediately, this view is disposable
   this.init();
 };
 goog.inherits(spo.control.Game, spo.control.Base);
@@ -58,6 +60,7 @@ spo.control.Game.prototype.getId = function() {
  * @private
  */
 spo.control.Game.prototype.editMode_ = false;
+
 /**
  * The Game ID that is viewed by this control.
  * @type {pstj.ds.RecordID}
@@ -77,21 +80,25 @@ spo.control.Game.prototype.hiddenForms_;
  * @private
  */
 spo.control.Game.prototype.gamelist_;
+
 /**
  * @type {spo.ds.TeamList}
  * @private
  */
 spo.control.Game.prototype.teamlist_;
+
 /**
  * @type {Array}
  * @private
  */
 spo.control.Game.prototype.playerslist_;
+
 /**
  * @type {spo.ds.ControlTeamList}
  * @private
  */
 spo.control.Game.prototype.cteamList_;
+
 /**
  * @type {Array}
  * @private
@@ -125,7 +132,6 @@ spo.control.Game.prototype.init = function() {
     if (response['status'] != 'ok') playersdef.errback();
     else cplayersdef.callback(response['content']['controlUsers']);
   });
-
 };
 
 /**
@@ -188,11 +194,14 @@ spo.control.Game.prototype.loadView = function() {
   this.view_.addChildAt(this.hiddenForms_, 2, true);
 
   // Setup the header attributes to match the view
+  var headerclock = new spo.ui.HeaderGameTime();
+  headerclock.setModel(this.getGameRecord());
   spo.ui.Header.getInstance().setViewName('game details');
   spo.ui.Header.getInstance().setGameName(
     dsGame.getProp(spo.ds.Game.Property.NAME).toString());
   spo.ui.Header.getInstance().setLinks('/games', 'dashboard', '/teams/' +
     this.gameId_, 'manage users/teams');
+  spo.ui.Header.getInstance().setClockInstance(headerclock);
 
 
   // create the list views
@@ -310,11 +319,11 @@ spo.control.Game.prototype.setupListeners_ = function() {
   // to the parent view)
   handler.listen(this.view_, spo.control.EventType.CONTROL_ACTION,
     this.handleExternalControlAction_);
-  // Listen for the uploadd forms events.
+  // Listen for the upload forms events.
   handler.listen(this.hiddenForms_, [spo.control.EventType.SUCCESS,
     spo.control.EventType.FAILURE], this.handleFormUploadFinish_);
   // Listen for game record updates: those are save to assume switching
-  // to view (intead of edit) because the game should be uneditable
+  // to view (instead of edit) because the game should be non-editable
   // by other users.
   //
   // However the game is updates when player count changes as well, so
@@ -331,14 +340,14 @@ spo.control.Game.prototype.setupListeners_ = function() {
 
 
 /**
- * Hanlder for the upload of files finish action.
+ * Handler for the upload of files finish action.
  * @param  {spo.ui.Forms.FormEvent} e The SUCCESS/FAILURE event from control.
  * @private
  */
 spo.control.Game.prototype.handleFormUploadFinish_ = function(e) {
   if (e.type = spo.control.EventType.SUCCESS) {
     this.view_.getChildAt(1).setNotification('Upload completed!');
-    // FIXME: the websocket should send the teardown signal and not from here.
+    // FIXME: the web socket should send the tear down signal and not from here.
     var response = e.formResponse;
     setTimeout(function() {
       spo.ds.Resource.getInstance().wsShim(response);
@@ -398,7 +407,7 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
  * @param  {spo.control.Action} action The action to execute.
  */
 spo.control.Game.prototype.syncGameStateToServer_ = function(action) {
-  var state;
+  var state = 0;
   if (action == spo.control.Action.PAUSE) {
     state = 2;
   } else if (action == spo.control.Action.PLAY) {
