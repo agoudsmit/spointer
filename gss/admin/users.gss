@@ -85,3 +85,9 @@
 .new-user-container .text-button {
   margin: 5px;
 }
+
+.add-user-button {
+  float: right;
+  position: relative;
+  top: -35px;
+}

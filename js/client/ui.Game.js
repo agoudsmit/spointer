@@ -152,7 +152,8 @@ spo.ui.Game.prototype.getPrintStatus_ = function() {
  */
 spo.ui.Game.prototype.showGameDetails_ = function() {
   if (this.getModel().getProp(spo.ds.Game.Property.STATUS) == 3) {
-    // Redirect to statistics and export.
+    window.location.pathname = goog.global['FINISHED_GAME_STATS_URL'] +
+    this.getModel().getProp(spo.ds.Game.Property.ID);
   } else {
     spo.admin.Router.getInstance().navigate('/game/' +
       this.getModel().getProp(spo.ds.Game.Property.ID));

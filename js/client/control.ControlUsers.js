@@ -4,7 +4,8 @@ goog.require('spo.control.Action');
 goog.require('spo.control.Users');
 goog.require('spo.ds.Resource');
 goog.require('spo.ui.ControlUsers');
-goog.require('spo.ui.ControlUser');
+goog.require('spo.ui.NewUser');
+goog.require('spo.ui.User');
 
 /**
  * Provides modified version of the User control suited for the Control Users.
@@ -30,7 +31,7 @@ goog.scope(function() {
       Resource.getInstance().get({
         'url': '/control_user/update/' + id,
         'data': ev.target.getValues()
-      });
+      }, goog.bind(this.handleUpdateResponse, this, ev.target));
     } else if (ev.getAction() == Action.DELETE) {
       Resource.getInstance().get({
         'url': '/control_user/remove/' + id
@@ -41,10 +42,13 @@ goog.scope(function() {
    * @inheritDoc
    */
   proto.getUserViewInstance = function() {
-    return new spo.ui.ControlUser();
+    return new spo.ui.User(true);
   };
   /** @inheritDoc */
   proto.getNewView = function() {
     this.view_ = new spo.ui.ControlUsers();
   };
+  proto.getNewUserWidget = function() {
+    return new spo.ui.NewUser(this.team_.getId(), true);
+  }
 });

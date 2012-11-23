@@ -306,6 +306,7 @@
 {template .Users}
   <div class="{css user-list}">
     <div class="{css detail-heading}">{$teamname}</div>
+    <div class="{css add-user-button} {css goog-button} {css form-button} {css text-button}">Add</div>
   </div>
 {/template}
 
@@ -318,6 +319,7 @@
 {template .User}
   <div class="{css user-item}">
     <div class="{css user-icon} {css circle-button} {css user-icon-users}"></div>
+    <div class="{css error}" style="display: none;"></div>
     <input class="{css form-values} {css user-role} {css sub-item} {css super-item}" type="text" value="{$userrole}" label="Role.." />
     <input class="{css form-values} {css user-function} {css sub-item}" value="{$userfunction}" label="Function..." />
     <input class="{css form-values} {css user-name} {css sub-item}" value="{$username}" label="Name..." />
@@ -332,6 +334,28 @@
   </div>
 {/template}
 
+
+
+/**
+ *
+ */
+{template .NewUser}
+  <div class="{css user-item} {css active}">
+    <div class="{css user-icon} {css circle-button} {css user-icon-users}"></div>
+    <div class="{css error}" style="display: none;"></div>
+    <input class="{css form-values} {css user-role} {css sub-item} {css super-item}" type="text" label="Role.." />
+    <input class="{css form-values} {css user-function} {css sub-item}" label="Function" />
+    <input class="{css form-values} {css user-name} {css sub-item}" label="Name" />
+    <input class="{css form-values} {css user-email} {css sub-item}" label="E-Mail" />
+    <input class="{css form-values} {css user-pass} {css sub-item}" label="Password" />
+    <div class="{css user-controls}">
+      <div class="{css form-button} {css goog-button} {css save-button} {css circle-button}" style="float:right"></div>
+      <div class="{css form-button} {css goog-button} {css delete-button} {css circle-button}" style="float:right"></div>
+      <div style="clear:both"></div>
+    </div>
+  </div>
+{/template}
+
 /**
  * @param name The user's name.
  * @param mail The user's e-mail.
@@ -339,8 +363,28 @@
 {template .ControlUser}
   <div class="{css user-item}">
     <div class="{css user-icon} {css circle-button} {css user-icon-users}"></div>
+    <div class="{css error}" style="display: none;"></div>
     <input class="{css form-values} {css user-name} {css sub-item} {css super-item}" value="{$name}" label="Name..." />
     <input class="{css form-values} {css user-email} {css sub-item}" value="{$mail}" label="E-Mail..." />
+    <div class="{css user-controls}">
+      <div class="{css form-button} {css goog-button} {css save-button} {css circle-button}" style="float:right"></div>
+      <div class="{css form-button} {css goog-button} {css delete-button} {css circle-button}" style="float:right"></div>
+      <div style="clear:both"></div>
+    </div>
+    <div class="{css transparent-overlay}"></div>
+  </div>
+{/template}
+
+/**
+ *
+ */
+{template .NewControlUser}
+  <div class="{css user-item} {css active}">
+    <div class="{css user-icon} {css circle-button} {css user-icon-users}"></div>
+    <div class="{css error}" style="display: none;"></div>
+    <input class="{css form-values} {css user-name} {css sub-item} {css super-item}" label="Name" />
+    <input class="{css form-values} {css user-email} {css sub-item}" label="E-Mail" />
+    <input class="{css form-values} {css user-pass} {css sub-item}" label="Password" />
     <div class="{css user-controls}">
       <div class="{css form-button} {css goog-button} {css save-button} {css circle-button}" style="float:right"></div>
       <div class="{css form-button} {css goog-button} {css delete-button} {css circle-button}" style="float:right"></div>

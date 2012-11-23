@@ -1,9 +1,11 @@
 goog.provide('spo.control.Users');
 
+goog.require('goog.ui.Component.EventType');
 goog.require('spo.control.Action');
 goog.require('spo.control.Base');
 goog.require('spo.control.Event');
 goog.require('spo.control.EventType');
+goog.require('spo.ui.NewUser');
 goog.require('spo.ui.User');
 goog.require('spo.ui.Users');
 
@@ -48,8 +50,7 @@ spo.control.Users.prototype.setList = function(team, userlist) {
  * @private
  */
 spo.control.Users.prototype.clean_ = function() {
-  this.getHandler().unlisten(this.view_, spo.control.EventType.CONTROL_ACTION,
-    this.handleControlAction);
+  this.getHandler().unlisten(this.view_, spo.control.EventType.CONTROL_ACTION, this.handleControlAction);
   goog.dispose(this.view_);
 };
 
@@ -78,11 +79,23 @@ spo.control.Users.prototype.handleControlAction = function(ev) {
     spo.ds.Resource.getInstance().get({
       'url': '/player/update/' + id,
       'data': ev.target.getValues()
-    });
+    }, goog.bind(this.handleUpdateResponse, this, ev.target));
+
   } else if (action == spo.control.Action.DELETE) {
     spo.ds.Resource.getInstance().get({
       'url': '/player/remove/' + id
     });
+  }
+};
+
+/**
+ * @protected
+ * @param  {spo.ui.User} target The User ui component.
+ * @param  {*} resp   The server response.
+ */
+spo.control.Users.prototype.handleUpdateResponse = function(target, resp) {
+  if (resp['status'] != 'ok') {
+    target.showError(resp['error']);
   }
 };
 
@@ -126,7 +139,47 @@ spo.control.Users.prototype.loadView = function() {
     this.view_.addChild(user, true);
   }
 
-  this.getHandler().listen(this.view_, spo.control.EventType.CONTROL_ACTION,
-    this.handleControlAction);
+  this.getHandler().listen(this.view_, spo.control.EventType.CONTROL_ACTION, this.handleControlAction);
+  this.getHandler().listen(this.view_, goog.ui.Component.EventType.ACTION, this.handleComponentAction_);
+  this.getHandler().listen(this.list_, pstj.ds.List.EventType.ADD, this.handleUserAdd);
 };
 
+/**
+ * Creates a new user widget compatible with the control and returns it.
+ *
+ * @protected
+ * @return {goog.ui.Component} The created widget.
+ */
+spo.control.Users.prototype.getNewUserWidget = function() {
+  return new spo.ui.NewUser(this.team_.getId());
+};
+
+/**
+ * Handles new user created event.
+ *
+ * @param  {goog.events.Event} ev The ADD event from the list.
+ * @protected
+ */
+spo.control.Users.prototype.handleUserAdd = function(ev) {
+  var node = ev.getNode();
+  var ui = this.getUserViewInstance();
+  ui.setModel(node);
+  this.view_.addChildAt(ui, this.list_.getIndexByItem(node) + 1, true);
+};
+
+/**
+ * Handles the ACTION event from view. In this case listen only for events from
+ * the 'add' button.
+ *
+ * @private
+ * @param  {goog.events.Event} ev The ACTION component event.
+ */
+spo.control.Users.prototype.handleComponentAction_ = function(ev) {
+  if (ev.target == this.view_.getActionButton()) {
+    var child = this.getNewUserWidget();
+    if (this.view_.getChildAt(1) instanceof spo.ui.NewUser) {
+      this.view_.removeChildAt(1, true);
+    }
+    this.view_.addChildAt(child, 1, true);
+  }
+};
