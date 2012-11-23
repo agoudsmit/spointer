@@ -151,8 +151,12 @@ spo.ui.Game.prototype.getPrintStatus_ = function() {
  * @private
  */
 spo.ui.Game.prototype.showGameDetails_ = function() {
-  spo.admin.Router.getInstance().navigate('/game/' +
-    this.getModel().getProp(spo.ds.Game.Property.ID));
+  if (this.getModel().getProp(spo.ds.Game.Property.STATUS) == 3) {
+    // Redirect to statistics and export.
+  } else {
+    spo.admin.Router.getInstance().navigate('/game/' +
+      this.getModel().getProp(spo.ds.Game.Property.ID));
+  }
 };
 
 
