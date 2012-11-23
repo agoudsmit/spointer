@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <title>InetrAct Admin Panel</title>
+    <link rel="stylesheet" href="build/game.css" type="text/css">
+    <script>
+      // Settings
+      // We need to know the user name (i.e. who we are)
+      // For now username will do, but we actually need to know more for the components
+      USER_NAME = 'Peter StJ';
+      LOGOUT_LINK = 'whatever';
+      UPLOAD_SCENARIO = '/InterACT/games/upload';
+      UPLOAD_TEAMS = '/InterACT/games/uploadPlayers';
+      FINISHED_GAME_STATS_URL = '/whateverYouWant/'; // + the game id will be appended
+    </script>
+    <script src="/InterACT/serverTime"></script>
+  </head>
+  <body>
+    <div id="screen"></div>
+
+
+    <script src="build/game-cssmap.js"></script>
+    <script src="../../library/closure/goog/base.js"></script>
+    <script src="build/deps.js"></script>
+    <script>goog.require('game');</script>
+
+<!--
+    <script src="build/game.build.js"></script>
+ -->
+
+  </body>
+</html>
