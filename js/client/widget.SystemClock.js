@@ -15,10 +15,9 @@ goog.require('spo.template');
  *
  * @constructor
  * @extends {pstj.ui.Clock}
- * @param {goog.dom.DomHelper=} odh Optional dom helper.
  */
-spo.widget.SystemClock = function(odh) {
-  goog.base(this, odh);
+spo.widget.SystemClock = function() {
+  goog.base(this);
 };
 goog.inherits(spo.widget.SystemClock, pstj.ui.Clock);
 

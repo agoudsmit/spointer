@@ -1,6 +1,7 @@
 goog.provide('spo.control.Users');
 
 goog.require('goog.ui.Component.EventType');
+goog.require('pstj.ds.List');
 goog.require('spo.control.Action');
 goog.require('spo.control.Base');
 goog.require('spo.control.Event');

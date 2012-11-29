@@ -1,4 +1,4 @@
-goog.provide('spo.ui.MessageEditor')
+goog.provide('spo.ui.MessageEditor');
 
 goog.require('goog.editor.Field');
 goog.require('spo.ui.Widget');
@@ -14,8 +14,8 @@ goog.require('goog.editor.plugins.LoremIpsum');
 goog.require('goog.editor.plugins.RemoveFormatting');
 goog.require('goog.editor.plugins.SpacesTabHandler');
 goog.require('goog.editor.plugins.UndoRedo');
-    goog.require('goog.ui.editor.DefaultToolbar');
-    goog.require('goog.ui.editor.ToolbarController');
+goog.require('goog.ui.editor.DefaultToolbar');
+goog.require('goog.ui.editor.ToolbarController');
 
 spo.ui.MessageEditor = function() {
   goog.base(this);
@@ -43,15 +43,16 @@ goog.scope(function() {
       this.buttons_ = [
         goog.editor.Command.BOLD,
         goog.editor.Command.ITALIC,
-        goog.editor.Command.UNDERLINE,
+        goog.editor.Command.UNDERLINE
       ];
-      var toolbar = dom.getElementByClass(goog.getCssName('editor-toolbar'), this.getElement());
+      var toolbar = /** @type {!Element} */ (dom.getElementByClass(goog.getCssName(
+          'editor-toolbar'), this.getElement()));
       var toolbarControl = goog.ui.editor.DefaultToolbar.makeToolbar(this.buttons_, toolbar);
       var tc = new goog.ui.editor.ToolbarController(this.field_, toolbarControl );
       this.field_.makeEditable();
     }
     this.hasMadeEditField_ = true;
-  }
+  };
 });
 
-goog.addSinletonGetter(spo.ui.MessageEditor);
+goog.addSingletonGetter(spo.ui.MessageEditor);

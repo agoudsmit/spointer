@@ -12,27 +12,25 @@ spo.ui.Widget = function() {
 };
 goog.inherits(spo.ui.Widget, goog.ui.Component);
 
-goog.scope(function() {
-  var proto = spo.ui.Widget.prototype;
-  var dom = goog.dom;
-  /** @inheritDoc */
-  proto.createDom = function() {
-    this.decorateInternal(this.getTemplateAsFragment());
-  };
-  /**
-   * Returns the template as document fragment.
-   *
-   * @return {!Element} The document fragment created by the template.
-   */
-  proto.getTemplateAsFragment = function() {
-    return /** @type {!Element} */ (dom.htmlToDocumentFragment(this.getTemplate()));
-  };
-  /**
-   * Returns the template for the widget as html string.
-   *
-   * @return {!string} The generated html string.
-   */
-  proto.getTemplate = function() {
-    return '<div></div>';
-  };
-});
+
+/** @inheritDoc */
+spo.ui.Widget.prototype.createDom = function() {
+  this.decorateInternal(this.getTemplateAsFragment());
+};
+/**
+ * Returns the template as document fragment.
+ *
+ * @return {!Element} The document fragment created by the template.
+ */
+spo.ui.Widget.prototype.getTemplateAsFragment = function() {
+  return /** @type {!Element} */ (goog.dom.htmlToDocumentFragment(this.getTemplate()));
+};
+/**
+ * Returns the template for the widget as html string.
+ *
+ * @return {!string} The generated html string.
+ */
+spo.ui.Widget.prototype.getTemplate = function() {
+  return '<div></div>';
+};
+

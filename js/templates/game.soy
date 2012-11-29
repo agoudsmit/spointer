@@ -10,4 +10,16 @@
   </div>
 {/template}
 
+/**
+ * @param name The mailbox view name.
+ * @param count The number of items unred in the mailbox.
+ */
+{template .MailBox}
+  <div class="{css mail-box}">
+    <span class="{css mail-box-name}">{$name}</span>
+    <span class="{css mail-box-count}">{$count}</span>
+	<span class="{css main-box-active-indicator}"></span>
+  </div>
+{/template}
+
 {/namespace}
