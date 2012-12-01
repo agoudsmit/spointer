@@ -1,11 +1,14 @@
 /**
- * Shift the scroll bar as per the new design
+ * Shift the scroll bar as per the new design - this is - make it look outside the scrollable view.
  */
 .custom-scroll-bar {
   -webkit-transform: translate(25px, 0);
   /* @alternate */ -moz-transform: translate(25px, 0);
 }
 
+/**
+ * Add some animation as per the design.
+ */
 .custom-scroll-area {
   position: absolute;
   top: 0;

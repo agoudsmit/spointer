@@ -36,6 +36,7 @@ tpl:
 	java -jar ../../templates/SoyToJsSrcCompiler.jar \
 	--shouldProvideRequireSoyNamespaces \
 	--codeStyle concat \
+	--shouldGenerateJsdoc \
 	--cssHandlingScheme GOOG \
 	--outputPathFormat 'js/tmp/{INPUT_FILE_NAME_NO_EXT}.soy.js' \
 	js/templates/*.soy
@@ -60,7 +61,7 @@ cssbuild:
 	--output-renaming-map-format CLOSURE_COMPILED \
 	--rename CLOSURE \
 	--output-renaming-map $(BUILDDIR)/cssmap-build.js \
-	gss/base.gss \
+	gss/*.gss \
 	gss/$(NS)/*.gss
 
 cssdebug:
@@ -70,7 +71,7 @@ cssdebug:
 	--output-renaming-map-format CLOSURE_COMPILED \
 	--rename NONE \
 	--output-renaming-map $(BUILDDIR)/cssmap-build.js \
-	gss/base.gss \
+	gss/*.gss \
 	gss/$(NS)/*.gss
 
 

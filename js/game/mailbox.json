@@ -1,0 +1,79 @@
+// Data structires for the game arena
+//
+// Mailbox - each user should receive list of available mail boxes upon
+// request and the client should know the name, the resource and the
+// counted flag of the mailbox. If all mailboxes are to be counted (i.e
+// if the "unred count" is to be shown for it).
+// Message groups should be separated in arrays as more than one/two groups
+// might exist per user (i.e. control user with multiple roles).
+mailboxes = [
+  [{
+    "name": "Inbox",
+    "resource": "/messages/inbox",
+    "counted": true
+  }, {
+    "name": "Pending",
+    "resource": "/messages/pending",
+    "counted": false
+  }, {
+    "name": "Rejected",
+    "resource": "/messages/rejected",
+    "counted": false
+  }, {
+    "name": "Sent Mail",
+    "resource": "/messages/sent",
+    "counted": false
+  }
+  ], [ {
+    "name": "Group Inbox",
+    "resource": "/messages/ginbox",
+    "counted": true,
+  }, {
+    "name": "Pending",
+    "resource": "/messages/gpending",
+    "counted": false
+  }, {
+    "name": "Rejected",
+    "resource": "/messages/grejected",
+    "counted": false
+  }, {
+    "name": "Sent Mail",
+    "resource": "/messages/gsent",
+    "counted": false
+  }]
+];
+
+// Represents the config of any user settable options. For now just the mail
+// count per page. It is used in the calculation for page offsets.
+// Eg: page2 = 20-39 if messagesPerPage = 20.
+config = {
+  "messagesPerPage": 20,
+};
+
+// Resource /messages/inbox/
+result = {
+  "count": 72,//Alreays requered for pagination. All messages in this mail box
+  "start": 0, // The indexes of the first and last messages in the returned list.
+  "end": 19,
+  "messages": [], // List of the messages that were requested
+};
+
+message = {
+  "from_id": 1, // The ID of the sender (used for reply),
+  "from_alias": "Some name", // The display name of the sender.
+  "subject": "Mail subject", // The title of the message,
+  "body": "HTML fragment", // The message body
+  "date": 1238927348397, // The timestamp of the message, in GAME time!
+  "to": "blia", // Tuk ne sum mn siguren, moje bi user ID shte e naj podhosqshto, problemut e
+  // che ako e adresirano do team... tr da pokaja team name za poluchatel... kak se razbira che
+  // tozi konkreten poluchatel e poluchil team msg.
+}
+
+receprients = [
+  {
+    "display_name": "whatever you feel like",
+    "id": 1
+    // Tuk po sushtiq nachin, kak nas erver-a razlichavash che poluchatela e vkaran kato
+    // team id a ne kato user id?
+  }
+]

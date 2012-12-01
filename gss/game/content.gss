@@ -1,0 +1,11 @@
+.fullscreen {
+  width: 100%;
+  height: 100%;
+  padding: 0 40px 0 40px;
+  color: EMBOSS_TEXT_COLOR;
+}
+
+/** override the border drawn for the content holder. */
+.content {
+	border: none;
+}

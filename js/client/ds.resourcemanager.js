@@ -26,7 +26,7 @@ spo.ds.Resource.MAIN_URL_ = '/InterACT/dispatcher';
 
 /**
  * The JSON processor to use. Here we use the native one and expect the
- * host to have it. Not etsted on IE8.
+ * host to have it. Not tested on IE8.
  *
  * @type {goog.json.Processor}
  * @private
@@ -103,7 +103,7 @@ spo.ds.Resource.prototype.registerResourceHandler = function(url, handler) {
  *                             utilize the first one.
  */
 spo.ds.Resource.prototype.get = function(data, cb) {
-  // Set the timestamp as it is needed on the server but not used anymore
+  // Set the time stamp as it is needed on the server but not used anymore
   // data['time_stamp'] = 0;
   var query = {
     'queries': [data]
@@ -112,7 +112,7 @@ spo.ds.Resource.prototype.get = function(data, cb) {
 };
 
 /**
- * Port from jquery.
+ * Port from jQuery.
  *
  * @param {!Array.<string>} arr
  * @param {!string} key
@@ -134,7 +134,7 @@ spo.ds.Resource.prototype.add_ = function(arr, key, value) {
  * @param  {*} data
  */
 spo.ds.Resource.prototype.buildParams_ = function(arr, prefix, data) {
-  var name;
+  var name = null;
   if (goog.isArray(data)) {
     goog.array.forEach(/** @type {!Array} */(data), function(el, index) {
       if (/\[\]$/.test(prefix)) {
@@ -155,7 +155,7 @@ spo.ds.Resource.prototype.buildParams_ = function(arr, prefix, data) {
 
 /**
  * Encodes Literal object data to PHP understandable multitude of post params
- * as url encoded string.
+ * as URL encoded string.
  *
  * @private
  * @param  {*} data Any literal object data.

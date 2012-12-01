@@ -1,0 +1,21 @@
+.mail-date {
+position: absolute;
+right: 20px;
+}
+.mail-preview-indicator {
+position: absolute;
+right: 0;
+opacity: 0;
+}
+
+.active .mail-preview-indicator {
+opacity: 1;
+}
+.mail-record-overlay {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 68px;
+	border-bottom: 1px solid EMBOSS_TEXT_COLOR;
+	cursor: pointer;
+}

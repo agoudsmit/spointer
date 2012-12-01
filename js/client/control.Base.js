@@ -1,10 +1,11 @@
 goog.provide('spo.control.Base');
+goog.require('spo.control.Action');
 
 goog.require('goog.Disposable');
 goog.require('goog.events.EventHandler');
 
 /**
- * A base controler class to inherit from. It contains some uilities.
+ * A base controller class to inherit from. It contains some utilities.
  * @constructor
  * @extends {goog.Disposable}
  * @param {!Element} container The HTMl element to use as container.
@@ -31,16 +32,43 @@ spo.control.Base.prototype.inited_ = false;
 
 
 /**
- * Method to set the controler state.
+ * Method to set the controller state.
  * Implementors should override this class.
- * @param {boolean} enable The state to put the controler in, true if it should
+ * @param {boolean} enable The state to put the controller in, true if it should
  * be enabled, false otherwise.
  * @param {Function=} fn Function to execute after the disable finished.
  */
 spo.control.Base.prototype.setEnabled = goog.abstractMethod;
 
 /**
- * Imitate the getHandler method from Component to allow lazy init
+ * Optional parent control. If the control cannot handle an action, it should
+ * populate it to the parent.
+ * @type {spo.control.Base}
+ * @private
+ */
+spo.control.Base.prototype.parentControl_ = null;
+
+/**
+ * Sets a parent control for this control.
+ * @param {spo.control.Base} control The control to use as parent control.
+ */
+spo.control.Base.prototype.setParentControl = function(control) {
+  this.parentControl_ = control;
+};
+
+/**
+ * Method used by child controls to notify for control Action that they cannot handle.
+ * @param {spo.control.Base} child The child the notification comes from.
+ * @param {spo.control.Action} action The action not handled at the child.
+ */
+spo.control.Base.prototype.notify = function(child, action) {
+  if (this.parentControl_ != null) {
+    this.parentControl_.notify(this, action);
+  }
+};
+
+/**
+ * Imitate the getHandler method from Component to allow lazy initialization
  * of a handler.
  * @protected
  * @return {!goog.events.EventHandler} The bound EventHandler.

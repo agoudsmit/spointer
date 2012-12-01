@@ -1,0 +1,30 @@
+.mail-box-list {
+	height: 100%;
+	width: 30%;
+	float: left;
+	padding-right: 10px;
+	border-right: 1px solid EMBOSS_TEXT_COLOR;
+}
+.mail-box-list .detail-heading {
+	text-transform: uppercase;
+	padding: 0 0 10px 0;
+}
+.mail-box {
+	padding: 2px;
+	cursor: pointer;
+	position: relative;
+}
+.mail-box:hover {
+	color: OUTLINE_COLOR;
+}
+.mail-box.active {
+	color: OUTLINE_COLOR;
+	font-weight: bold;
+}
+.mail-box-count {
+	float: right;
+}
+
+.mail-box-active-indicator {
+	float: right;
+}

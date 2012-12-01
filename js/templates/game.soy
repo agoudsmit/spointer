@@ -16,10 +16,101 @@
  */
 {template .MailBox}
   <div class="{css mail-box}">
-    <span class="{css mail-box-name}">{$name}</span>
-    <span class="{css mail-box-count}">{$count}</span>
-	<span class="{css main-box-active-indicator}"></span>
+  	<div class="{css mail-box-content}">
+    	<span class="{css mail-box-name}">{$name}</span>
+    	<span class="{css mail-box-count}">{$count}</span>
+    </div>
+    <div class="{css mail-box-active-indicator}"></div>
   </div>
 {/template}
 
-{/namespace}
+/**
+ * @param header The header title to use (wither TEAMS or Control teams).
+ */
+{template .MailBoxList}
+  <div class="{css mail-box-list}">
+    <div class="{css detail-heading}">{$header}</div>
+  </div>
+{/template}
+
+/**
+ * The container for the mail list for boxes.
+ */
+{template .MailList}
+	<div class="{css mail-list-container}">
+		<div class="{css mail-listing-view}">
+			<!-- mails should go here -->
+		</div>
+		<div class="{css control-buttons}">
+			<span class="{css goog-button} {css text-button} {css form-button} {css prev}">Prev</span>
+			<span class="{css goog-button} {css text-button} {css form-button} {css next}">Next</span>
+		</div>
+	</div>
+{/template}
+
+/**
+ * Mail record in mail list.
+ * @param recordid
+ * @param sender
+ * @param subject
+ * @param date
+ * @param isread
+ */
+{template .MailRecord}
+	<div class="
+	{if ($isread == false)}
+		{css mail-record-container} {css unread}
+	{else}
+		{css mail-record-container}
+	{/if}
+	">
+		<div class="{css mail-record}">
+			<div class="{css record-raw} {css raw-one}">
+				<span>{$sender}</span>
+				<span class="{css mail-date}">{$date}</span>
+				<span class="{css mail-preview-indicator}"></span>
+			</div>
+			<div class="{css record-raw} {css raw-two}">{$subject}</div>
+		</div>
+		<div class="{css mail-record-overlay}" data-recordid="{$recordid}"></div>
+	</div>
+{/template}
+/**
+ * The widgets for the game arena
+ */
+{template .Widgets}
+	<div class="{css left-pane}">
+		<div class="{css top-pane}">
+			<div class="{css mail-list-placeholder}">
+				<!-- set the mailbox list here and next to it float the mail list -->
+			</div>
+		</div>
+		<div class="{css bottom-pane}">
+			<div class="{css meeting-box-placeholder}">
+				<!-- setup the meeting widget here -->
+			</div>
+		</div>
+	</div>
+	<div class="{css right-pane}">
+	<!-- set the mail view here -->
+	</div>
+{/template}
+/**
+ *
+ */
+{template .ListLoading}
+	<div class="{css load-indicator}">Loading...</div>
+{/template}
+
+/**
+ * This is the main
+ */
+{template .game}
+  <div class="{css fullscreen}">
+    <div class="{css header} {css game-header}">
+      <!-- put here the header widget -->
+    </div>
+    <div class="{css content}"></div>
+  </div>
+{/template}
+

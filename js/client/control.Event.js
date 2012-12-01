@@ -55,5 +55,6 @@ spo.control.Action = {
   DELETE: 6,
   SAVE: 7,
   PAUSE: 8,
-  ADD: 9
+  ADD: 9,
+  SELECT: 10
 };

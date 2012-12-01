@@ -10,6 +10,7 @@ goog.require('spo.ds.ControlTeam');
 goog.require('spo.ds.ControlTeamList');
 goog.require('spo.ds.ControlUserList');
 goog.require('spo.ds.Game');
+goog.require('spo.ds.GameList');
 goog.require('spo.ui.Header');
 goog.require('spo.ui.HeaderGameTime');
 goog.require('spo.ui.NewControlTeam');
@@ -114,7 +115,7 @@ goog.scope(function() {
   /**
    * Returns the ID of the game the control is bound to,
    *
-   * @return {pstj.ds.RecordID} The recod id of the list item bound in the
+   * @return {pstj.ds.RecordID} The record id of the list item bound in the
    *                               control.
    */
   proto.getId = function() {

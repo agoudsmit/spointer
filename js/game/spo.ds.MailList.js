@@ -14,9 +14,11 @@
  * node.
  */
 
-goog.provide('spo.ds.MailBox');
+goog.provide('spo.ds.MailList');
 
-goog.require('goog.events.EventTarget');
+goog.require('spo.ds.OverrideList');
+goog.require('spo.ds.Resource');
+
 /**
  * Provides the mail box wrapper abstraction. It should be responsible for the
  * server loading and message listing.
@@ -24,31 +26,40 @@ goog.require('goog.events.EventTarget');
  * footprint is manager in the instance.
  *
  * @constructor
- * @extends {goog.events.EventTarget}
+ * @extends {spo.ds.OverrideList}
+ * @param {!string} resource The resource for this mail listing.
  */
-spo.ds.MailBox = function() {
-  goog.base(this);
+spo.ds.MailList = function(resource) {
+  goog.base(this, resource);
+  this.list_ = [];
 };
-goog.inherits(spo.ds.MailBox, goog.events.EventTarget);
+goog.inherits(spo.ds.MailList, spo.ds.OverrideList);
+
+/**
+ * @inheritDoc
+ */
+spo.ds.MailList.prototype.interval = 5000;
 
 /**
  * Number of items per page.
  * @type {!number}
  * @protected
  */
-spo.ds.MailBox.prototype.msgsPerPage = 8;
+spo.ds.MailList.prototype.msgsPerPage = 5;
+
 /**
  * Pointer to the list of messages that are loaded from the server.
- * @type {Array.<*>}
+ * @type {!Array.<*>}
  * @private
  */
-spo.ds.MailBox.prototype.list_;
+spo.ds.MailList.prototype.list_;
+
 /**
  * Holds the number of messages total on the server.
  * @type {!number}
  * @private
  */
-spo.ds.MailBox.prototype.msgCount_;
+spo.ds.MailList.prototype.msgCount_;
 /**
  * Holds the viewed property state. This is used to monitor the server list.
  * It is supposed to work as this: Initially the box is not viewed and the list
@@ -68,39 +79,102 @@ spo.ds.MailBox.prototype.msgCount_;
  * @type {!boolean}
  * @private
  */
-spo.ds.MailBox.prototype.viewState_;
+spo.ds.MailList.prototype.viewState_;
+
 /**
  * Counter indicating on which page the view is currently.
  *
  * @type {!number}
  * @private
  */
-spo.ds.MailBox.prototype.onPage_ = 1;
+spo.ds.MailList.prototype.onPage_ = 1;
+
 /**
- * The interval to use when updating the list from the server.
- * Default to 30 seconds.
- *
- * @type {!number}
- * @protected
+ * @inheritDoc
  */
-spo.ds.MailBox.prototype.updateInterval = 30000;
+spo.ds.MailList.prototype.update = function() {
+  if (this.hasScheduledUpdate()) this.cancelUpdate();
+  goog.base(this, 'update');
+};
+
+/**
+ * Determines if there is a previous page
+ * @return {boolean}
+ */
+spo.ds.MailList.prototype.hasPreviousPage = function() {
+  if (this.start_ != 1) return true;
+  return false;
+};
+
+/**
+ * Determines if there is a next page
+ * @return {boolean}
+ */
+spo.ds.MailList.prototype.hasNextPage = function() {
+  return this.getBoxCount() / this.msgsPerPage > 1;
+};
+
+spo.ds.MailList.prototype.getPage = function(page) {
+  var start = 1 + ((this.onPage_ - 1) * this.msgsPerPage);
+  console.log('start is ',start);
+  if (this.msgCount_ != null)
+    if (start > this.msgCount_) return;
+  this.start_ = start;
+  this.update();
+};
+
+/** @inheritDoc */
+spo.ds.MailList.prototype.getRequest = function() {
+  return {
+    'url': this.resource_,
+    'config': {
+      'start': this.start_,
+      'count': this.msgsPerPage
+     }
+  };
+};
+
+/**
+ * @inheritDoc
+ */
+spo.ds.MailList.prototype.handleUpdate = function(resp) {
+  goog.base(this, 'handleUpdate', resp);
+  var content = resp['content'];
+  this.setBoxCount(content['message_count']);
+  this.overrideSet(content['messages']);
+  this.dispatchEvent(spo.ds.OverrideList.EventType.UPDATED);
+  if (this.viewState_) {
+    this.scheduleNextUpdate();
+  }
+};
+
 /**
  * Overrides the data set that is stored for this mail box.
  *
  * @param {!Array.<*>} list The list of messages currently saved on the server
  * for this particular mailbox.
  */
-spo.ds.MailBox.prototype.overrideSet = function(list) {
+spo.ds.MailList.prototype.overrideSet = function(list) {
   this.list_ = list;
-  this.dispatchEvent(spo.ds.MailBox.EventType.UPDATE);
 };
+
 /**
  * Returns the count of all messages in the mail box list.
  * @return {!number} Message count.
  */
-spo.ds.MailBox.prototype.getBoxCount = function() {
+spo.ds.MailList.prototype.getBoxCount = function() {
   return this.msgCount_;
 };
+
+/**
+ * Getter for the raw data listing.
+ * @return {!Array.<*>}
+ */
+spo.ds.MailList.prototype.getList = function() {
+  return this.list_;
+};
+
+
 /**
  * Sets the number of messages in this mail box. Note that the number of loaded
  * messages does not necessarily match the number of mails in the box stored on
@@ -109,22 +183,34 @@ spo.ds.MailBox.prototype.getBoxCount = function() {
  * @param {!number} count The total number of messages on the server for this
  * mailbox.
  */
-spo.ds.MailBox.prototype.setBoxCount = function(count) {
+spo.ds.MailList.prototype.setBoxCount = function(count) {
   this.msgCount_ = count;
 };
+
+spo.ds.MailList.prototype.clean = function() {
+  this.cancelUpdate();
+  this.list_ = [];
+  this.msgCount_ = null;
+  this.onPage_ = 1;
+};
+
 /**
  * Updates the view state of the list.
  * @param {!boolean} viewed True if the list is currently viewed / monitored.
  */
-spo.ds.MailBox.prototype.setViewState = function(viewed) {
+spo.ds.MailList.prototype.setViewState = function(viewed) {
   if (this.viewState_ != viewed) {
     this.viewState_ = viewed;
+    if (this.viewState_ == false) {
+      this.clean();
+    }
   }
 };
+
 /**
  * The event type to use when the internal list ref is overloaded by the server.
  * @enum {string}
  */
-spo.ds.MailBox.EventType = {
+spo.ds.MailList.EventType = {
   UPDATE: goog.events.getUniqueId('update')
 };

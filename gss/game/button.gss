@@ -23,3 +23,26 @@
   color: #69c;
   border-color: #69c;
 }
+
+/** handle our text buttons, a lot of them there will be */
+.text-button {
+  background-color: OUTLINE_COLOR;
+  color: BASE_COLOR;
+  padding: 0 4px;
+  border: 1px solid #98aebf;;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+
+/**
+ * Handle text button focus
+ */
+.text-button.form-button-focused, .text-button.form-button-hover {
+  box-shadow: 0 0 2px 4px white;
+}
+
+.form-button-disabled.text-button {
+  cursor: default;
+  background-color: transparent;
+}
