@@ -39,6 +39,7 @@ spo.ui.MailList.prototype.getModel;
 
 /**
  * @type {Array.<*>}
+ * @private
  */
 spo.ui.MailList.prototype.localCopy_ = null;
 
@@ -106,8 +107,10 @@ spo.ui.MailList.prototype.onPrevPressed = function(ev) {
 spo.ui.MailList.prototype.onContentClick = function(ev) {
   var target = /** @type {!Element} */ (ev.target);
   if (goog.dom.dataset.has(target, 'recordid')) {
+    var selectedIndex = +goog.dom.dataset.get(target, 'recordid');
     // safe reference to the mail record that is selected.
-    this.selectedMailRecord_ = this.getModel().getList()[+goog.dom.dataset.get(target, 'recordid')];
+    this.selectedMailRecord_ = this.getModel().getList()[selectedIndex];
+    this.setSelectedChild(selectedIndex);
     // notify for select action.
     this.dispatchEvent(new spo.control.Event(this, spo.control.Action.SELECT));
   }
@@ -151,6 +154,9 @@ spo.ui.MailList.prototype.setSelectedId = function(id) {
  * @param {number} index The index to set as active.
  */
 spo.ui.MailList.prototype.setSelectedChild = function(index) {
+  var old = goog.dom.getElementByClass(goog.getCssName('active'), this.getContentElement());
+  if (old != null) goog.dom.classes.remove(old, goog.getCssName('active'));
+  goog.dom.classes.add(this.getContentElement().children[index], goog.getCssName('active'));
 };
 
 /**
