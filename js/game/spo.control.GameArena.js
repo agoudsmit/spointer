@@ -4,13 +4,16 @@ goog.require('spo.control.Base');
 goog.require('pstj.ui.CustomScrollArea');
 goog.require('spo.control.MailBoxList');
 goog.require('spo.control.Action');
+goog.require('spo.control.Event');
+goog.require('spo.control.EventType');
 goog.require('spo.ds.mail');
 goog.require('spo.ui.MailList');
+goog.require('spo.control.MailPreview');
 
 
 /**
  * The mail control of the game area.
- * 
+ *
  * @constructor
  * @extends {spo.control.Base}
  * @param {!Element} container The container to render the views in.
@@ -32,20 +35,52 @@ spo.control.GameArena.prototype.init = function() {
   this.view_.render(this.container_);
   this.view_.getContentElement().innerHTML = spo.gametemplate.Widgets({});
   // TODO: Load game details => setup header
-  
+
   var top_pane = /** @type {!Element} */ (goog.dom.getElementByClass(goog.getCssName(
   'mail-list-placeholder'), this.view_.getContentElement()));
-  
+
   //Load mailbox list => setup mailbox list
   this.mailbox_ = new spo.control.MailBoxList(top_pane);
   this.mailbox_.setParentControl(this);
-  
+
   // Load mail listing UI.
   this.maillist_ = new spo.ui.MailList();
-  console.log(top_pane);
+  this.getHandler().listen(this.maillist_, spo.control.EventType.CONTROL_ACTION,
+    this.handleMailListAction);
   this.maillist_.render(top_pane);
+
+
+  this.previewControl_ = new spo.control.MailPreview(
+    /** @type {!Element} */ goog.dom.getElementByClass(goog.getCssName(
+      'mail-preview-container'), this.view_.getContentElement()));
 };
 
+spo.control.GameArena.prototype.currentPreviewdMailRecord_ = null;
+
+/**
+ * Loads a mail using data from the mail listing.
+ */
+spo.control.GameArena.prototype.loadMailPreview = function() {
+  var record = this.maillist_.getSelectedRecord();
+  if (record != null) {
+    this.currentPreviewdMailRecord_ = record;
+    this.previewControl_.loadRecord(this.currentPreviewdMailRecord_);
+  }
+};
+
+/**
+ * Handles the control actions coming from the mail listing.
+ * @param {spo.control.Event} ev The control event.
+ * @protected
+ */
+spo.control.GameArena.prototype.handleMailListAction = function(ev) {
+  ev.stopPropagation();
+  switch (ev.getAction()) {
+  case spo.control.Action.SELECT:
+    this.loadMailPreview();
+    break;
+  }
+};
 /** @inheritDoc */
 spo.control.GameArena.prototype.notify = function(child, action) {
   switch (child) {
@@ -55,10 +90,10 @@ spo.control.GameArena.prototype.notify = function(child, action) {
         var mailbox = spo.ds.mail.getListing(this.mailbox_.getActiveResource());
         console.log(mailbox);
         this.maillist_.setModel(spo.ds.mail.getListing(this.mailbox_.getActiveResource()));
-        
+
       }
       break;
-    default: 
+    default:
        goog.base(this, 'notify', null, action);
        break;
   }

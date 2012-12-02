@@ -76,6 +76,29 @@
 	</div>
 {/template}
 /**
+ * The mail preview widget. Controls are exclude due to difference in msg types.
+ * @param from The alias of the sender.
+ * @param date The date the message has been sent.
+ * @param subject The subject of the message.
+ * @param recepients List of recepients to display.
+ * @param body The body of the message.
+ */
+{template .MailPreview}
+  <div class="{css mail-preview-container}">
+    <div class="{css mail-preview-controls} {css mail-bottom-border}">
+      <!-- controls go here -->
+    </div>
+    <div class="{css mail-preview-details} {css mail-bottom-border}">
+      <div><span class="{css mail-service-info}">From:&nbsp;</span>{$from}</div>
+      <div><span class="{css mail-service-info}">Date:&nbsp;</span>{$date}</div>
+      <div><span class="{css mail-service-info}">Subject:&nbsp;</span>{$subject}</div>
+      <div><span class="{css mail-service-info}">To:&nbsp;</span>{$recepients}</div>
+    </div>
+    <div class="{css mail-preview-body}">{$body}</div>
+  </div>
+{/template}
+
+/**
  * The widgets for the game arena
  */
 {template .Widgets}
@@ -92,7 +115,8 @@
 		</div>
 	</div>
 	<div class="{css right-pane}">
-	<!-- set the mail view here -->
+    <div class="{css mail-editor-container}" style="display: none;"></div>
+    <div class="{css mail-preview-container}"></div>
 	</div>
 {/template}
 /**

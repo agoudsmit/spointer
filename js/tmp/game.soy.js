@@ -61,8 +61,18 @@ spo.gametemplate.MailRecord = function(opt_data) {
  * @return {string}
  * @notypecheck
  */
+spo.gametemplate.MailPreview = function(opt_data) {
+  return '<div class="' + goog.getCssName('mail-preview-container') + '"><div class="' + goog.getCssName('mail-preview-controls') + ' ' + goog.getCssName('mail-bottom-border') + '"><!-- controls go here --></div><div class="' + goog.getCssName('mail-preview-details') + ' ' + goog.getCssName('mail-bottom-border') + '"><div><span class="' + goog.getCssName('mail-service-info') + '">From:&nbsp;</span>' + soy.$$escapeHtml(opt_data.from) + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Date:&nbsp;</span>' + soy.$$escapeHtml(opt_data.date) + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Subject:&nbsp;</span>' + soy.$$escapeHtml(opt_data.subject) + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">To:&nbsp;</span>' + soy.$$escapeHtml(opt_data.recepients) + '</div></div><div class="' + goog.getCssName('mail-preview-body') + '">' + soy.$$escapeHtml(opt_data.body) + '</div></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @return {string}
+ * @notypecheck
+ */
 spo.gametemplate.Widgets = function(opt_data) {
-  return '\t<div class="' + goog.getCssName('left-pane') + '"><div class="' + goog.getCssName('top-pane') + '"><div class="' + goog.getCssName('mail-list-placeholder') + '"><!-- set the mailbox list here and next to it float the mail list --></div></div><div class="' + goog.getCssName('bottom-pane') + '"><div class="' + goog.getCssName('meeting-box-placeholder') + '"><!-- setup the meeting widget here --></div></div></div><div class="' + goog.getCssName('right-pane') + '"><!-- set the mail view here --></div>';
+  return '\t<div class="' + goog.getCssName('left-pane') + '"><div class="' + goog.getCssName('top-pane') + '"><div class="' + goog.getCssName('mail-list-placeholder') + '"><!-- set the mailbox list here and next to it float the mail list --></div></div><div class="' + goog.getCssName('bottom-pane') + '"><div class="' + goog.getCssName('meeting-box-placeholder') + '"><!-- setup the meeting widget here --></div></div></div><div class="' + goog.getCssName('right-pane') + '"><div class="' + goog.getCssName('mail-editor-container') + '" style="display: none;"></div><div class="' + goog.getCssName('mail-preview-container') + '"></div></div>';
 };
 
 

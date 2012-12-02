@@ -1,0 +1,12 @@
+/** Make the container add padding to the content to match the design */
+.mail-preview-container {
+  padding: 5px;
+}
+
+.mail-bottom-border {
+  border-bottom: 1px solid EMBOSS_TEXT_COLOR;
+}
+
+.mail-service-info {
+  color: BACKGROUND_COLOR;
+}

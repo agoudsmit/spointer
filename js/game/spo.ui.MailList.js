@@ -55,6 +55,14 @@ spo.ui.MailList.prototype.selectedMailId_;
  */
 spo.ui.MailList.prototype.contentElement_;
 
+/**
+ * Pointer to the currently selected mail record. Can be null meaning no record
+ * is currently selected.
+ * @type {*}
+ * @private
+ */
+spo.ui.MailList.prototype.selectedMailRecord_ = null;
+
 /** @inheritDoc */
 spo.ui.MailList.prototype.getTemplate = function() {
   return spo.gametemplate.MailList({});
@@ -116,6 +124,14 @@ spo.ui.MailList.prototype.onContentClick = function(ev) {
   }
 };
 
+/**
+ * Getter for the record marked as active.
+ * @return {*} The pure record.
+ */
+spo.ui.MailList.prototype.getSelectedRecord = function() {
+  if (typeof this.selectedMailRecord_ != 'object') return null;
+  return this.selectedMailRecord_;
+};
 
 /**
  * Sets the data source provider.
