@@ -27,7 +27,7 @@ game = function() {
 
 
 
-  var header = new spo.ui.GameHeader.getInstance();
+  var header = spo.ui.GameHeader.getInstance();
   header.decorate(goog.dom.getElementByClass(goog.getCssName('header'),
     screen));
 
@@ -38,10 +38,11 @@ game = function() {
       var game = result['content']['content'];
       if (gameRecord == null) {
         gameRecord = new spo.ds.Game(game);
-        var clock  = new spo.ui.HeaderGameTime();
+        var clock = new spo.ui.HeaderGameTime();
         clock.setModel(gameRecord);
         header.setClockInstance(clock);
-        header.setGameName(gameRecord.getProp(spo.ds.Game.Property.NAME).toString());
+        header.setGameName(gameRecord.getProp(spo.ds.Game.Property.NAME)
+          .toString());
       } else {
         gameRecord.update(new spo.ds.Game(game));
       }
@@ -58,7 +59,8 @@ game = function() {
 
 //  var scrollarea = new pstj.ui.CustomScrollArea();
 //  scrollarea.setScrollInsideTheWidget(false);
-//  scrollarea.render(goog.dom.getElementByClass(goog.getCssName('content'), screen));
+//  scrollarea.render(goog.dom.getElementByClass(goog.getCssName('content'),
+//  screen));
 
 };
 

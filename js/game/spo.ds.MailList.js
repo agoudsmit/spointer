@@ -56,7 +56,7 @@ spo.ds.MailList.prototype.list_;
 
 /**
  * Holds the number of messages total on the server.
- * @type {!number}
+ * @type {number}
  * @private
  */
 spo.ds.MailList.prototype.msgCount_;
