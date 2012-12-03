@@ -7,8 +7,11 @@
 /* State: disabled. */
 .goog-button-disabled {
   border-color: #333;
-  color: #333;
   background-color: #999;
+}
+
+.text-button.form-button-disabled {
+  color: EMBOSS_TEXT_COLOR;
 }
 
 /* State: hover. */
@@ -45,4 +48,17 @@
 .form-button-disabled.text-button {
   cursor: default;
   background-color: transparent;
+}
+
+.circle-button {
+  @mixin cirlebutton();
+}
+
+.send-button {
+  @mixin icons(9);
+}
+
+.send-button:hover, .send-button:focus, .form-button-hover.send-button,
+.form-button-focused.send-button {
+  @mixin hovericons(9);
 }

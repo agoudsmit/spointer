@@ -118,6 +118,10 @@ spo.ui.MailList.prototype.onContentClick = function(ev) {
     var selectedIndex = +goog.dom.dataset.get(target, 'recordid');
     // safe reference to the mail record that is selected.
     this.selectedMailRecord_ = this.getModel().getList()[selectedIndex];
+    if (!spo.ds.mail.isRead(this.selectedMailRecord_)) {
+      spo.ds.mail.markAsRead(this.selectedMailRecord_);
+      // TODO: call the mark as read on the server.
+    }
     this.setSelectedChild(selectedIndex);
     // notify for select action.
     this.dispatchEvent(new spo.control.Event(this, spo.control.Action.SELECT));
@@ -197,7 +201,7 @@ spo.ui.MailList.prototype.handleListUpdate = function(ev) {
       sender: newList[i]['from']['alias'],
       subject: newList[i]['subject'],
       date: pstj.date.utils.renderTime(newList[i]['date'], 'Mon dd hh:xx'),
-      isread: (newList[i]['is_read'] == 1) ? true : false
+      isread: spo.ds.mail.isRead(newList[i])
     });
   }
   if (newList.length == 0) {

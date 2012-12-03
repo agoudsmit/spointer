@@ -1,13 +1,83 @@
-.editor-wrapper {
-  width: 400px;
-  height: 600px;
+.mail-composer {
+	width: 100%;
+}
+
+.toolbars-wrap {
+	height: 40px;
+	position: relative;
+}
+
+.fields-wrap {
+	position: relative;
+  margin-bottom: 10px;
+}
+
+.mail-composer-form-field {
+	height: 30px;
+}
+
+.mail-composer-form-field label {
+	line-height: 30px;
 }
 
 .editor-toolbar {
-  width:100%;
-  height: 30px;
+	position: absolute;
+  top: 0;
+	right: 0;
+	width: 80%;
+	height: 30px;
 }
+
+.toolbars-wrap .send-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .editor-field {
   width: 100%;
-  height: 570px;
+  outline: none;
+}
+
+input.form-values {
+	width: 80%;
+	position: absolute;
+	right: 0;
+  background-color: BASE_COLOR;
+  border: 1px solid EMBOSS_TEXT_COLOR;
+  padding: 3px;
+  outline: none;
+}
+
+.form-values {
+	color: EMBOSS_TEXT_COLOR;
+}
+
+.goog-toolbar {
+	background-color: BACKGROUND_COLOR;;
+}
+
+
+.ac-renderer {
+  position: absolute;
+  background-color: BASE_COLOR;
+  border: 1px solid ;
+  -moz-box-shadow: 2px 2px 2px rgba(102, 102, 102, .6);
+  -webkit-box-shadow: 2px 2px 2px rgba(102, 102, 102, .6);
+  width: 300px;
+}
+
+.ac-row {
+  cursor: pointer;
+  padding: .4em;
+  color: EMBOSS_TEXT_COLOR;
+}
+
+.ac-highlighted {
+	color: black;
+}
+
+.ac-active {
+  color: BASE_COLOR;
+  background-color: EMBOSS_TEXT_COLOR;
 }

@@ -1,12 +1,29 @@
 {namespace spo.gametemplate}
 
 /**
- * @param id The for the field.
+ * Contains the composer view. It is entierly programatically controlled, thus no fields can be prefilled.
  */
-{template .EditorWrapper}
-  <div class="{css editor-wrapper}">
-    <div class="{css editor-toolbar}"></div>
-    <div class="{css editor-field}" id="{$id}"></div>
+{template .Composer}
+  <div class="{css mail-composer}">
+  	<div class="{css toolbars-wrap} {css mail-bottom-border} {css mail-padded}">
+  		<div class="{css goog-button} {css form-button} {css circle-button} {css send-button}"></div>
+    	<div class="{css editor-toolbar}"></div>
+    </div>
+    <div class="{css fields-wrap} {css mail-bottom-border} {css mail-padded}">
+    	<div class="{css mail-composer-form-field}">
+    		<label>To:</label>
+    		<input class="{css form-values} {css field-to}" type="text"/>
+    	</div>
+    	<div class="{css mail-composer-form-field}">
+    		<label>From:</label>
+    		<input class="{css form-values} {css field-from}" type="text"/>
+    	</div>
+    	<div class="{css mail-composer-form-field}">
+    		<label>Subject:</label>
+    		<input class="{css form-values} {css field-subject}" type="text"/>
+    	</div>
+    </div>
+    <div class="{css editor-field}" id="mail-composer-text-field"></div>
   </div>
 {/template}
 
@@ -69,6 +86,7 @@
 				<span>{$sender}</span>
 				<span class="{css mail-date}">{$date}</span>
 				<span class="{css mail-preview-indicator}"></span>
+				<div class="{css current-indicator}"></div>
 			</div>
 			<div class="{css record-raw} {css raw-two}">{$subject}</div>
 		</div>
@@ -83,18 +101,18 @@
  * @param recepients List of recepients to display.
  * @param body The body of the message.
  */
-{template .MailPreview}
-  <div class="{css mail-preview-container}">
-    <div class="{css mail-preview-controls} {css mail-bottom-border}">
+{template .MailPreview autoescape="false"}
+  <div class="{css mail-preview-box}">
+    <div class="{css mail-preview-controls} {css mail-padded} {css mail-bottom-border}">
       <!-- controls go here -->
     </div>
-    <div class="{css mail-preview-details} {css mail-bottom-border}">
+    <div class="{css mail-preview-details} {css mail-padded} {css mail-bottom-border}">
       <div><span class="{css mail-service-info}">From:&nbsp;</span>{$from}</div>
       <div><span class="{css mail-service-info}">Date:&nbsp;</span>{$date}</div>
       <div><span class="{css mail-service-info}">Subject:&nbsp;</span>{$subject}</div>
       <div><span class="{css mail-service-info}">To:&nbsp;</span>{$recepients}</div>
     </div>
-    <div class="{css mail-preview-body}">{$body}</div>
+    <div class="{css mail-preview-body} {css mail-padded}">{$body}</div>
   </div>
 {/template}
 
@@ -116,7 +134,7 @@
 	</div>
 	<div class="{css right-pane}">
     <div class="{css mail-editor-container}" style="display: none;"></div>
-    <div class="{css mail-preview-container}"></div>
+    <div class="{css mail-preview-container}" style="display: none;"></div>
 	</div>
 {/template}
 /**

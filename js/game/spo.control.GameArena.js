@@ -9,7 +9,8 @@ goog.require('spo.control.EventType');
 goog.require('spo.ds.mail');
 goog.require('spo.ui.MailList');
 goog.require('spo.control.MailPreview');
-
+goog.require('spo.control.Composer');
+goog.require('spo.ui.GameHeader');
 
 /**
  * The mail control of the game area.
@@ -51,8 +52,19 @@ spo.control.GameArena.prototype.init = function() {
 
 
   this.previewControl_ = new spo.control.MailPreview(
-    /** @type {!Element} */ goog.dom.getElementByClass(goog.getCssName(
-      'mail-preview-container'), this.view_.getContentElement()));
+    /** @type {!Element} */ (goog.dom.getElementByClass(goog.getCssName(
+      'mail-preview-container'), this.view_.getContentElement())));
+
+  this.composer = new spo.control.Composer(/** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName(
+  'mail-editor-container'), this.view_.getContentElement())));
+  this.composer.setEnable(true);
+
+  spo.ui.GameHeader.getInstance().setSearchFiledState('search messages', goog.bind(this.performSearch, this));
+
+};
+
+spo.control.GameArena.prototype.performSearch = function(text) {
+  console.log('text to search', text);
 };
 
 spo.control.GameArena.prototype.currentPreviewdMailRecord_ = null;

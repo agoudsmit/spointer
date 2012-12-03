@@ -15,7 +15,7 @@ opacity: 1;
 	position: absolute;
 	top: 0;
 	width: 100%;
-	height: 68px;
+	height: 65px;
 	border-bottom: 1px solid EMBOSS_TEXT_COLOR;
 	cursor: pointer;
 }

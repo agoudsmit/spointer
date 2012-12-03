@@ -1,0 +1,44 @@
+.game-header .view-name,
+.game-header .back-link,
+.game-header .forward-link {
+	display: none;
+}
+
+.header.game-header {
+	height: 140px;
+}
+
+/** The input divs. We need those to space out the inputs more reliably */
+.game-header .input {
+  padding: 2px;
+  height: 40px;
+  position: absolute;
+  top: 140px;
+  right: -3px;
+}
+
+/** Define how the input fields will look like in all login panels */
+.game-header input[type="text"], .game-header input[type="password"] {
+  width: 200px;
+  background-color: BASE_COLOR;
+  border: 1px solid #98aebf;
+  color: #98aebf;
+  padding: 6px;
+  outline: none;
+}
+
+input[type="text"]:focus, input[type="password"]:focus,
+input[type="text"]:focus.invalid-value {
+  border-color: OUTLINE_COLOR;
+}
+
+input[type="text"].invalid-value,
+input[type="password"].invalid-value {
+  border-color: red;
+}
+
+/** How the server error will look like. The server generated errors should come
+inline in the html, this is only possible in the login stage*/
+.error {
+  color: ERROR_COLOR;
+}

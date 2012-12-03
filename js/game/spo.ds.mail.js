@@ -10,7 +10,7 @@ goog.provide('spo.ds.mail');
 goog.require('pstj.object');
 goog.require('pstj.ds.ListItem');
 goog.require('spo.ds.MailList');
-
+goog.require('spo.ds.Resource');
 
 /**
  * Holds reference to all resources matching a mail listing.
@@ -18,6 +18,15 @@ goog.require('spo.ds.MailList');
  * @private
  */
 spo.ds.mail.registry_ = {};
+
+/**
+ * Getter for the list of known names on the game.
+ * @return {!Array.<string>}
+ */
+spo.ds.mail.getNames = function() {
+  return goog.global['RECIPIENTS'];
+};
+
 /**
  * Getter for the ID of the message. It is used to retrieve the id in order to
  * be able to compare the messages after list overlapping.
@@ -81,7 +90,7 @@ spo.ds.mail.subsetMatch = function(whole_list, partial_list) {
  * Returns the mail listing data structure matching the resource. If one
  * does not exists it will be created and then returned.
  * 
- * @param {!string} resource The mail url resource to use.
+ * @param {!string} resource The mail URL resource to use.
  */
 spo.ds.mail.getListing = function(resource) {
   if (!goog.isDef(spo.ds.mail.registry_[resource])) {
@@ -89,4 +98,21 @@ spo.ds.mail.getListing = function(resource) {
     //spo.ds.mail.registry_[resource].update();
   }
   return spo.ds.mail.registry_[resource];
+};
+
+/**
+ * Checks if a message record is read.
+ * @param {*} record The message record.
+ * @return {boolean} True if the message is read already.
+ */
+spo.ds.mail.isRead = function(record) {
+  return record['is_read'] == 1;
+};
+
+/**
+ * Updates the record in place to be marked as read.
+ * @param {*} record The message record.
+ */
+spo.ds.mail.markAsRead = function(record) {
+  record['is_read'] = 1;
 };

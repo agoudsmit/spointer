@@ -4,6 +4,10 @@ goog.require('pstj.ui.Templated');
 goog.require('spo.gametemplate');
 goog.require('pstj.date.utils');
 
+/**
+ * @constructor
+ * @extends {pstj.ui.Templated}
+ */
 spo.ui.MailPreview = function() {
   goog.base(this);
 };

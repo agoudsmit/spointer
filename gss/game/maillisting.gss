@@ -1,3 +1,5 @@
+@def CONTROL_BUTTONS_VIEWPORT 28px;
+
 .mail-list-container {
 	width: 70%;
 	height: 100%;
@@ -5,13 +7,48 @@
 }
 
 .mail-listing-view {
-	height: 340px;
+	height: 390px;
 	padding: 5px;
 }
 
 .mail-record-container {
 	width: 100%;
-	height: 68px;
+	height: 65px;
 	position: relative;
 }
 
+.mail-record-container:hover {
+	color: OUTLINE_COLOR;
+}
+
+.mail-record-container.active {
+	font-weight: bold;
+	color: OUTLINE_COLOR;
+}
+
+.control-buttons {
+	background-color: BACKGROUND_COLOR;
+	height: CONTROL_BUTTONS_VIEWPORT;
+	padding: 4px;
+}
+
+.text-button.next {
+	float:right;
+}
+
+.unread {
+	font-weight: bold;
+}
+
+.current-indicator {
+	background-image: url('../assets/dot.png');
+	display: none;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	right: -10px;
+}
+
+.active .current-indicator {
+	display: block;
+}

@@ -4,8 +4,7 @@
 
 .goog-toolbar {
   /* Client apps may override the URL at which they serve the image. */
-  background: #fafafa url(//ssl.gstatic.com/editor/toolbar-bg.png) repeat-x bottom left;
-  border-bottom: 1px solid #d5d5d5;
+  /*background: #fafafa url(//ssl.gstatic.com/editor/toolbar-bg.png) repeat-x bottom left;*/
   cursor: default;
   font: normal 12px Arial, sans-serif;
   margin: 0;

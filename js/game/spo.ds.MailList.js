@@ -45,7 +45,7 @@ spo.ds.MailList.prototype.interval = 5000;
  * @type {!number}
  * @protected
  */
-spo.ds.MailList.prototype.msgsPerPage = 5;
+spo.ds.MailList.prototype.msgsPerPage = 6;
 
 /**
  * Pointer to the list of messages that are loaded from the server.
@@ -59,7 +59,7 @@ spo.ds.MailList.prototype.list_;
  * @type {number}
  * @private
  */
-spo.ds.MailList.prototype.msgCount_;
+spo.ds.MailList.prototype.msgCount_ = -1;
 /**
  * Holds the viewed property state. This is used to monitor the server list.
  * It is supposed to work as this: Initially the box is not viewed and the list
@@ -117,7 +117,7 @@ spo.ds.MailList.prototype.hasNextPage = function() {
 spo.ds.MailList.prototype.getPage = function(page) {
   var start = 1 + ((this.onPage_ - 1) * this.msgsPerPage);
   console.log('start is ',start);
-  if (this.msgCount_ != null)
+  if (this.msgCount_ != -1)
     if (start > this.msgCount_) return;
   this.start_ = start;
   this.update();
@@ -190,7 +190,7 @@ spo.ds.MailList.prototype.setBoxCount = function(count) {
 spo.ds.MailList.prototype.clean = function() {
   this.cancelUpdate();
   this.list_ = [];
-  this.msgCount_ = null;
+  this.msgCount_ = -1;
   this.onPage_ = 1;
 };
 

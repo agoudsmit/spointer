@@ -8,5 +8,9 @@
 }
 
 .mail-service-info {
-  color: BACKGROUND_COLOR;
+  opacity: 0.7;
+}
+
+.mail-padded {
+	padding: 5px 0 5px 0;
 }

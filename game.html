@@ -9,14 +9,18 @@
       // For now username will do, but we actually need to know more for the components
       USER_NAME = 'Peter StJ';
       LOGOUT_LINK = 'whatever';
-      UPLOAD_SCENARIO = '/InterACT/games/upload';
-      UPLOAD_TEAMS = '/InterACT/games/uploadPlayers';
-      FINISHED_GAME_STATS_URL = '/whateverYouWant/'; // + the game id will be appended
+      // UPLOAD_SCENARIO = '/InterACT/games/upload';
+      // UPLOAD_TEAMS = '/InterACT/games/uploadPlayers';
+      // FINISHED_GAME_STATS_URL = '/whateverYouWant/'; // + the game id will be appended
     </script>
     <script src="/InterACT/serverTime"></script>
+    <script src="/InterACT/recipients"></script>
+    <!-- <script>
+    RECIPIENTS = ['user 1', 'user2'];
+    </script> -->
   </head>
   <body>
-    <div id="screen"></div>
+    <div id="screen" class="gamearena"></div>
 
 
     <script src="build/game-cssmap.js"></script>
