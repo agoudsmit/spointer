@@ -97,6 +97,9 @@ spo.ui.MailList.prototype.enterDocument = function() {
  */
 spo.ui.MailList.prototype.onNextPressed = function(ev) {
   ev.stopPropagation();
+  if (this.getModel().hasNextPage()) {
+    this.getModel().getPage(this.getModel().getPageIndex()+1);
+  }
 };
 
 /**
@@ -106,6 +109,9 @@ spo.ui.MailList.prototype.onNextPressed = function(ev) {
  */
 spo.ui.MailList.prototype.onPrevPressed = function(ev) {
   ev.stopPropagation();
+  if (this.getModel().hasPreviousPage()) {
+    this.getModel().getPage(this.getModel().getPageIndex()-1);
+  }
 };
 /**
  * Handle clicks in the content zone, make sure the HTML only data records can be clicked.
@@ -179,6 +185,7 @@ spo.ui.MailList.prototype.setSelectedChild = function(index) {
   goog.dom.classes.add(this.getContentElement().children[index], goog.getCssName('active'));
 };
 
+
 /**
  *
  * Handles the update event on the linked list.
@@ -219,4 +226,5 @@ spo.ui.MailList.prototype.handleListUpdate = function(ev) {
   this.localCopy_ = newList;
   this.buttonPrev_.setEnabled(this.getModel().hasPreviousPage());
   this.buttonNext_.setEnabled(this.getModel().hasNextPage());
+  this.dispatchEvent(new spo.control.Event(this, spo.control.Action.UPDATE));
 };
