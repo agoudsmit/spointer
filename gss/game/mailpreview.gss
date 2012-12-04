@@ -14,3 +14,11 @@
 .mail-padded {
 	padding: 5px 0 5px 0;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  color: OUTLINE_COLOR;
+}
