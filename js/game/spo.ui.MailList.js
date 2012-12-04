@@ -14,7 +14,7 @@ goog.require('goog.dom.dataset');
 goog.require('spo.control.Event');
 goog.require('spo.control.EventType');
 goog.require('pstj.date.utils');
-
+goog.require('spo.ds.Resource');
 /**
  * Will act as a control as well.
  *
@@ -28,6 +28,9 @@ spo.ui.MailList = function() {
   this.buttonNext_ = new goog.ui.CustomButton('', spo.ui.ButtonRenderer.getInstance());
   this.buttonPrev_.setEnabled(false);
   this.buttonNext_.setEnabled(false);
+  this.boundUpdateModel = goog.bind(function() {
+    this.getModel().update();
+  });
 };
 goog.inherits(spo.ui.MailList, spo.ui.Widget);
 
@@ -125,8 +128,10 @@ spo.ui.MailList.prototype.onContentClick = function(ev) {
     // safe reference to the mail record that is selected.
     this.selectedMailRecord_ = this.getModel().getList()[selectedIndex];
     if (!spo.ds.mail.isRead(this.selectedMailRecord_)) {
-      spo.ds.mail.markAsRead(this.selectedMailRecord_);
-      // TODO: call the mark as read on the server.
+      //spo.ds.mail.markAsRead(this.selectedMailRecord_);
+      spo.ds.Resource.getInstance().get({
+        'url': '/read/' + spo.ds.mail.getMessageId(this.selectedMailRecord_)
+      }, this.boundUpdateModel);
     }
     this.setSelectedChild(selectedIndex);
     // notify for select action.

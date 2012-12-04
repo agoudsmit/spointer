@@ -58,8 +58,8 @@ spo.ds.mail.doMatch = function(message, message_other) {
   }
   // TODO: fix up the compare function!!!
   return pstj.object.deepEquals(message, message_other, function(a, b) {
-    if (a['is_read'] != a['is_read']) return false;
-    return true;
+    if (a['is_read'] != b['is_read']) return false;
+    return true ;
   });
 };
 
