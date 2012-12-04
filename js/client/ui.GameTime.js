@@ -44,7 +44,7 @@ spo.ui.GameTime.prototype.setTime = function(time) {
    *****************************************/
 
   // Get the server time.
-  var serverNow = spo.ds.STP.getInstance().getServerTime();
+  var serverNow = spo.ds.STP.getInstance().getServerTime(time);
 
   // Get the last saved game time.
   var savedgametime = this.getModel().getProp(
