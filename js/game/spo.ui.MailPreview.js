@@ -22,8 +22,20 @@ goog.scope(function() {
       from: data['from']['alias'],
       date: pstj.date.utils.renderTime(data['date'], 'Month dd, yyyy / hh:xx'),
       subject: data['subject'],
-      recepients: 'Static for now', // Should be list generated form the ids.
+      recepients: spo.gametemplate.UserList({
+        list: data['to']
+      }), // Should be list generated form the ids.
       body: data['body']
     });
   };
+  /** @inheritDoc */
+  p.decorateInternal = function(el) {
+    goog.base(this, 'decorateInternal', el);
+    this.userListContainer = goog.dom.getElementByClass(goog.getCssName('user-list-container'), el).parentNode;
+  };
+  /** @inheritDoc */
+  p.disposeInternal = function() {
+    delete this.userListContainer;
+    goog.base(this, 'disposeInternal');
+  }
 });

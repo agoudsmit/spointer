@@ -11,6 +11,23 @@ goog.require('soy');
  * @return {string}
  * @notypecheck
  */
+spo.gametemplate.UserList = function(opt_data) {
+  var output = '';
+  var recipientList3 = opt_data.list;
+  var recipientListLen3 = recipientList3.length;
+  for (var recipientIndex3 = 0; recipientIndex3 < recipientListLen3; recipientIndex3++) {
+    var recipientData3 = recipientList3[recipientIndex3];
+    output += '<span class="clickable" data-indexkey="' + soy.$$escapeHtml(recipientIndex3) + '">' + soy.$$escapeHtml(recipientData3) + '</span>' + ((recipientIndex3 == recipientListLen3 - 1) ? '&nbsp;' : ',&nbsp;');
+  }
+  return output;
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @return {string}
+ * @notypecheck
+ */
 spo.gametemplate.Composer = function(opt_data) {
   return '<div class="' + goog.getCssName('mail-composer') + '"><div class="' + goog.getCssName('toolbars-wrap') + ' ' + goog.getCssName('mail-bottom-border') + ' ' + goog.getCssName('mail-padded') + '"><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('circle-button') + ' ' + goog.getCssName('send-button') + '"></div><div class="' + goog.getCssName('editor-toolbar') + '"></div></div><div class="' + goog.getCssName('fields-wrap') + ' ' + goog.getCssName('mail-bottom-border') + ' ' + goog.getCssName('mail-padded') + '"><div class="' + goog.getCssName('mail-composer-form-field') + '"><label>To:</label><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('field-to') + '" type="text"/></div><div class="' + goog.getCssName('mail-composer-form-field') + '"><label>From:</label><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('field-from') + '" type="text"/></div><div class="' + goog.getCssName('mail-composer-form-field') + '"><label>Subject:</label><input class="' + goog.getCssName('form-values') + ' ' + goog.getCssName('field-subject') + '" type="text"/></div></div><div class="' + goog.getCssName('editor-field') + '" id="mail-composer-text-field"></div></div>';
 };
@@ -62,7 +79,7 @@ spo.gametemplate.MailRecord = function(opt_data) {
  * @notypecheck
  */
 spo.gametemplate.MailPreview = function(opt_data) {
-  return '<div class="' + goog.getCssName('mail-preview-box') + '"><div class="' + goog.getCssName('mail-preview-controls') + ' ' + goog.getCssName('mail-padded') + ' ' + goog.getCssName('mail-bottom-border') + '"><!-- controls go here --></div><div class="' + goog.getCssName('mail-preview-details') + ' ' + goog.getCssName('mail-padded') + ' ' + goog.getCssName('mail-bottom-border') + '"><div><span class="' + goog.getCssName('mail-service-info') + '">From:&nbsp;</span>' + opt_data.from + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Date:&nbsp;</span>' + opt_data.date + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Subject:&nbsp;</span>' + opt_data.subject + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">To:&nbsp;</span>' + opt_data.recepients + '</div></div><div class="' + goog.getCssName('mail-preview-body') + ' ' + goog.getCssName('mail-padded') + '">' + opt_data.body + '</div></div>';
+  return '<div class="' + goog.getCssName('mail-preview-box') + '"><div class="' + goog.getCssName('mail-preview-controls') + ' ' + goog.getCssName('mail-padded') + ' ' + goog.getCssName('mail-bottom-border') + '"><!-- controls go here --></div><div class="' + goog.getCssName('mail-preview-details') + ' ' + goog.getCssName('mail-padded') + ' ' + goog.getCssName('mail-bottom-border') + '"><div><span class="' + goog.getCssName('mail-service-info') + '">From:&nbsp;</span>' + opt_data.from + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Date:&nbsp;</span>' + opt_data.date + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Subject:&nbsp;</span>' + opt_data.subject + '</div><div><span class="' + goog.getCssName('mail-service-info') + ' ' + goog.getCssName('user-list-container') + '">To:&nbsp;</span>' + opt_data.recepients + '</div></div><div class="' + goog.getCssName('mail-preview-body') + ' ' + goog.getCssName('mail-padded') + '">' + opt_data.body + '</div></div>';
 };
 
 
