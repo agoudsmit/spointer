@@ -11,6 +11,7 @@ goog.require('goog.events.KeyHandler.EventType');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.LabelInput');
 goog.require('spo.template');
+goog.require('goog.events.KeyCodes');
 
 /**
  * The live header widget is an universal widget that is able to handle
@@ -100,6 +101,13 @@ spo.ui.Header.prototype.clock_;
 spo.ui.Header.prototype.clockElement_;
 
 /**
+ * If the search function should be called only on enter key.
+ * @type {!boolean}
+ * @private
+ */
+spo.ui.Header.prototype.searchOnlyOnEnter_ = false;
+
+/**
  * The default string to use as Game Name. We use non blocking space
  * to avoid additional styling.
  *
@@ -186,6 +194,16 @@ spo.ui.Header.prototype.setSearchEnabled_ = function(enable) {
 };
 
 /**
+ * Pains the search term, notice that this will NOT trigger search field change event.
+ * @param {string=} term The search term to visualize.
+ */
+spo.ui.Header.prototype.setSearchTerm = function(term) {
+  if (goog.isString(term)) this.searchField_.setValue(term);
+  else this.searchField_.setValue('');
+};
+
+
+/**
  * Handler for the change in the search sub-widget.
  *
  * @param  {goog.events.Event} e The KeyHandler KEY event.
@@ -193,6 +211,11 @@ spo.ui.Header.prototype.setSearchEnabled_ = function(enable) {
  */
 spo.ui.Header.prototype.onSearchChange_ = function(e) {
   this.searchDelayed_.stop();
+  if (this.searchOnlyOnEnter_ == true) {
+    if (e.keyCode != goog.events.KeyCodes.ENTER) {
+      return;
+    }
+  }
   // Omit checks for 'changed' as we might change back to 'original'
   // and still need to call the search function to clear the search.
   if (goog.isFunction(this.searchFieldHandler_)) {
@@ -234,8 +257,9 @@ spo.ui.Header.prototype.setGameName = function(gamename) {
  *                       the field will be disabled/hidden.
  * @param {function(string): void=} handler The handler to use with
  *                                  the fields change currently.
+ * @param {boolean=} on_enter If the search should be perfored only on enter press or on everykey press.
  */
-spo.ui.Header.prototype.setSearchFiledState = function(text, handler) {
+spo.ui.Header.prototype.setSearchFiledState = function(text, handler, on_enter) {
   this.searchField_.clear();
   if (goog.isString(text)) {
     this.searchField_.setLabel(text);
@@ -247,6 +271,8 @@ spo.ui.Header.prototype.setSearchFiledState = function(text, handler) {
     this.searchFieldHandler_ = null;
     this.searchField_.getElement().style.display = 'none';
   }
+  if (on_enter == true) this.searchOnlyOnEnter_ = true;
+  else this.searchOnlyOnEnter_ = false;
 };
 
 /**
