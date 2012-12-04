@@ -31,11 +31,11 @@
 }
 
 @defmixin hovericons(NUMBER) {
-  background-position: mult(32px, NUMBER, -1) 0, -320px 0;
+  background-position: mult(32px, NUMBER, -1) 0, -448px 0;
 }
 /** @border-top-right-radius:  will change due to more icons being added */
 @defmixin hoverdark(NUMBER) {
- background-position: mult(32px, NUMBER, -1) 0, -320px 0;
+ background-position: mult(32px, NUMBER, -1) 0, -480px 0;
 }
 
 /** Add natural box sizing, works in ie8+, ff, chrome */

@@ -1,7 +1,6 @@
 .goog-button {
   color: #036;
   border-color: #036;
-  background-color: #69c;
 }
 
 /* State: disabled. */
@@ -53,12 +52,32 @@
 .circle-button {
   @mixin cirlebutton();
 }
-
+/** Configure buttons for this view */
 .send-button {
-  @mixin icons(9);
+  @mixin icons(11);
 }
-
 .send-button:hover, .send-button:focus, .form-button-hover.send-button,
 .form-button-focused.send-button {
-  @mixin hovericons(9);
+  @mixin hovericons(11);
+}
+.reply-button {
+  @mixin icons(13);
+}
+.forward-button {
+  @mixin icons(10);
+}
+.new-button {
+  @mixin icons(12);
+}
+.replay-button:hover, .replay-button:focus, .form-button-hover.replay-button,
+.form-button-focused.replay-button {
+  @mixin hovericons(11);
+}
+.forward-button:hover, .forward-button:focus, .form-button-hover.forward-button,
+.form-button-focused.forward-button {
+  @mixin hovericons(11);
+}
+.new-button:hover, .new-button:focus, .form-button-hover.new-button,
+.form-button-focused.new-button {
+  @mixin hovericons(11);
 }
