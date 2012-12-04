@@ -54,17 +54,22 @@ spo.control.GameArena.prototype.init = function() {
   this.previewControl_ = new spo.control.MailPreview(
     /** @type {!Element} */ (goog.dom.getElementByClass(goog.getCssName(
       'mail-preview-container'), this.view_.getContentElement())));
+  this.previewControl_.setParentControl(this);
 
   this.composer = new spo.control.Composer(/** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName(
   'mail-editor-container'), this.view_.getContentElement())));
-  this.composer.setEnable(true);
+  //this.composer.setEnable(true);
 
-  spo.ui.GameHeader.getInstance().setSearchFiledState('search messages', goog.bind(this.performSearch, this));
+  spo.ui.GameHeader.getInstance().setSearchFiledState('search messages', goog.bind(this.performSearch, this), true);
 
 };
 
 spo.control.GameArena.prototype.performSearch = function(text) {
-  console.log('text to search', text);
+  if (this.mailbox_.getActiveResource() != null) {
+    this.maillist_.getModel().setFilter(text);
+  } else {
+     spo.ui.GameHeader.getInstance().setSearchTerm('');
+  }
 };
 
 spo.control.GameArena.prototype.currentPreviewdMailRecord_ = null;
@@ -91,6 +96,16 @@ spo.control.GameArena.prototype.handleMailListAction = function(ev) {
   case spo.control.Action.SELECT:
     this.loadMailPreview();
     break;
+  case spo.control.Action.UPDATE:
+    var record = this.previewControl_.getRecord();
+    if (record != null) {
+      var index = spo.ds.mail.getIndexOfMessage(this.maillist_.getModel().getList(), record)
+      if (index != -1) {
+        this.maillist_.setSelectedChild(index);
+      }
+    }
+    // Check if the currently viewed mail is in the list and if yes - highlight it.
+    break;
   }
 };
 /** @inheritDoc */
@@ -100,9 +115,18 @@ spo.control.GameArena.prototype.notify = function(child, action) {
       if (action == spo.control.Action.SELECT) {
         console.log(' Received new resource', this.mailbox_.getActiveResource());
         var mailbox = spo.ds.mail.getListing(this.mailbox_.getActiveResource());
-        console.log(mailbox);
         this.maillist_.setModel(spo.ds.mail.getListing(this.mailbox_.getActiveResource()));
 
+      }
+      break;
+    case this.previewControl_:
+      if (action == spo.control.Action.SELECT) {
+        var username = this.previewControl_.getSelectedUserName();
+        if (username != null) {
+          this.composer.setEnable(true);
+          // change undefined to the 'my username value'
+          this.composer.loadData([username], undefined, 'Compose your message here.')
+        }
       }
       break;
     default:
