@@ -49,6 +49,17 @@ spo.control.Composer.prototype.setEnable = function(enable) {
   else this.container_.style.display = 'none';
 };
 
+/**
+ * Loads the composer with the optional data.
+ * @param  {{Array.<string>}=} to The list of recipients.
+ * @param  {string=} from  Optionally who the msg is from.
+ * @param  {string=} body Optional body for the messages.
+ * @param  {web_form} web_form Optional web form to load, used for creating events.
+ */
+spo.control.Composer.prototype.loadData = function(to, from, body, web_form) {
+  this.view_.setFields(to, from);
+  this.field_.setHtml(undefined, (goog.isString(body)) ? body : '');
+};
 
 spo.control.Composer.prototype.createAutoComplete = function() {
   this.ac = goog.ui.ac.createSimpleAutoComplete(spo.ds.mail.getNames(), this.view_.toField, true);
