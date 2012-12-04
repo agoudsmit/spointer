@@ -18,6 +18,7 @@ goog.provide('spo.ds.MailList');
 
 goog.require('spo.ds.OverrideList');
 goog.require('spo.ds.Resource');
+goog.require('goog.string');
 
 /**
  * Provides the mail box wrapper abstraction. It should be responsible for the
@@ -32,6 +33,7 @@ goog.require('spo.ds.Resource');
 spo.ds.MailList = function(resource) {
   goog.base(this, resource);
   this.list_ = [];
+  this.filter_ = '';
 };
 goog.inherits(spo.ds.MailList, spo.ds.OverrideList);
 
@@ -45,7 +47,7 @@ spo.ds.MailList.prototype.interval = 5000;
  * @type {!number}
  * @protected
  */
-spo.ds.MailList.prototype.msgsPerPage = 6;
+spo.ds.MailList.prototype.msgsPerPage = 2;
 
 /**
  * Pointer to the list of messages that are loaded from the server.
@@ -111,27 +113,53 @@ spo.ds.MailList.prototype.hasPreviousPage = function() {
  * @return {boolean}
  */
 spo.ds.MailList.prototype.hasNextPage = function() {
-  return this.getBoxCount() / this.msgsPerPage > 1;
+  return this.getBoxCount() / (this.msgsPerPage * this.onPage_) > 1;
 };
 
+/**
+ * Gets the current page we are on.
+ * @return {number} The page index.
+ */
+spo.ds.MailList.prototype.getPageIndex = function() {
+  return this.onPage_;
+}
+
 spo.ds.MailList.prototype.getPage = function(page) {
-  var start = 1 + ((this.onPage_ - 1) * this.msgsPerPage);
-  console.log('start is ',start);
+  // console.log('requesting page ' + page);
+  var start = 1 + ((page - 1) * this.msgsPerPage);
+  // console.log('start is ',start);
   if (this.msgCount_ != -1)
     if (start > this.msgCount_) return;
   this.start_ = start;
+  this.onPage_ = page;
   this.update();
 };
 
 /** @inheritDoc */
 spo.ds.MailList.prototype.getRequest = function() {
-  return {
+  var req = {
     'url': this.resource_,
     'config': {
       'start': this.start_,
       'count': this.msgsPerPage
      }
   };
+  if (this.filter_ != '') {
+    req['config']['query'] = this.filter_;
+  }
+  return req;
+};
+
+/**
+ * Applies a filter on the listing.
+ * @param {string=} query The search query if any.
+ */
+spo.ds.MailList.prototype.setFilter = function(query) {
+  query = goog.string.trim(query);
+  if (query != this.filter_) {
+    this.filter_ = query;
+    this.getPage(1);
+  }
 };
 
 /**
@@ -192,6 +220,7 @@ spo.ds.MailList.prototype.clean = function() {
   this.list_ = [];
   this.msgCount_ = -1;
   this.onPage_ = 1;
+  this.filter_ = '';
 };
 
 /**
