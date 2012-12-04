@@ -89,7 +89,7 @@ spo.ds.mail.subsetMatch = function(whole_list, partial_list) {
 /**
  * Returns the mail listing data structure matching the resource. If one
  * does not exists it will be created and then returned.
- * 
+ *
  * @param {!string} resource The mail URL resource to use.
  */
 spo.ds.mail.getListing = function(resource) {
@@ -115,4 +115,34 @@ spo.ds.mail.isRead = function(record) {
  */
 spo.ds.mail.markAsRead = function(record) {
   record['is_read'] = 1;
+};
+
+/**
+ * Get index of the message if it is contained in this list.
+ * @param  {Array.<*>} list The msg list.
+ * @param  {*} message message to find.
+ * @return {number} The index of the mesasge or -1.
+ */
+spo.ds.mail.getIndexOfMessage = function(list, message) {
+  var id = spo.ds.mail.getMessageId(message);
+  for (var i = 0; i < list.length; i++) {
+    if (spo.ds.mail.getMessageId(list[i]) == id) return i;
+  }
+  return -1;
+};
+
+/**
+ * Retrieves the username by index from the recipient list. If none is found null is returned.
+ * @param  {*} record The mail record
+ * @param  {number} index  The index to look for.
+ * @return {string|null} The username found or null.
+ */
+spo.ds.mail.getRecipientByIndex = function(record, index) {
+  if (goog.isArray(record['to'])) {
+    if (index < record['to'].length) {
+      var username = record['to'][index];
+      if (username != '') return username;
+    }
+  }
+  return null;
 };
