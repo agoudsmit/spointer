@@ -63,14 +63,19 @@ spo.control.MailBoxList.prototype.handleChildAction = function(ev) {
     this.notify(this, spo.control.Action.SELECT);
   }
 };
+
+spo.control.MailBoxList.prototype.getActiveResource = function() {
+  return (typeof this.currentActiveResource_ == 'string') ? this.currentActiveResource_ : null;
+}
+
 /**
  * Loads the view after the needed data has been provided.
  * @protected
  */
 spo.control.MailBoxList.prototype.loadView = function() {
-  
-  
-  
+
+
+
   var list = this.model_.getList();
   var count = list.getCount();
   for (var i = 0; i < count; i++) {
