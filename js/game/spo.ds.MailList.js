@@ -122,7 +122,7 @@ spo.ds.MailList.prototype.hasNextPage = function() {
  */
 spo.ds.MailList.prototype.getPageIndex = function() {
   return this.onPage_;
-}
+};
 
 spo.ds.MailList.prototype.getPage = function(page) {
   // console.log('requesting page ' + page);
@@ -151,11 +151,17 @@ spo.ds.MailList.prototype.getRequest = function() {
 };
 
 /**
- * Applies a filter on the listing.
+ * Applies a filter on the listing. Optional string will be applied as search criteria.
+ * If no string is provided it will be considered to be an ampty string and no filter will be applied.
+ * 
  * @param {string=} query The search query if any.
  */
 spo.ds.MailList.prototype.setFilter = function(query) {
-  query = goog.string.trim(query);
+  if (!goog.isString(query)) {
+    query = '';
+  } else {
+    query = goog.string.trim(query);
+  }
   if (query != this.filter_) {
     this.filter_ = query;
     this.getPage(1);

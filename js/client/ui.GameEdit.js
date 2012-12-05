@@ -124,7 +124,7 @@ spo.ui.GameEdit.prototype.createDom = function() {
 
 
 /**
- * Ceck if the form has been utilized to save data already.
+ * Check if the form has been utilized to save data already.
  * @return {boolean} True is the save button has been used.
  */
 spo.ui.GameEdit.prototype.isSafeToClose = function() {

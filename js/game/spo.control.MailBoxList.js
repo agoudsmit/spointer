@@ -40,13 +40,6 @@ spo.control.MailBoxList.prototype.activeBox_ = null;
 spo.control.MailBoxList.prototype.currentActiveResource_;
 
 /**
- * Getter for the currently active resource.
- * @return {string}
- */
-spo.control.MailBoxList.prototype.getActiveResource = function() {
-  return this.currentActiveResource_;
-};
-/**
  * Handles the action of a child, this is usually to change the focus to another box.
  * @param {goog.events.Event} ev The ACTION component event.
  * @protected
@@ -64,18 +57,19 @@ spo.control.MailBoxList.prototype.handleChildAction = function(ev) {
   }
 };
 
+/**
+ * Getter for the currently active resource - it will return the resource (mailbox) that is selected in the view.
+ * @return {string|null} The resource if one is selected, null otherwise.
+ */
 spo.control.MailBoxList.prototype.getActiveResource = function() {
   return (typeof this.currentActiveResource_ == 'string') ? this.currentActiveResource_ : null;
-}
+};
 
 /**
  * Loads the view after the needed data has been provided.
  * @protected
  */
 spo.control.MailBoxList.prototype.loadView = function() {
-
-
-
   var list = this.model_.getList();
   var count = list.getCount();
   for (var i = 0; i < count; i++) {

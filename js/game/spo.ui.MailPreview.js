@@ -3,6 +3,7 @@ goog.provide('spo.ui.MailPreview');
 goog.require('pstj.ui.Templated');
 goog.require('spo.gametemplate');
 goog.require('pstj.date.utils');
+goog.require('goog.dom');
 
 /**
  * @constructor
@@ -15,6 +16,11 @@ goog.inherits(spo.ui.MailPreview, pstj.ui.Templated);
 
 goog.scope(function() {
   var p = spo.ui.MailPreview.prototype;
+  /**
+   * @type {!Element}
+   * @private
+   */
+  p.userListContainer;
   /** @inheritDoc */
   p.getTemplate = function() {
     var data = this.getModel();
@@ -31,11 +37,11 @@ goog.scope(function() {
   /** @inheritDoc */
   p.decorateInternal = function(el) {
     goog.base(this, 'decorateInternal', el);
-    this.userListContainer = goog.dom.getElementByClass(goog.getCssName('user-list-container'), el).parentNode;
+    this.userListContainer = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('user-list-container'), el).parentNode);
   };
   /** @inheritDoc */
   p.disposeInternal = function() {
     delete this.userListContainer;
     goog.base(this, 'disposeInternal');
-  }
+  };
 });

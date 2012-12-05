@@ -9,7 +9,7 @@
 
 .fields-wrap {
 	position: relative;
-  margin-bottom: 10px;
+ 	 margin-bottom: 10px;
 }
 
 .mail-composer-form-field {
@@ -22,10 +22,16 @@
 
 .editor-toolbar {
 	position: absolute;
-  top: 0;
+  	top: 0;
 	right: 0;
-	width: 80%;
+	width: 50%;
 	height: 30px;
+}
+
+.template-button {
+	position: absolute;
+	right: 52%;
+	top: 3px;
 }
 
 .toolbars-wrap .send-button {
@@ -57,6 +63,9 @@ input.form-values {
 	background-color: BACKGROUND_COLOR;;
 }
 
+.goog-menu {
+	box-shadow: 1px 2px 6px 0 EMBOSS_TEXT_COLOR;
+}
 
 .ac-renderer {
   position: absolute;
@@ -81,3 +90,7 @@ input.form-values {
   color: BASE_COLOR;
   background-color: EMBOSS_TEXT_COLOR;
 }
+
+.goog-menuitem {
+	padding: 0 10px;
+	}

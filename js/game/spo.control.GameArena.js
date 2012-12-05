@@ -35,8 +35,7 @@ spo.control.GameArena.prototype.init = function() {
   this.view_.setScrollInsideTheWidget(false);
   this.view_.render(this.container_);
   this.view_.getContentElement().innerHTML = spo.gametemplate.Widgets({});
-  // TODO: Load game details => setup header
-
+  
   var top_pane = /** @type {!Element} */ (goog.dom.getElementByClass(goog.getCssName(
   'mail-list-placeholder'), this.view_.getContentElement()));
 
@@ -99,7 +98,7 @@ spo.control.GameArena.prototype.handleMailListAction = function(ev) {
   case spo.control.Action.UPDATE:
     var record = this.previewControl_.getRecord();
     if (record != null) {
-      var index = spo.ds.mail.getIndexOfMessage(this.maillist_.getModel().getList(), record)
+      var index = spo.ds.mail.getIndexOfMessage(this.maillist_.getModel().getList(), record);
       if (index != -1) {
         this.maillist_.setSelectedChild(index);
       }
@@ -113,8 +112,6 @@ spo.control.GameArena.prototype.notify = function(child, action) {
   switch (child) {
     case this.mailbox_:
       if (action == spo.control.Action.SELECT) {
-        console.log(' Received new resource', this.mailbox_.getActiveResource());
-        var mailbox = spo.ds.mail.getListing(this.mailbox_.getActiveResource());
         this.maillist_.setModel(spo.ds.mail.getListing(this.mailbox_.getActiveResource()));
 
       }
@@ -124,8 +121,8 @@ spo.control.GameArena.prototype.notify = function(child, action) {
         var username = this.previewControl_.getSelectedUserName();
         if (username != null) {
           this.composer.setEnable(true);
-          // change undefined to the 'my username value'
-          this.composer.loadData([username], undefined, 'Compose your message here.')
+          // change undefined to the 'my user name value'
+          this.composer.loadData([username], undefined, 'Compose your message here.');
         }
       }
       break;

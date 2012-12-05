@@ -22,8 +22,15 @@
  */
 {template .Composer}
   <div class="{css mail-composer}">
+  	<div class="{css error} {css error-toolbar}" style="display: none;"></div>
   	<div class="{css toolbars-wrap} {css mail-bottom-border} {css mail-padded}">
   		<div class="{css goog-button} {css form-button} {css circle-button} {css send-button}"></div>
+  		<div class="{css text-button} {css goog-button} {css from-button} {css template-button}">Templates</div>
+  		<div class="{css goog-menu}" style="display: none;">
+  			<div class="{css goog-menuitem}" data-template="draft">Load draft</div>
+  			<div class="{css goog-menuitem}" data-template="meeting">New meeting</div>
+  			<div class="{css goog-menuitem}" data-template="intelligence">Intelligence request</div>
+  		</div>
     	<div class="{css editor-toolbar}"></div>
     </div>
     <div class="{css fields-wrap} {css mail-bottom-border} {css mail-padded}">
@@ -40,8 +47,23 @@
     		<input class="{css form-values} {css field-subject}" type="text"/>
     	</div>
     </div>
+    <div class="{css web-form-container}"></div>
     <div class="{css editor-field}" id="mail-composer-text-field"></div>
   </div>
+{/template}
+
+/**
+ * Template for the meeting web form
+ * @param date_format
+ * @param time_format
+ * @param date
+ * @param time
+ */
+{template .MeetingForm}
+	<div class="{css meeting-form}">
+		<div><input class="{css meeting-date}" label="{$date_format}" value="{$date}" /></div>
+		<div><input class="{css meeting-time}" label="{$time_format}" value="{$time}" /></div>
+	</div>
 {/template}
 
 /**

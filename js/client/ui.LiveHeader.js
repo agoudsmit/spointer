@@ -12,6 +12,7 @@ goog.require('goog.ui.Component');
 goog.require('goog.ui.LabelInput');
 goog.require('spo.template');
 goog.require('goog.events.KeyCodes');
+goog.require('pstj.ui.Clock');
 
 /**
  * The live header widget is an universal widget that is able to handle
@@ -124,7 +125,12 @@ spo.ui.Header.prototype.defaultGameName_ = '&nbsp;';
  * @type {string}
  */
 spo.ui.Header.prototype.defaultViewName_ = '&nbsp;';
-
+/**
+ * Flag if the search term in the search field was appplied.
+ * @type {boolean}
+ * @private
+ */
+spo.ui.Header.prototype.searchWasApplied_ = false;
 /**
  * @inheritDoc
  */
@@ -177,13 +183,12 @@ spo.ui.Header.prototype.setClockInstance = function(clock) {
 };
 
 /**
- * Enables/disables the search widget (a labaled input).
+ * Enables/disables the search widget (a labeled input).
  *
  * @param {boolean} enable If true, the search widget will be shown and enabled.
  * @private
  */
 spo.ui.Header.prototype.setSearchEnabled_ = function(enable) {
-  var el = this.searchField_.getElement();
   if (enable) {
     this.getHandler().listen(this.keyHandler_,
       goog.events.KeyHandler.EventType.KEY, this.onSearchChange_);
@@ -211,6 +216,11 @@ spo.ui.Header.prototype.setSearchTerm = function(term) {
  */
 spo.ui.Header.prototype.onSearchChange_ = function(e) {
   this.searchDelayed_.stop();
+  if (this.searchWasApplied_) {
+    this.searchWasApplied_ = false;
+    goog.dom.classes.remove(this.searchField_.getElement(), goog.getCssName('used'));
+  }
+  
   if (this.searchOnlyOnEnter_ == true) {
     if (e.keyCode != goog.events.KeyCodes.ENTER) {
       return;
@@ -229,16 +239,28 @@ spo.ui.Header.prototype.onSearchChange_ = function(e) {
  * @private
  */
 spo.ui.Header.prototype.performSearchCallback_ = function() {
-  this.searchFieldHandler_(this.searchField_.getValue());
+  var value = this.searchField_.getValue();
+  if (value != '') {
+    if (!this.searchWasApplied_) {
+      this.searchWasApplied_ = true;
+      goog.dom.classes.add(this.searchField_.getElement(), goog.getCssName('used'));
+    }
+  } else {
+    if (this.searchWasApplied_) {
+      this.searchWasApplied_ = false;
+      goog.dom.classes.remove(this.searchField_.getElement(), goog.getCssName('used'));
+    }
+  }
+  this.searchFieldHandler_(value);
 };
 
 /**
  * Public method to set the view name in the header.
  *
- * @param {string=} viewname The view name to use.
+ * @param {string=} view_name The view name to use.
  */
-spo.ui.Header.prototype.setViewName = function(viewname) {
-  this.viewName_.innerHTML = viewname || this.defaultViewName_;
+spo.ui.Header.prototype.setViewName = function(view_name) {
+  this.viewName_.innerHTML = view_name || this.defaultViewName_;
 };
 
 /**

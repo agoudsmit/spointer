@@ -8,6 +8,7 @@ goog.provide('spo.control.EventType');
 
 goog.require('goog.events');
 goog.require('goog.events.Event');
+goog.require('goog.events.EventTarget');
 
 
 /**
@@ -42,7 +43,7 @@ spo.control.EventType = {
 };
 
 /**
- * Enumarate the known action types.
+ * Enumerate the known action types.
  * @enum {number}
  */
 spo.control.Action = {
@@ -56,5 +57,6 @@ spo.control.Action = {
   SAVE: 7,
   PAUSE: 8,
   ADD: 9,
-  SELECT: 10
+  SELECT: 10,
+  UPDATE: 11
 };

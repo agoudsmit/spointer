@@ -32,12 +32,14 @@ game = function() {
     screen));
 
   var gameRecord = null;
+  
   function handleGameDetails(result) {
 
     if (result['status'] == 'ok') {
       var game = result['content']['content'];
       if (gameRecord == null) {
         gameRecord = new spo.ds.Game(game);
+        window['GAME'] = gameRecord;
         var clock = new spo.ui.HeaderGameTime();
         clock.setModel(gameRecord);
         header.setClockInstance(clock);
