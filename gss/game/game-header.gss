@@ -42,3 +42,7 @@ inline in the html, this is only possible in the login stage*/
 .error {
   color: ERROR_COLOR;
 }
+
+.game-header input.search-input.used {
+	background-color: #fdffca;
+}
