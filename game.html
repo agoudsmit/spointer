@@ -16,9 +16,26 @@
     </script>
     <script src="/InterACT/serverTime"></script>
     <script src="/InterACT/recipients"></script>
-    <!-- <script>
-    RECIPIENTS = ['user 1', 'user2'];
-    </script> -->
+   	<script>
+    	COMPOSER_SETUP = {
+    	    can_use_tags: true,
+    	    can_set_from: true
+    	}
+    </script>
+    <script>
+    	TEMPLATES = {
+    	    intelligence: {
+    	      to: "Intelligence",
+    	      from: PLAYER_NAME,
+    	      body: "Hello intel,<p> I would like to know...</p>"
+    	    },
+    	    meeting:  {
+    	      body: "Let us meet...",
+    	      web_form: 1, // should be text if the form is ready to use - only <span class="click" data-resource="url"> are supported
+    	      //web_form_config: 123873746 The datetime of the meeting form
+    	    }
+    	}
+    </script>
   </head>
   <body>
     <div id="screen" class="gamearena"></div>
