@@ -22,3 +22,32 @@
 .clickable:hover {
   color: OUTLINE_COLOR;
 }
+
+.mail-preview-details .web-form-container {
+	padding: 5px;
+	/*border-top: 1px solid EMBOSS_TEXT_COLOR;*/
+	margin-top: 5px;
+}
+
+.web-form-container span {
+	border: 1px solid EMBOSS_TEXT_COLOR;
+	border-radius: 3px;
+	margin: 5px;
+}
+
+.tags-list-container {
+	height: 26px;
+	padding: 5px 0;
+}
+
+.tags-container {
+	position: relative;
+}
+
+.tags-container input {
+	top: 0;
+}
+.tags-container .goog-button {
+	position: absolute;
+	top: 2px;
+}

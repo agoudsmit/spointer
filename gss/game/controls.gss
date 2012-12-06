@@ -1,0 +1,8 @@
+.game-controls {
+  height: 32px;
+}
+
+/*.game-control-item {
+  margin: 11px 0 11px 0;
+}
+*/

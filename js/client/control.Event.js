@@ -58,5 +58,7 @@ spo.control.Action = {
   PAUSE: 8,
   ADD: 9,
   SELECT: 10,
-  UPDATE: 11
+  UPDATE: 11,
+  REPLY: 12,
+  FORWARD: 13
 };

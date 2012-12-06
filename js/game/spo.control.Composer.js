@@ -62,16 +62,17 @@ spo.control.Composer.prototype.webFormView;
 
 /**
  * Loads the composer with the optional data.
- * @param  {{Array.<string>}=} to The list of recipients.
+ * @param  {Array.<string>=} to The list of recipients.
  * @param  {string=} from  Optionally who the message is from.
+ * @param {string=} subject Optional subject to use.
  * @param  {string=} body Optional body for the messages.
  * @param  {string=} web_form Optional web form to load, used for creating events.
  * @param {*=} web_form_config Optional configuration for the form - this is the date.
  */
-spo.control.Composer.prototype.loadData = function(to, from, body, web_form, web_form_config) {
+spo.control.Composer.prototype.loadData = function(to, from, subject, body, web_form, web_form_config) {
   goog.dispose(this.webFormView);
   this.view_.formContainer.innerHTML = '';
-  this.view_.setFields(to, from);
+  this.view_.setFields(to, from, subject);
   this.field_.setHtml(undefined, (goog.isString(body)) ? body : '');
   if (goog.isDefAndNotNull(web_form)) {
     if (goog.isNumber(web_form)) {
@@ -83,6 +84,16 @@ spo.control.Composer.prototype.loadData = function(to, from, body, web_form, web
     }
   }
 };
+/**
+ * @type {*} The mail we are working with currently.
+ * @private
+ */
+spo.control.Composer.prototype.model_;
+spo.control.Composer.prototype.setRecordModel = function(msg_record) {
+  this.model_ = msg_record;
+};
+
+
 /**
  * Binds the template menu.
  */
@@ -141,7 +152,7 @@ spo.control.Composer.prototype.handleTemplateSelection = function(ev) {
     } else {
       if (goog.isDefAndNotNull(goog.global['TEMPLATES'][templateName])) {
         var template = goog.global['TEMPLATES'][templateName];
-        this.loadData(template['to'], template['from'], template['body'], template['web_form'],
+        this.loadData(template['to'], template['from'], template['subject'], template['body'], template['web_form'],
             template['web_form_config']);
       } else {
         this.showError('not implemented yet');
@@ -162,7 +173,7 @@ spo.control.Composer.prototype.createEditor = function() {
   var original = goog.dom.getElement('mail-composer-text-field');
   this.isCreated = true;
   this.field_ = new goog.editor.SeamlessField('mail-composer-text-field');
-  this.field_.setMinHeight(400);
+  this.field_.setMinHeight(100);
   this.field_.registerPlugin(new goog.editor.plugins.BasicTextFormatter());
   this.field_.registerPlugin(new goog.editor.plugins.EnterHandler());
 
@@ -179,6 +190,6 @@ spo.control.Composer.prototype.createEditor = function() {
   var toolbarControl = goog.ui.editor.DefaultToolbar.makeToolbar(this.buttons_, this.view_.googToolbar);
   (new goog.ui.editor.ToolbarController(this.field_, toolbarControl));
   // Make the write field at least 300 pixels tall, otherwise it looks funny.
-  original.style.minHeight = '300px';
+  original.style.minHeight = '100px';
   this.field_.makeEditable();
 };

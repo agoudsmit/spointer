@@ -132,4 +132,3 @@ spo.ui.Composer.prototype.decorateInternal = function(el) {
   this.errorToolbar = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('error-toolbar'), this.getElement()));
   this.formContainer = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('web-form-container'), this.getElement()));
 };
-

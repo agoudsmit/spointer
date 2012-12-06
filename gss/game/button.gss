@@ -69,15 +69,20 @@
 .new-button {
   @mixin icons(12);
 }
-.replay-button:hover, .replay-button:focus, .form-button-hover.replay-button,
-.form-button-focused.replay-button {
-  @mixin hovericons(11);
+.reply-button:hover, .reply-button:focus, .form-button-hover.reply-button,
+.form-button-focused.reply-button {
+  @mixin hoverdark(13);
 }
 .forward-button:hover, .forward-button:focus, .form-button-hover.forward-button,
 .form-button-focused.forward-button {
-  @mixin hovericons(11);
+  @mixin hoverdark(10);
 }
 .new-button:hover, .new-button:focus, .form-button-hover.new-button,
 .form-button-focused.new-button {
-  @mixin hovericons(11);
+  @mixin hoverdark(12);
+}
+
+.delete-button:hover, .delete-button:focus, .form-button-hover.delete-button,
+.form-button-focused.delete-button {
+  @mixin hoverdark(5);
 }

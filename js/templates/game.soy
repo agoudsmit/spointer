@@ -16,6 +16,28 @@
   {/foreach}
 {/template}
 
+/**
+ *
+ */
+{template .PreviewControl}
+  <div class="{css game-controls}">
+    <div class="{css game-control-item} {css form-button} {css goog-button} {css reply-button} {css circle-button}" data-action="reply"></div>
+    <div class="{css game-control-item} {css form-button} {css goog-button} {css forward-button} {css circle-button}" data-action="forward"></div>
+    <div class="{css game-control-item} {css form-button} {css goog-button} {css delete-button} {css circle-button}" data-action="delete"></div>
+  </div>
+{/template}
+
+
+/**
+ * @param tags
+ */
+{template .Tags}
+	<div class="{css tags-container}">
+		<div class="{css goog-button} {css text-button} {css form-button}">Save</div>
+		<input class="{css form-values} {css field-tags}" type="text" value="{$tags}"/>
+	</div>
+{/template}
+
 
 /**
  * Contains the composer view. It is entierly programatically controlled, thus no fields can be prefilled.
@@ -139,6 +161,7 @@
  * @param subject The subject of the message.
  * @param recepients List of recepients to display.
  * @param body The body of the message.
+ * @param webform The web form html
  */
 {template .MailPreview autoescape="false"}
   <div class="{css mail-preview-box}">
@@ -150,6 +173,8 @@
       <div><span class="{css mail-service-info}">Date:&nbsp;</span>{$date}</div>
       <div><span class="{css mail-service-info}">Subject:&nbsp;</span>{$subject}</div>
       <div><span class="{css mail-service-info} {css user-list-container}">To:&nbsp;</span>{$recepients}</div>
+      <div class="{css tags-list-container}"></div>
+      <div class="{css web-form-container}">{$webform}</div>
     </div>
     <div class="{css mail-preview-body} {css mail-padded}">{$body}</div>
   </div>

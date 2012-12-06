@@ -39,6 +39,7 @@ spo.ui.GameControls.prototype.createDom = function() {
  * @inheritDoc
  */
 spo.ui.GameControls.prototype.decorateInternal = function(element) {
+
   goog.base(this, 'decorateInternal', element);
   var controls = goog.dom.getElementsByClass(goog.getCssName(
     'game-control-item'), element);
@@ -49,6 +50,7 @@ spo.ui.GameControls.prototype.decorateInternal = function(element) {
  * @inheritDoc
  */
 spo.ui.GameControls.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
   this.getHandler().listen(this,
     goog.ui.Component.EventType.ACTION, this.handleControlAction_);
 };
@@ -124,7 +126,7 @@ spo.ui.GameControls.prototype.createControl_ = function(el) {
 spo.ui.GameControls.prototype.handleControlAction_ = function(e) {
   var target = e.target.getElement();
   if (goog.dom.dataset.has(target, 'action')) {
-    this.handleNamedAction_(goog.dom.dataset.get(target, 'action'));
+    this.handleNamedAction(goog.dom.dataset.get(target, 'action'));
   }
 };
 
@@ -132,11 +134,11 @@ spo.ui.GameControls.prototype.handleControlAction_ = function(e) {
 /**
  * Handles a named action coming from the control buttons.
  *
- * @private
+ * @protected
  * @param  {?string} action The name of the action as recived by the html data
  *                          set.
  */
-spo.ui.GameControls.prototype.handleNamedAction_ = function(action) {
+spo.ui.GameControls.prototype.handleNamedAction = function(action) {
   if (goog.isString(action) && !goog.string.isEmpty(action)) {
     switch (action) {
       case 'uploadscenario':

@@ -59,7 +59,7 @@ cssbuild:
 	--allowed-non-standard-function color-stop \
 	--output-file $(BUILDDIR)/$(NS).css \
 	--output-renaming-map-format CLOSURE_COMPILED \
-	--excluded_classes_from_renaming clickable \
+	--excluded-classes-from-renaming clickable \
 	--rename CLOSURE \
 	--output-renaming-map $(BUILDDIR)/cssmap-build.js \
 	gss/*.gss \

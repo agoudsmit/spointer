@@ -16,8 +16,11 @@
     </script>
     <script src="/InterACT/serverTime"></script>
     <script src="/InterACT/recipients"></script>
+    <!--<script>
+    	RECIPIENTS = ['TEAM1', 'TEAM2', 'PLAYER1', 'PLAYER2'];
+    </script>-->
    	<script>
-    	COMPOSER_SETUP = {
+    	SETUP = {
     	    can_use_tags: true,
     	    can_set_from: true
     	}
@@ -25,8 +28,8 @@
     <script>
     	TEMPLATES = {
     	    intelligence: {
-    	      to: "Intelligence",
-    	      from: PLAYER_NAME,
+    	      to: ["Intelligence"],
+    	      from: ["PLAYER_NAME"],
     	      body: "Hello intel,<p> I would like to know...</p>"
     	    },
     	    meeting:  {
@@ -40,15 +43,15 @@
   <body>
     <div id="screen" class="gamearena"></div>
 
-
+<!--
     <script src="build/game-cssmap.js"></script>
     <script src="../../library/closure/goog/base.js"></script>
     <script src="build/deps.js"></script>
     <script>goog.require('game');</script>
-
-<!--
-    <script src="build/game.build.js"></script>
  -->
+
+    <script src="build/game.build.js"></script>
+
 
   </body>
 </html>

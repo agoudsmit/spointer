@@ -35,7 +35,7 @@ spo.control.GameArena.prototype.init = function() {
   this.view_.setScrollInsideTheWidget(false);
   this.view_.render(this.container_);
   this.view_.getContentElement().innerHTML = spo.gametemplate.Widgets({});
-  
+
   var top_pane = /** @type {!Element} */ (goog.dom.getElementByClass(goog.getCssName(
   'mail-list-placeholder'), this.view_.getContentElement()));
 
@@ -54,12 +54,29 @@ spo.control.GameArena.prototype.init = function() {
     /** @type {!Element} */ (goog.dom.getElementByClass(goog.getCssName(
       'mail-preview-container'), this.view_.getContentElement())));
   this.previewControl_.setParentControl(this);
+  this.previewControl_.setScrollElement(goog.dom.getElementByClass(goog.getCssName(
+    'mail-editor-container'), this.view_.getElement()));
+  //this.previewControl_.setScrollElement(this.view_.getContentElement());
 
   this.composer = new spo.control.Composer(/** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName(
   'mail-editor-container'), this.view_.getContentElement())));
   //this.composer.setEnable(true);
 
   spo.ui.GameHeader.getInstance().setSearchFiledState('search messages', goog.bind(this.performSearch, this), true);
+
+
+  // FIXME: this is to test the preview with webforms
+  this.previewControl_.loadRecord({
+    'id': 1,
+    'from': ['Team Blia'],
+    'to': ['You', 'And Me'],
+    'message_tags': ['tag1', 'tag2'],
+    'date': 12398128491,
+    'subject': 'Test web forms',
+    'body': '<b>Some html <span style="color:yellow;"> here</span>',
+    'is_read': 1,
+    'web_form': '<div><div style="margin: 10px;">Are you ging to this meeting?</div><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>Yes, I am!</b></span><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>No, I am not</b></span></div>'
+  });
 
 };
 
@@ -122,8 +139,20 @@ spo.control.GameArena.prototype.notify = function(child, action) {
         if (username != null) {
           this.composer.setEnable(true);
           // change undefined to the 'my user name value'
-          this.composer.loadData([username], undefined, 'Compose your message here.');
+          this.composer.loadData([username], undefined, undefined, 'Compose your message here.');
         }
+      } else if (action == spo.control.Action.REPLY) {
+        this.composer.setEnable(true);
+        var model = this.previewControl_.getRecord();
+        if (model != null)
+          // this should actually work with models directly...
+          this.composer.loadData(model['from'], undefined, 'Re:'+ model['subject']);
+      } else if (action == spo.control.Action.FORWARD) {
+        this.composer.setEnable(true);
+        var model = this.previewControl_.getRecord();
+        if (model != null)
+          // this should actually work with models directly...
+          this.composer.loadData(undefined, undefined, 'Fwd:'+ model['subject'], '<br>-----<br>' + model['body']);
       }
       break;
     default:

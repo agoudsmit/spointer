@@ -30,7 +30,7 @@ spo.ui.MailList = function() {
   this.buttonNext_.setEnabled(false);
   this.boundUpdateModel = goog.bind(function() {
     this.getModel().update();
-  });
+  }, this);
 };
 goog.inherits(spo.ui.MailList, spo.ui.Widget);
 
@@ -210,7 +210,7 @@ spo.ui.MailList.prototype.handleListUpdate = function(ev) {
   for (var i = 0; i < newList.length; i++) {
     html = html + spo.gametemplate.MailRecord({
       recordid: i,
-      sender: newList[i]['from']['alias'],
+      sender: newList[i]['from'][0],
       subject: newList[i]['subject'],
       date: pstj.date.utils.renderTime(newList[i]['date'], 'Mon dd hh:xx'),
       isread: spo.ds.mail.isRead(newList[i])

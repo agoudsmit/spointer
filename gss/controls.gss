@@ -1,0 +1,86 @@
+
+.game-control-item {
+  float: left;
+}
+
+.circle-button {
+  @mixin cirlebutton();
+}
+
+.pause-button {
+  @mixin icons(6);
+}
+
+.play-button {
+  @mixin icons(8);
+}
+
+.stop-button {
+  @mixin icons(4);
+}
+
+.edit-button {
+  @mixin icons(1);
+}
+
+.delete-button {
+  @mixin icons(5);
+}
+
+.play-button {
+  @mixin icons(8);
+}
+
+.save-button {
+  @mixin icons(9);
+}
+
+.user-icon {
+  @mixin icons(0);
+}
+
+.pause-button:hover, .pause-button:focus, .form-button-hover.pause-button,
+.form-button-focused.pause-button {
+  @mixin hovericons(6);
+}
+
+.save-button:hover, .save-button:focus, .form-button-hover.save-button,
+.form-button-focused.save-button {
+  @mixin hovericons(9);
+}
+
+.play-button:hover, .play-button:focus, .form-button-hover.play-button,
+.form-button-focused.play-button {
+  @mixin hovericons(8);
+}
+
+.stop-button:hover, .stop-button:focus, .form-button-hover.stop-button,
+.form-button-focused.stop-button {
+  @mixin hovericons(4);
+}
+
+.edit-button:hover, .edit-button:focus, .form-button-hover.edit-button,
+.form-button-focused.edit-button {
+  @mixin hovericons(1);
+}
+
+.delete-button:hover, .delete-button:focus, .form-button-hover.delete-button,
+.form-button-focused.delete-button {
+  @mixin hovericons(5);
+}
+
+.play-button:hover, .play-button:focus, .form-button-hover.play-button,
+.form-button-focused.play-button {
+  @mixin hovericons(8);
+}
+
+.control-spacer {
+  width: 150px;
+  height: BUTTON_SIZE;
+  float: left;
+}
+
+.form-button-disabled.text-button {
+  cursor: default;
+  background-color: transparent;
+}
