@@ -47,6 +47,8 @@
   	<div class="{css error} {css error-toolbar}" style="display: none;"></div>
   	<div class="{css toolbars-wrap} {css mail-bottom-border} {css mail-padded}">
   		<div class="{css goog-button} {css form-button} {css circle-button} {css send-button}"></div>
+      <div class="{css goog-button} {css form-button} {css circle-button} {css save-button}"></div>
+      <div class="{css goog-button} {css form-button} {css text-button} {css attachment-button}">Attach file</div>
   		<div class="{css text-button} {css goog-button} {css from-button} {css template-button}">Templates</div>
   		<div class="{css goog-menu}" style="display: none;">
   			<div class="{css goog-menuitem}" data-template="draft">Load draft</div>
@@ -83,8 +85,9 @@
  */
 {template .MeetingForm}
 	<div class="{css meeting-form}">
-		<div><input class="{css meeting-date}" label="{$date_format}" value="{$date}" /></div>
-		<div><input class="{css meeting-time}" label="{$time_format}" value="{$time}" /></div>
+    <div>Create meeting request for:</div>
+		<div><input class="{css meeting-date}" label="{$date_format}" value="{$date}" type="text"/></div>
+		<div><input class="{css meeting-time}" label="{$time_format}" value="{$time}" type="text"/></div>
 	</div>
 {/template}
 

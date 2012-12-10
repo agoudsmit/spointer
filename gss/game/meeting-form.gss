@@ -1,0 +1,5 @@
+.meeting-form {
+  border-bottom: 1px solid EMBOSS_TEXT_COLOR;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}

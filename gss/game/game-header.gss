@@ -18,7 +18,8 @@
 }
 
 /** Define how the input fields will look like in all login panels */
-.game-header input[type="text"], .game-header input[type="password"] {
+.game-header input[type="text"], .game-header input[type="password"] ,
+.meeting-form input[type="text"], .meeting-form input[type="password"]{
   width: 200px;
   background-color: BASE_COLOR;
   border: 1px solid #98aebf;

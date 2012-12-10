@@ -11,6 +11,8 @@ goog.require('spo.ui.MailList');
 goog.require('spo.control.MailPreview');
 goog.require('spo.control.Composer');
 goog.require('spo.ui.GameHeader');
+goog.require('goog.object');
+goog.require('spo.ui.Calendar');
 
 /**
  * The mail control of the game area.
@@ -54,8 +56,9 @@ spo.control.GameArena.prototype.init = function() {
     /** @type {!Element} */ (goog.dom.getElementByClass(goog.getCssName(
       'mail-preview-container'), this.view_.getContentElement())));
   this.previewControl_.setParentControl(this);
-  this.previewControl_.setScrollElement(goog.dom.getElementByClass(goog.getCssName(
-    'mail-editor-container'), this.view_.getElement()));
+  this.previewControl_.setScrollElement(
+      /** @type {!Element} */ (goog.dom.getElementByClass(goog.getCssName(
+    'mail-editor-container'), this.view_.getElement())));
   //this.previewControl_.setScrollElement(this.view_.getContentElement());
 
   this.composer = new spo.control.Composer(/** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName(
@@ -77,6 +80,19 @@ spo.control.GameArena.prototype.init = function() {
     'is_read': 1,
     'web_form': '<div><div style="margin: 10px;">Are you ging to this meeting?</div><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>Yes, I am!</b></span><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>No, I am not</b></span></div>'
   });
+
+  var events = [
+    {date: '2012-12-11'},
+    {date: '2012-12-21'}
+  ];
+
+  this.callendar_ = new spo.ui.Calendar();
+  this.callendar_.setModel(events);
+  this.callendar_.render(
+    goog.dom.getElementByClass(
+      goog.getCssName('meeting-box-placeholder'), this.view_.getContentElement()
+    )
+  );
 
 };
 
@@ -144,15 +160,27 @@ spo.control.GameArena.prototype.notify = function(child, action) {
       } else if (action == spo.control.Action.REPLY) {
         this.composer.setEnable(true);
         var model = this.previewControl_.getRecord();
-        if (model != null)
+        if (model != null) {
+          // Useless piece of crap, even clones the model cannot be reused.
+          var clone = goog.object.unsafeClone(model);
+          clone['to'] = model['from'];
+          clone['from'] = goog.global['PLAYER_NAME'];
+          clone['subject'] = 'Re:'+ model['subject'];
+          delete clone['web_form'];
+          delete clone['web_form_config'];
+          delete clone['is_read'];
+          this.composer.loadModel(clone);
+          this.composer.setReplyId(model['id']);
+        }
           // this should actually work with models directly...
-          this.composer.loadData(model['from'], undefined, 'Re:'+ model['subject']);
+
       } else if (action == spo.control.Action.FORWARD) {
         this.composer.setEnable(true);
         var model = this.previewControl_.getRecord();
         if (model != null)
           // this should actually work with models directly...
           this.composer.loadData(undefined, undefined, 'Fwd:'+ model['subject'], '<br>-----<br>' + model['body']);
+          this.composer.setReplyId(model['id']);
       }
       break;
     default:

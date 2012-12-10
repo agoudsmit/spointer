@@ -43,4 +43,4 @@ goog.scope(function() {
       }
     }
   };
-})
+});

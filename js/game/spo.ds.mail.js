@@ -146,3 +146,16 @@ spo.ds.mail.getRecipientByIndex = function(record, index) {
   }
   return null;
 };
+
+/**
+ * Parse a string to lookup user names in it.
+ * @param  {string} str The string value of the input
+ * @return {Array.<string>}     The names as array with trimmed values.
+ */
+spo.ds.mail.parseStringToNameList = function(str) {
+  var list = str.split(',');
+  goog.array.forEach(list, function(item, index, arr) {
+    arr[index] = goog.string.trim(item);
+  });
+  return list;
+};

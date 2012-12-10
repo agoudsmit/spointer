@@ -15,7 +15,8 @@ goog.require('goog.ui.LabelInput');
  */
 spo.ui.MeetingForm = function(meeting_date) {
   goog.base(this);
-  this.meetingDate_ = meeting_date;
+  this.meetingDate_ = (goog.isNumber(meeting_date)) ? meeting_date :
+   +new Date(this.getCurrentGameTime(goog.global['GAME'], 'mm/dd/yyyy hh:xx', this.meetingStartOffset));
   this.datePicker_ = new goog.ui.InputDatePicker(spo.ds.Game.DateFormatter,
       spo.ds.Game.DateParser);
   this.datePicker_.getDatePicker().setShowToday(false);
@@ -30,26 +31,38 @@ goog.scope(function() {
   var p = spo.ui.MeetingForm.prototype;
   /**
    * Gets the current game time rendered
+   * @param {*} model The game model to use.
+   * @param {string=} format How to format the date.
+   * @param {number=} offset offset in milliseconds to apply to the current game time.
    * @return {string}
    */
-  p.getCurrentGameTime = function(model) {
+  p.getCurrentGameTime = function(model, format, offset) {
     var serverNow = spo.ds.STP.getInstance().getServerTime();
     var savedgametime = model.getProp(spo.ds.Game.Property.SAVED_GAME_TIME);
     var savets = model.getProp(spo.ds.Game.Property.SAVED_REAL_TIME);
     var delta = serverNow - savets;
     var delta_game_time = delta * model.getProp(spo.ds.Game.Property.SPEED);
     var gametimeNow = (savedgametime + delta_game_time);
-    return(pstj.date.utils.renderTime(gametimeNow, spo.ds.Game.Formatting.DATE_ONLY));
+    if (goog.isNumber(offset)) {
+      gametimeNow = gametimeNow + offset;
+    }
+    return(pstj.date.utils.renderTime(gametimeNow, (goog.isString(format))  ?
+      format : spo.ds.Game.Formatting.DATE_ONLY));
   };
+  /**
+   * How much forward / backward in time to calculate the meeting date/time
+   * @type {number}
+   * @protected
+   */
+  p.meetingStartOffset = 1000*60*60*24*3;
+
   /** @inheritDoc */
   p.getTemplate = function() {
     return spo.gametemplate.MeetingForm({
       date_format: spo.ds.Game.Formatting.DATE_ONLY,
       time_format: spo.ds.Game.Formatting.TIME_ONLY,
-      date: (goog.isNumber(this.meetingDate_)) ? pstj.date.utils.renderTime(
-          this.meetingDate_, spo.ds.Game.Formatting.DATE_ONLY) : this.getCurrentGameTime(goog.global['GAME']),
-      time: (goog.isNumber(this.meetingDate_)) ? pstj.date.utils.renderTime(
-          this.meetingDate_, spo.ds.Game.Formatting.TIME_ONLY) : '0:00'
+      date: pstj.date.utils.renderTime(this.meetingDate_, spo.ds.Game.Formatting.DATE_ONLY),
+      time: pstj.date.utils.renderTime(this.meetingDate_, spo.ds.Game.Formatting.TIME_ONLY)
     });
   };
   /** @inheritDoc */

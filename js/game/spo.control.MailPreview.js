@@ -49,7 +49,7 @@ spo.control.MailPreview.prototype.handleMessageControlAction = function(ev) {
 spo.control.MailPreview.prototype.scrollElement_;
 
 /**
- * Sets the element to scroll when updateing.
+ * Sets the element to scroll when updating.
  * @param {!Element} el The element to update.
  */
 spo.control.MailPreview.prototype.setScrollElement = function(el) {
@@ -68,7 +68,7 @@ spo.control.MailPreview.prototype.loadRecord = function(record) {
  * @type {spo.ui.MailPreview}
  * @private
  */
-spo.control.MailPreview.prototype.view_ = null;
+spo.control.MailPreview.prototype.view_;
 /**
  * getter for the currently utilized mail record. Notice that it might not be the same as
  * the one that initialize it so comparison should be made using spo.ds.mail.

@@ -31,13 +31,26 @@
 .template-button {
 	position: absolute;
 	right: 52%;
-	top: 3px;
+	top: 5px;
+}
+
+.attachment-button {
+  position: absolute;
+  top: 5px;
+  left: 64px;
 }
 
 .toolbars-wrap .send-button {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+
+.toolbars-wrap .save-button {
+  position: absolute;
+  top: 0;
+  left: 32px;
 }
 
 .editor-field {

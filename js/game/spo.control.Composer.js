@@ -19,6 +19,7 @@ goog.require('spo.ds.mail');
 goog.require('goog.dom');
 goog.require('goog.async.Delay');
 goog.require('spo.ui.MeetingForm');
+goog.require('goog.object');
 
 /**
  * @constructor
@@ -48,7 +49,7 @@ spo.control.Composer.prototype.setEnable = function(enable) {
     if (!this.isCreated) {
       this.createEditor();
       this.createAutoComplete();
-      this.bindMenu();
+      this.attachEvents();
     }
   }
   else this.container_.style.display = 'none';
@@ -61,6 +62,42 @@ spo.control.Composer.prototype.setEnable = function(enable) {
 spo.control.Composer.prototype.webFormView;
 
 /**
+ * Reference to a mail model/record to use
+ * @type {*}
+ * @private
+ */
+spo.control.Composer.prototype.mailRecordModel_;
+
+/**
+ * Method to load data from a mail record directly instead of parts.
+ * @param {*} model The mail model to use.
+ */
+spo.control.Composer.prototype.loadModel = function(model) {
+  this.mailRecordModel_ = model;
+  this.loadData(model['to'], model['from'], model['subject'], model['body'], model['web_form'], model['web_form_config']);
+};
+
+/**
+ * The msg ID that the composed message should be a reply of.
+ * @type {?string}
+ * @protected
+ */
+spo.control.Composer.prototype.inReplyOf = null;
+/**
+ * Sets the ID of the reply to field. Note that it must be set manually each
+ * time a data is loaded in the composer as it will be overriden on each load.
+ * @param {string} msgid The message id that the compose should be reply of.
+ */
+spo.control.Composer.prototype.setReplyId = function(msgid) {
+  this.inReplyOf = msgid;
+};
+/**
+ * Flag that tells us if the composing involves a form for meeting.
+ * @type {Boolean}
+ */
+spo.control.Composer.prototype.isComposingMeeting = false;
+
+/**
  * Loads the composer with the optional data.
  * @param  {Array.<string>=} to The list of recipients.
  * @param  {string=} from  Optionally who the message is from.
@@ -71,19 +108,22 @@ spo.control.Composer.prototype.webFormView;
  */
 spo.control.Composer.prototype.loadData = function(to, from, subject, body, web_form, web_form_config) {
   goog.dispose(this.webFormView);
+  this.isComposingMeeting = false;
+  this.inReplyOf = null;
   this.view_.formContainer.innerHTML = '';
   this.view_.setFields(to, from, subject);
   this.field_.setHtml(undefined, (goog.isString(body)) ? body : '');
   if (goog.isDefAndNotNull(web_form)) {
     if (goog.isNumber(web_form)) {
       if (web_form == 1) {
+        this.isComposingMeeting = true;
         this.webFormView = new spo.ui.MeetingForm((goog.isDef(web_form_config)) ? +(web_form_config) : undefined);
-        console.log(this.view_.formContainer);
         this.webFormView.render(this.view_.formContainer);
       }
     }
   }
 };
+
 /**
  * @type {*} The mail we are working with currently.
  * @private
@@ -95,15 +135,56 @@ spo.control.Composer.prototype.setRecordModel = function(msg_record) {
 
 
 /**
- * Binds the template menu.
+ * Binds events from buttons
+ * @protected
  */
-spo.control.Composer.prototype.bindMenu = function() {
-  this.getHandler().listen(this.view_, spo.control.EventType.CONTROL_ACTION,
-      this.handleTemplateSelection);
+spo.control.Composer.prototype.attachEvents = function() {
+  this.getHandler().listen(this.view_, goog.ui.Component.EventType.ACTION, this.handleActionFromButtons);
+  this.getHandler().listen(this.view_, spo.control.EventType.CONTROL_ACTION, this.handleTemplateSelection);
 };
 
 /**
- * Processes a template loading response
+ * @param  {goog.events.Event} ev The ACTION event from a child
+ * @protected
+ */
+spo.control.Composer.prototype.handleActionFromButtons = function(ev) {
+  var target = ev.target;
+  switch (target) {
+    case this.view_.saveButton_:
+      // compose message from the values.
+      // both regular messages and meeting requests are saved as regular messages
+      // the diferentiation is made on send.
+
+      var msg = {
+        'to': spo.ds.mail.parseStringToNameList(this.view_.toField.value),
+        'from': spo.ds.mail.parseStringToNameList(this.view_.fromField.value),
+        'subject': this.view_.subjectField.value,
+        'body': this.field_.getCleanContents(),
+        'reply_message_id': this.inReplyOf
+      };
+      spo.ds.Resource.getInstance().get({
+        'url' : '/message/draft/put',
+        'data' : {
+          'message': msg
+        }
+      }, function(resp) {
+        console.log(resp);
+      });
+      break;
+    case this.view_.sendButton_:
+      if (!this.isComposingMeeting) {
+        // regular send
+      } else {
+        // send as form
+      }
+      break;
+  }
+};
+
+/**
+ * Processes a template loading response.
+ * This will not be used as we will inline the templates.
+ * @deprecated
  * @param {*} resp The response package.
  * @protected
  */
@@ -112,6 +193,9 @@ spo.control.Composer.prototype.processTemplate = function(resp) {
     this.showError('Problem loading template: ' + resp['error']);
     return;
   }
+  console.log('received draft template', resp);
+  var message = resp['content']['message'];
+  this.loadModel(message);
   //this.loadData( with all the shit );
 };
 
@@ -145,15 +229,18 @@ spo.control.Composer.prototype.handleTemplateSelection = function(ev) {
     var templateName = ev.target.getSelectedTemplateName();
     if (templateName == 'draft') {
       // TODO: make the requests when it is ready.
-      this.showError('not implemented');
-//      spo.ds.Resource.getInstance().get({
-//        'url': '/message/draft/get'
-//      }, this.processTemplate_bound_);
+      //this.showError('not implemented');
+     spo.ds.Resource.getInstance().get({
+       'url': '/message/draft/get',
+       'data': {
+          'is_team_sent': 0
+       }
+     }, this.processTemplate_bound_);
     } else {
       if (goog.isDefAndNotNull(goog.global['TEMPLATES'][templateName])) {
         var template = goog.global['TEMPLATES'][templateName];
-        this.loadData(template['to'], template['from'], template['subject'], template['body'], template['web_form'],
-            template['web_form_config']);
+        var model = goog.object.unsafeClone(template);
+        this.loadModel(model);
       } else {
         this.showError('not implemented yet');
       }

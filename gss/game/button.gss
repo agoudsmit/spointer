@@ -41,7 +41,7 @@
  * Handle text button focus
  */
 .text-button.form-button-focused, .text-button.form-button-hover {
-  box-shadow: 0 0 2px 4px white;
+  box-shadow: 0 0 2px 2px EMBOSS_TEXT_COLOR;
 }
 
 .form-button-disabled.text-button {
@@ -58,8 +58,15 @@
 }
 .send-button:hover, .send-button:focus, .form-button-hover.send-button,
 .form-button-focused.send-button {
-  @mixin hovericons(11);
+  @mixin hoverdark(11);
 }
+
+/** Override save button */
+.save-button:hover, .save-button:focus, .form-button-hover.save-button,
+.form-button-focused.save-button {
+  @mixin hoverdark(9);
+}
+
 .reply-button {
   @mixin icons(13);
 }
@@ -86,3 +93,4 @@
 .form-button-focused.delete-button {
   @mixin hoverdark(5);
 }
+

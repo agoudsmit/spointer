@@ -15,13 +15,14 @@ spo.ui.MailPreview = function() {
 };
 goog.inherits(spo.ui.MailPreview, pstj.ui.Templated);
 
+/**
+ * @type {!Element}
+ * @private
+ */
+spo.ui.MailPreview.prototype.userListContainer;
+
 goog.scope(function() {
   var p = spo.ui.MailPreview.prototype;
-  /**
-   * @type {!Element}
-   * @private
-   */
-  p.userListContainer;
   /**
    * @type {!Element}
    * @private
