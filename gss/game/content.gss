@@ -1,5 +1,5 @@
-@def CONTENT_VIEWPORT 600px;
-@def MEETING_VIEWPORT 150px;
+@def CONTENT_VIEWPORT 700px;
+@def MEETING_VIEWPORT 230px;
 
 
 .fullscreen {
@@ -12,8 +12,59 @@
 /** override the border drawn for the content holder. */
 .content {
 	border: none;
+
 }
 
 .gamearena .content {
-	height: 600px;
+	height: CONTENT_VIEWPORT;
+}
+
+/** Position the panes */
+.left-pane {
+  width: 50%;
+  position: absolute;
+  background-color: transparent;
+  float: left;
+}
+.right-pane {
+  width: 50%;
+  background-color: transparent;
+  position: relative;
+  min-height: 100%;
+  left: 50%;
+}
+
+.top-pane {
+  width: 100%;
+  height: sub(CONTENT_VIEWPORT, MEETING_VIEWPORT);
+  padding: 0 10px 10px 0;
+}
+
+.mail-list-placeholder, .meeting-box-placeholder, .mail-preview-container {
+  background-color: BASE_COLOR;
+  width: 100%;
+  height: 100%;
+  border-color: EMBOSS_TEXT_COLOR;
+  border-style: solid;
+  border-width: 1px;
+  padding: 10px;
+}
+
+.meeting-box-placeholder {
+  padding: 10px 10px 10px 175px;
+}
+
+.mail-editor-container {
+  margin-bottom: 10px;
+  background-color: BASE_COLOR;
+  width: 100%;
+  border-color: EMBOSS_TEXT_COLOR;
+  border-style: solid;
+  border-width: 1px;
+  padding: 10px;
+}
+.bottom-pane {
+  width: 100%;
+  height: MEETING_VIEWPORT;
+  padding: 0 10px 0 0;
 }

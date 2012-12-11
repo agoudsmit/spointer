@@ -141,3 +141,13 @@ spo.gametemplate.ListLoading = function(opt_data) {
 spo.gametemplate.game = function(opt_data) {
   return '<div class="' + goog.getCssName('fullscreen') + '"><div class="' + goog.getCssName('header') + ' ' + goog.getCssName('game-header') + '"><!-- put here the header widget --></div><div class="' + goog.getCssName('content') + '"></div></div>';
 };
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @return {string}
+ * @notypecheck
+ */
+spo.gametemplate.MeetingList = function(opt_data) {
+  return '<div class="' + goog.getCssName('meetings-list') + '"><div class="' + goog.getCssName('meetings-label') + '">meetings</div><div class="' + goog.getCssName('goog-tab-bar') + '  ' + goog.getCssName('goog-tab-bar-top') + '"><div class="' + goog.getCssName('right') + ' ' + goog.getCssName('goog-tab') + '">Pending</div><div class="' + goog.getCssName('right') + ' ' + goog.getCssName('goog-tab') + ' ' + goog.getCssName('goog-tab-selected') + '">Upcoming</div></div><div class="' + goog.getCssName('goog-tab-bar-clear') + '"></div><div class="' + goog.getCssName('goog-tab-content') + '">Example content</div></div>';
+};

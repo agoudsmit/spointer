@@ -1,0 +1,13 @@
+
+.meetings-list {
+  height: 100%;
+  position: relative;
+  top: -100%;
+}
+
+.meetings-label  {
+  position: absolute;
+  top: 8px;
+  text-transform: uppercase;
+  font-weight: bold;
+}

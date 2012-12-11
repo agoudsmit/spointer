@@ -11,7 +11,7 @@
   z-index: 20000; /* Arbitrary, but some apps depend on it... */
 }
 
-goog-menuitem {
+.goog-menuitem {
   color: #000;
   list-style: none;
   margin: 0;

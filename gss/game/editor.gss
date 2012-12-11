@@ -37,7 +37,7 @@
 .attachment-button {
   position: absolute;
   top: 5px;
-  left: 64px;
+  left: 72px;
 }
 
 .toolbars-wrap .send-button {

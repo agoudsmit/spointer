@@ -47,7 +47,7 @@ spo.ds.MailList.prototype.interval = 5000;
  * @type {!number}
  * @protected
  */
-spo.ds.MailList.prototype.msgsPerPage = 2;
+spo.ds.MailList.prototype.msgsPerPage = 6; // 68 px per item = 408
 
 /**
  * Pointer to the list of messages that are loaded from the server.
@@ -153,7 +153,7 @@ spo.ds.MailList.prototype.getRequest = function() {
 /**
  * Applies a filter on the listing. Optional string will be applied as search criteria.
  * If no string is provided it will be considered to be an ampty string and no filter will be applied.
- * 
+ *
  * @param {string=} query The search query if any.
  */
 spo.ds.MailList.prototype.setFilter = function(query) {

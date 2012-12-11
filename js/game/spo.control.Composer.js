@@ -34,7 +34,7 @@ spo.control.Composer = function(container) {
   this.view_ = new spo.ui.Composer();
   this.view_.render(this.container_);
   this.processTemplate_bound_ = goog.bind(this.processTemplate, this);
-  this.showError_delayed_ = new goog.async.Delay(this.showError, 2000, this);
+  this.showError_delayed_ = new goog.async.Delay(this.showError, 8000, this);
 };
 goog.inherits(spo.control.Composer, spo.control.Base);
 
@@ -74,6 +74,9 @@ spo.control.Composer.prototype.mailRecordModel_;
  */
 spo.control.Composer.prototype.loadModel = function(model) {
   this.mailRecordModel_ = model;
+  if (goog.isDef(this.mailRecordModel_['id'])) {
+    this.setReplyId(model['id']);
+  }
   this.loadData(model['to'], model['from'], model['subject'], model['body'], model['web_form'], model['web_form_config']);
 };
 
@@ -113,14 +116,10 @@ spo.control.Composer.prototype.loadData = function(to, from, subject, body, web_
   this.view_.formContainer.innerHTML = '';
   this.view_.setFields(to, from, subject);
   this.field_.setHtml(undefined, (goog.isString(body)) ? body : '');
-  if (goog.isDefAndNotNull(web_form)) {
-    if (goog.isNumber(web_form)) {
-      if (web_form == 1) {
-        this.isComposingMeeting = true;
-        this.webFormView = new spo.ui.MeetingForm((goog.isDef(web_form_config)) ? +(web_form_config) : undefined);
-        this.webFormView.render(this.view_.formContainer);
-      }
-    }
+  if (goog.isNumber(web_form_config)) {
+    this.isComposingMeeting = true;
+    this.webFormView = new spo.ui.MeetingForm((web_form_config == 0) ? undefined : web_form_config);
+    this.webFormView.render(this.view_.formContainer);
   }
 };
 
@@ -129,6 +128,10 @@ spo.control.Composer.prototype.loadData = function(to, from, subject, body, web_
  * @private
  */
 spo.control.Composer.prototype.model_;
+/**
+ * Applies a record on the composer, it will override all things done..
+ * @param {*} msg_record The message record to apply.
+ */
 spo.control.Composer.prototype.setRecordModel = function(msg_record) {
   this.model_ = msg_record;
 };
@@ -144,6 +147,42 @@ spo.control.Composer.prototype.attachEvents = function() {
 };
 
 /**
+ * Saves the message as draft on the server.
+ * @param  {Function} callback The callback to execute over the result.
+ * @protected
+ */
+spo.control.Composer.prototype.saveDraft = function(callback) {
+  this.mailRecordModel_['to'] = spo.ds.mail.parseStringToNameList(this.view_.toField.value),
+  this.mailRecordModel_['from'] = spo.ds.mail.parseStringToNameList(this.view_.fromField.value),
+  this.mailRecordModel_['subject'] = this.view_.subjectField.value,
+  this.mailRecordModel_['body'] = this.field_.getCleanContents(),
+  spo.ds.Resource.getInstance().get({
+    'url' : '/message/draft/put',
+    'data' : {
+      'message': this.mailRecordModel_
+    }
+  }, callback);
+};
+
+spo.control.Composer.prototype.sendMessage = function(resp) {
+  console.log('resp', resp)
+  if (resp['status'] == 'ok') {
+    spo.ds.Resource.getInstance().get({
+      'url' : '/message/draft/send',
+      'data': {
+        'is_team_sent': 0
+      }
+    }, goog.bind(function(resp) {
+      if (resp['status'] != 'ok') {
+        this.showError('Error sending message: ' + resp['error']);
+      } else {
+        this.setEnable(false);
+      }
+    }, this));
+  }
+};
+
+/**
  * @param  {goog.events.Event} ev The ACTION event from a child
  * @protected
  */
@@ -154,26 +193,11 @@ spo.control.Composer.prototype.handleActionFromButtons = function(ev) {
       // compose message from the values.
       // both regular messages and meeting requests are saved as regular messages
       // the diferentiation is made on send.
-
-      var msg = {
-        'to': spo.ds.mail.parseStringToNameList(this.view_.toField.value),
-        'from': spo.ds.mail.parseStringToNameList(this.view_.fromField.value),
-        'subject': this.view_.subjectField.value,
-        'body': this.field_.getCleanContents(),
-        'reply_message_id': this.inReplyOf
-      };
-      spo.ds.Resource.getInstance().get({
-        'url' : '/message/draft/put',
-        'data' : {
-          'message': msg
-        }
-      }, function(resp) {
-        console.log(resp);
-      });
+      this.saveDraft();
       break;
     case this.view_.sendButton_:
       if (!this.isComposingMeeting) {
-        // regular send
+        this.saveDraft(goog.bind(this.sendMessage, this));
       } else {
         // send as form
       }
@@ -195,6 +219,7 @@ spo.control.Composer.prototype.processTemplate = function(resp) {
   }
   console.log('received draft template', resp);
   var message = resp['content']['message'];
+  console.log(message);
   this.loadModel(message);
   //this.loadData( with all the shit );
 };

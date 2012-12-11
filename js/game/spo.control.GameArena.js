@@ -13,6 +13,7 @@ goog.require('spo.control.Composer');
 goog.require('spo.ui.GameHeader');
 goog.require('goog.object');
 goog.require('spo.ui.Calendar');
+goog.require('spo.ui.MeetingList');
 
 /**
  * The mail control of the game area.
@@ -94,6 +95,11 @@ spo.control.GameArena.prototype.init = function() {
     )
   );
 
+  this.meetinglist_ = new spo.ui.MeetingList();
+  this.meetinglist_.render(goog.dom.getElementByClass(
+      goog.getCssName('meeting-box-placeholder'), this.view_.getContentElement()
+    ));
+
 };
 
 spo.control.GameArena.prototype.performSearch = function(text) {
@@ -140,13 +146,23 @@ spo.control.GameArena.prototype.handleMailListAction = function(ev) {
     break;
   }
 };
+/**
+ * The empty mesage template.
+ * @type {Object}
+ * @protected
+ */
+spo.control.GameArena.prototype.emptyMessage = {
+  'id_read': 1,
+  'from': goog.global['PLAYER_NAME'],
+  'body': 'Compose your message here'
+};
+
 /** @inheritDoc */
 spo.control.GameArena.prototype.notify = function(child, action) {
   switch (child) {
     case this.mailbox_:
       if (action == spo.control.Action.SELECT) {
         this.maillist_.setModel(spo.ds.mail.getListing(this.mailbox_.getActiveResource()));
-
       }
       break;
     case this.previewControl_:
@@ -155,7 +171,9 @@ spo.control.GameArena.prototype.notify = function(child, action) {
         if (username != null) {
           this.composer.setEnable(true);
           // change undefined to the 'my user name value'
-          this.composer.loadData([username], undefined, undefined, 'Compose your message here.');
+          var clone = goog.object.clone(spo.control.GameArena.prototype.emptyMessage);
+          clone['to'] = [username];
+          this.composer.loadModel(clone);
         }
       } else if (action == spo.control.Action.REPLY) {
         this.composer.setEnable(true);
@@ -166,21 +184,26 @@ spo.control.GameArena.prototype.notify = function(child, action) {
           clone['to'] = model['from'];
           clone['from'] = goog.global['PLAYER_NAME'];
           clone['subject'] = 'Re:'+ model['subject'];
+          clone['reply_message_id'] = model['id'];
           delete clone['web_form'];
           delete clone['web_form_config'];
           delete clone['is_read'];
           this.composer.loadModel(clone);
-          this.composer.setReplyId(model['id']);
         }
           // this should actually work with models directly...
 
       } else if (action == spo.control.Action.FORWARD) {
         this.composer.setEnable(true);
         var model = this.previewControl_.getRecord();
-        if (model != null)
-          // this should actually work with models directly...
-          this.composer.loadData(undefined, undefined, 'Fwd:'+ model['subject'], '<br>-----<br>' + model['body']);
-          this.composer.setReplyId(model['id']);
+        if (model != null) {
+          var clone = goog.object.unsafeClone(model);
+          delete clone['to'];
+          delete clone['from'];
+          delete clone['id'];
+          clone['subject'] = 'Fwd:'+ model['subject'];
+          clone['body'] = '<br>-----<br>' + model['body'];
+          this.composer.loadModel(clone);
+        }
       }
       break;
     default:

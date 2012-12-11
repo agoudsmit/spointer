@@ -10,7 +10,7 @@
 .goog-date-picker-btn {
   background-color: OUTLINE_COLOR;
   color: BASE_COLOR;
-  padding: 0 4px;
+  padding: 0 2px;
   border: 1px solid #98aebf;;
   border-radius: 3px;
   cursor: pointer;
@@ -23,7 +23,7 @@
 .goog-date-picker-date {
   color: EMBOSS_TEXT_COLOR;
   cursor: pointer;
-  text-align: right;
+  text-align: center;
   vertical-align: middle;
 }
 
@@ -37,6 +37,8 @@
 
 .goog-date-picker-menu ul {
   list-style-type: none;
+  padding-left: 0;
+  margin: 5px;
 }
 
 .goog-date-picker-menu li {
@@ -45,4 +47,18 @@
 }
 .goog-date-picker-menu li.goog-date-picker-menu-selected {
   color: OUTLINE_COLOR;
+}
+
+
+.goog-date-picker-menu {
+  position: absolute;
+  background: white;
+  border: 1px solid gray;
+  -moz-user-focus: normal;
+  z-index: 1;
+  outline: none;
+}
+
+.goog-date-picker-month {
+  width: 12ex;
 }
