@@ -61,8 +61,15 @@ spo.control.MailPreview.prototype.setScrollElement = function(el) {
  */
 spo.control.MailPreview.prototype.loadRecord = function(record) {
   this.mailRecord_ = record;
+  this.nextMessageId = record['reply_message_id'] || null;
   this.loadView();
 };
+/**
+ * @type {?number}
+ * @private
+ */
+spo.control.MailPreview.prototype.nextMessageId = null;
+
 /**
  * The view currently used.
  * @type {spo.ui.MailPreview}
@@ -82,6 +89,7 @@ spo.control.MailPreview.prototype.clean = function() {
   this.messageControls_.exitDocument();
   this.getHandler().unlisten(this.view_.userListContainer, goog.events.EventType.CLICK, this.handleUserClick);
   this.getHandler().unlisten(this.view_.webFormContainer, goog.events.EventType.CLICK, this.handleWebForms);
+  this.getHandler().unlisten(this.view_.nextMessageButton, goog.events.EventType.CLICK, this.loadNextMEssage)
   this.getHandler().unlisten(this.view_, goog.ui.Component.EventType.ACTION, this.saveTags);
   goog.dispose(this.view_);
 };
@@ -102,12 +110,53 @@ spo.control.MailPreview.prototype.loadView = function() {
   this.messageControls_.render(this.view_.controlContainer);
   this.getHandler().listen(this.view_.userListContainer, goog.events.EventType.CLICK, this.handleUserClick);
   this.getHandler().listen(this.view_.webFormContainer, goog.events.EventType.CLICK, this.handleWebForms);
+  this.getHandler().listen(this.view_.nextMessageButton, goog.events.EventType.CLICK, this.loadNextMEssage)
   this.getHandler().listen(this.view_, goog.ui.Component.EventType.ACTION, this.saveTags);
   //this.view_.getElement().scrollIntoView(true);
-  var el =
+  //var el =
   setTimeout(this.scrollBottom_bound_, 50);
+  this.setNextButtonState();
 };
 
+spo.control.MailPreview.prototype.setNextButtonState = function() {
+  if (this.nextMessageId == null) {
+    this.view_.nextMessageButton.style.display='none';
+  } else {
+    this.view_.nextMessageButton.style.display='block';
+  }
+};
+
+spo.control.MailPreview.prototype.loadNextMEssage = function() {
+  if (this.nextMessageId != null) {
+    spo.ds.Resource.getInstance().get({
+      'url': '/message/get/' + this.nextMessageId
+    }, goog.bind(this.showRelatedMessage, this));
+  }
+};
+
+spo.control.MailPreview.prototype.showRelatedMessage = function(resp) {
+  console.log(resp);
+  if (resp['status'] == 'ok') {
+    var msg = resp['content']['message'];
+    if (msg['id'] == this.nextMessageId) {
+      this.view_.relatedMessageContent.innerHTML = this.view_.relatedMessageContent.innerHTML +
+      '<div style="padding: 5px; border: 1px solid black;">' +
+      msg['body'] +
+      '</div>';
+      this.nextMessageId = msg['reply_message_id'] || null;
+      this.setNextButtonState();
+    }
+
+  }
+};
+
+
+
+/**
+ * saves the tags/
+ * @param  {goog.events.Event} ev The action event.
+ * @protected
+ */
 spo.control.MailPreview.prototype.saveTags = function(ev) {
   ev.stopPropagation();
   var input = this.view_.getTagList();
@@ -117,9 +166,9 @@ spo.control.MailPreview.prototype.saveTags = function(ev) {
     arr[i] = goog.string.trim(el);
   });
   spo.ds.Resource.getInstance().get({
-    'url': '/tags/save/' + this.mailRecord_['id'],
+    'url': '/message/tag/update/' + this.mailRecord_['message_details_id'],
     'data': {
-      'tags': arr
+      'message_tags': arr.join(', ')
     }
   });
 };

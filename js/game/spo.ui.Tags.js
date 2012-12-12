@@ -26,7 +26,7 @@ goog.scope(function() {
   /** @inheritDoc */
   p.getTemplate = function() {
     return spo.gametemplate.Tags({
-      tags: (goog.isDef(this.getModel()['message_tags'])) ? this.getModel()['message_tags'].join(' ,') : ''
+      tags: (goog.isDef(this.getModel()['message_tags'])) ? this.getModel()['message_tags'] : ''
     });
   };
   /** @inheritDoc */
@@ -44,5 +44,5 @@ goog.scope(function() {
     delete this.contentElement_;
     goog.base(this, 'disposeInternal');
   };
-  
+
 });

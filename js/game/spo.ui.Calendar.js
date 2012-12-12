@@ -27,7 +27,6 @@ spo.ui.Calendar = function(opt_date, opt_dateTimeSymbols, opt_domHelper) {
 };
 
 goog.inherits(spo.ui.Calendar, goog.ui.DatePicker);
-
 spo.ui.Calendar.symbols_ = {
   ERAS: ['BC', 'AD'],
   ERANAMES: ['Before Christ', 'Anno Domini'],
@@ -61,28 +60,37 @@ spo.ui.Calendar.symbols_ = {
 };
 
 /**
+ * @override
+ * @return {Array.<*>|null}
+ */
+spo.ui.Calendar.prototype.getModel;
+
+/**
  * Searches for matching date in the event list and returns true on success and null failure
  * @param {goog.date.Date|Date=} date date to search for in the event array
- * @return {Boolean=}
+ * @return {boolean}
  */
 spo.ui.Calendar.prototype.getDateByEvent = function(date) {
-    var events = this.getModel();
-    if (events) {
-        var dateString = date.toIsoString(true);
+  var events = this.getModel();
+  if (events) {
+      var dateString = date.toIsoString(true);
 
-        return goog.array.find(events, function(event) {
-            var eventDate = pstj.date.utils.renderTime(event.date, 'yyyy-mm-dd');
+      var result = goog.array.find(events, function(event) {
+          var eventDate = pstj.date.utils.renderTime(event.date, 'yyyy-mm-dd');
 
-            return eventDate == dateString;
-        });
-    }
+          return eventDate == dateString;
+      });
+      if (result === null) return false;
+      return true;
+  }
+  return false;
 };
 
 
 /**
  * Decorator function for drawing active events on the date table
  * @param {goog.date.Date|Date=} date the date that may be decorated
- * @return {String}
+ * @return {string}
  */
 spo.ui.Calendar.prototype.eventDecorator = function(date) {
     var hasEvent = this.getDateByEvent(date);
@@ -90,6 +98,7 @@ spo.ui.Calendar.prototype.eventDecorator = function(date) {
     if (hasEvent) {
         return goog.getCssName('goog-date-picker-event');
     }
+    return '';
 };
 
 /**

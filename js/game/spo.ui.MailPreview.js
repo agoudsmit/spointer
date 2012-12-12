@@ -5,6 +5,7 @@ goog.require('spo.gametemplate');
 goog.require('pstj.date.utils');
 goog.require('goog.dom');
 goog.require('spo.ui.Tags');
+goog.require('goog.array');
 
 /**
  * @constructor
@@ -44,15 +45,31 @@ goog.scope(function() {
         list: data['to']
       }), // Should be list generated form the ids.
       body: data['body'],
-      webform: (goog.isString(data['web_form'])) ? data['web_form'] : ''
+      webform: (goog.isString(data['web_form'])) ? data['web_form'] : '',
+      attachments: data['message_attachments'],
+      attachments_names: this.getAttachmentstNames(data['message_attachments'])
     });
   };
+
+  /**
+   * Returns the basename for each file
+   * @param  {Array.<string>} arr The attachmnetsarray
+   * @return {Array.<string>}
+   */
+  p.getAttachmentstNames = function(arr) {
+    return goog.array.map(arr, function(path) {
+      return path.replace(/\\/g,'/').replace( /.*\//, '' );
+    });
+  };
+
   /** @inheritDoc */
   p.decorateInternal = function(el) {
     goog.base(this, 'decorateInternal', el);
     this.controlContainer = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('mail-preview-controls'), el));
     this.userListContainer = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('user-list-container'), el).parentNode);
     this.webFormContainer = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('web-form-container'), el).parentNode);
+    this.nextMessageButton = this.getEls(goog.getCssName('loadnext-button'));
+    this.relatedMessageContent = this.getEls(goog.getCssName('previous-message-content'));
     var tagcontainer = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('tags-list-container'), el));
     if (goog.global['SETUP']['can_use_tags']) {
       this.taglist_ = new spo.ui.Tags();

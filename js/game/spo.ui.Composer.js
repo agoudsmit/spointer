@@ -22,8 +22,10 @@ spo.ui.Composer = function() {
   goog.base(this);
   this.sendButton_ = new goog.ui.CustomButton('', spo.ui.ButtonRenderer.getInstance());
   this.saveButton_ = new goog.ui.CustomButton('', spo.ui.ButtonRenderer.getInstance());
+  this.attachButton_ = new goog.ui.CustomButton('', spo.ui.ButtonRenderer.getInstance());
   this.addChild(this.sendButton_);
   this.addChild(this.saveButton_);
+  this.addChild(this.attachButton_);
   this.templateButton_ = new goog.ui.CustomButton('', spo.ui.ButtonRenderer.getInstance());
   this.templateMenu_ = new goog.ui.PopupMenu();
   this.templateMenu_.setToggleMode(true);
@@ -123,6 +125,7 @@ spo.ui.Composer.prototype.decorateInternal = function(el) {
   this.googToolbar = /** @type {!Element} */ (goog.dom.getElementByClass(goog.getCssName('editor-toolbar'), this.getElement()));
   this.sendButton_.decorate(goog.dom.getElementByClass(goog.getCssName('send-button'), this.getElement()));
   this.saveButton_.decorate(goog.dom.getElementByClass(goog.getCssName('save-button'), this.getElement()));
+  this.attachButton_.decorate(this.getEls(goog.getCssName('attachment-button')));
   this.templateButton_.decorate(goog.dom.getElementByClass(goog.getCssName('template-button'), el));
   this.templateMenu_.decorate(goog.dom.getElementByClass(goog.getCssName('goog-menu'), el));
   this.templateMenu_.attach(this.templateButton_.getElement(),

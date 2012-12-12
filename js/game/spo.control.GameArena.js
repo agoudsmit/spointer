@@ -74,12 +74,13 @@ spo.control.GameArena.prototype.init = function() {
     'id': 1,
     'from': ['Team Blia'],
     'to': ['You', 'And Me'],
-    'message_tags': ['tag1', 'tag2'],
+    'message_tags': 'tag1, tag2',
     'date': 12398128491,
     'subject': 'Test web forms',
     'body': '<b>Some html <span style="color:yellow;"> here</span>',
     'is_read': 1,
-    'web_form': '<div><div style="margin: 10px;">Are you ging to this meeting?</div><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>Yes, I am!</b></span><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>No, I am not</b></span></div>'
+    'web_form': '<div><div style="margin: 10px;">Are you ging to this meeting?</div><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>Yes, I am!</b></span><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>No, I am not</b></span></div>',
+    'message_attachments': ['/huhutja/babati.txt', '/second/tryal.csv']
   });
 
   var events = [
@@ -153,8 +154,10 @@ spo.control.GameArena.prototype.handleMailListAction = function(ev) {
  */
 spo.control.GameArena.prototype.emptyMessage = {
   'id_read': 1,
-  'from': goog.global['PLAYER_NAME'],
-  'body': 'Compose your message here'
+  'from': [goog.global['PLAYER_NAME']],
+  'body': 'Compose your message here',
+  'web_form' : null,
+  'web_form_config': null
 };
 
 /** @inheritDoc */
@@ -185,9 +188,9 @@ spo.control.GameArena.prototype.notify = function(child, action) {
           clone['from'] = goog.global['PLAYER_NAME'];
           clone['subject'] = 'Re:'+ model['subject'];
           clone['reply_message_id'] = model['id'];
-          delete clone['web_form'];
-          delete clone['web_form_config'];
-          delete clone['is_read'];
+          clone['web_form'] = null;
+          clone['web_form_config'] = null;
+          clone['is_read'] = 1;
           this.composer.loadModel(clone);
         }
           // this should actually work with models directly...
@@ -197,11 +200,16 @@ spo.control.GameArena.prototype.notify = function(child, action) {
         var model = this.previewControl_.getRecord();
         if (model != null) {
           var clone = goog.object.unsafeClone(model);
-          delete clone['to'];
-          delete clone['from'];
-          delete clone['id'];
+          clone['to'] = [];
+          clone['from'] = [goog.global['PLAYER_NAME']];
+          clone['id'] = [];
+          clone['web_form'] = null;
+          clone['web_form_config'] = null;
+          clone['reply_message_id'] = null;
+          clone['is_read'] = 1;
           clone['subject'] = 'Fwd:'+ model['subject'];
           clone['body'] = '<br>-----<br>' + model['body'];
+          console.log(clone);
           this.composer.loadModel(clone);
         }
       }

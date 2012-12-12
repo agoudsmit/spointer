@@ -20,6 +20,7 @@ goog.require('goog.dom');
 goog.require('goog.async.Delay');
 goog.require('spo.ui.MeetingForm');
 goog.require('goog.object');
+goog.require('spo.ui.Attachment');
 
 /**
  * @constructor
@@ -33,6 +34,8 @@ spo.control.Composer = function(container) {
   this.isCreated = false;
   this.view_ = new spo.ui.Composer();
   this.view_.render(this.container_);
+  this.form = new spo.ui.Attachment();
+  this.form.render(this.container_);
   this.processTemplate_bound_ = goog.bind(this.processTemplate, this);
   this.showError_delayed_ = new goog.async.Delay(this.showError, 8000, this);
 };
@@ -96,7 +99,7 @@ spo.control.Composer.prototype.setReplyId = function(msgid) {
 };
 /**
  * Flag that tells us if the composing involves a form for meeting.
- * @type {Boolean}
+ * @type {!boolean}
  */
 spo.control.Composer.prototype.isComposingMeeting = false;
 
@@ -148,7 +151,7 @@ spo.control.Composer.prototype.attachEvents = function() {
 
 /**
  * Saves the message as draft on the server.
- * @param  {Function} callback The callback to execute over the result.
+ * @param  {function(*): void} callback The callback to execute over the result.
  * @protected
  */
 spo.control.Composer.prototype.saveDraft = function(callback) {
@@ -182,6 +185,14 @@ spo.control.Composer.prototype.sendMessage = function(resp) {
   }
 };
 
+spo.control.Composer.prototype.updateDraft = function(resp) {
+  if (resp['status'] == 'ok') {
+    var hash = resp['content']['message']['hash'];
+    if (goog.isString(hash))
+      this.mailRecordModel_['hash'] = hash;
+  }
+}
+
 /**
  * @param  {goog.events.Event} ev The ACTION event from a child
  * @protected
@@ -193,7 +204,7 @@ spo.control.Composer.prototype.handleActionFromButtons = function(ev) {
       // compose message from the values.
       // both regular messages and meeting requests are saved as regular messages
       // the diferentiation is made on send.
-      this.saveDraft();
+      this.saveDraft(goog.bind(this.updateDraft, this));
       break;
     case this.view_.sendButton_:
       if (!this.isComposingMeeting) {
@@ -202,7 +213,25 @@ spo.control.Composer.prototype.handleActionFromButtons = function(ev) {
         // send as form
       }
       break;
+    case this.view_.attachButton_:
+      if (goog.isString(this.mailRecordModel_['hash'])) {
+        this.openFileSelector();
+      } else {
+        this.showError('Please save the draft first (save button).')
+      }
   }
+};
+
+/**
+ * Opens up the file selection.
+ */
+spo.control.Composer.prototype.openFileSelector = function() {
+  if (goog.isString(this.mailRecordModel_['hash'])) {
+    this.form.setHash(this.mailRecordModel_['hash']);
+  } else {
+    return;
+  }
+  this.form.trigger();
 };
 
 /**
