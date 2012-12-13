@@ -1,0 +1,6 @@
+Make sure to have node and npm installed on the server.
+
+Enter this directory and:
+
+$ npm install
+$ node daemon.js
