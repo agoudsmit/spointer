@@ -211,7 +211,11 @@ spo.ds.Resource.prototype.handleResponse_ = function(cb, e) {
   // shim we have here.
   // Remove this once we have a working web socket on the server.
   if (goog.isDefAndNotNull(responseObject['resource'])) {
-    spo.ds.Resource.defaultCallback_(responseObject);
+    console.log('Updating....')
+    goog.net.XhrIo.send('/socket', undefined, 'POST', this.encode_({
+      'data' : spo.ds.Resource.JSON_PROCESSOR_.stringify(responseObject)
+    }));
+    //spo.ds.Resource.defaultCallback_(responseObject);
   }
 };
 
@@ -237,3 +241,7 @@ spo.ds.Resource.prototype.wsShim = function(packet) {
  * Makes the Resource object globally available.
  */
 goog.addSingletonGetter(spo.ds.Resource);
+
+goog.exportSymbol('SocketBridge.process', function(data) {
+  spo.ds.Resource.getInstance().wsShim(data);
+});;

@@ -18,15 +18,28 @@
   <body>
     <div id="screen"></div>
 
-<!--
+
     <script src="build/admin-cssmap.js"></script>
     <script src="../../library/closure/goog/base.js"></script>
     <script src="build/deps.js"></script>
     <script>goog.require('admin');</script>
- -->
 
+<!--
     <script src="build/admin.build.js"></script>
-
-
+ -->
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <script>
+      // Hide variables in closure.
+      // It is guaranteed that io will not override anything only if the compiled
+      // closure build is wrapped as well. If closure modules are used wrap them as well
+      // and use export namespace in the modules. (see compiler options)
+      // the build exports window.SocketBridge = { process: function(data) {} }
+      (function() {
+        var socket = io.connect('http://localhost:8080/');
+        socket.on('message', function(data) {
+          SocketBridge.process(data);
+        });
+      }());
+    </script>
   </body>
 </html>
