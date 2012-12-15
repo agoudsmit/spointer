@@ -25,8 +25,9 @@ goog.scope(function() {
   /** @inheritDoc */
   p.decorateInternal = function(el) {
     goog.base(this, 'decorateInternal', el);
+    this.addChild(this.tabs_);
     this.tabs_.decorate(this.getEls(goog.getCssName('goog-tab-bar')));
+    this.contentElement = this.getEls(goog.getCssName('goog-tab-content'))
   };
-
 });
 

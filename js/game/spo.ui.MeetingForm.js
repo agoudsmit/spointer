@@ -79,14 +79,10 @@ goog.scope(function() {
    * Should return an object with the values as config
    * @return {*}
    */
-  p.getValues = function() {
+  p.getValue = function() {
     var time = this.timeInput_.getValue();
     var date = this.datePicker_.getInputValue();
     var datetime = new Date(date + ' ' + time);
-    return {
-      web_form_config: {
-        datetime: +(datetime)
-      }
-    };
+    return +(datetime);
   };
 });

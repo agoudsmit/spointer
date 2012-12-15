@@ -13,7 +13,7 @@ goog.require('spo.control.Composer');
 goog.require('spo.ui.GameHeader');
 goog.require('goog.object');
 goog.require('spo.ui.Calendar');
-goog.require('spo.ui.MeetingList');
+goog.require('spo.control.MeetingList');
 
 /**
  * The mail control of the game area.
@@ -68,39 +68,67 @@ spo.control.GameArena.prototype.init = function() {
 
   spo.ui.GameHeader.getInstance().setSearchFiledState('search messages', goog.bind(this.performSearch, this), true);
 
+  this.getHandler().listen(spo.ui.GameHeader.getInstance(), goog.ui.Component.EventType.ACTION,
+      this.showEmptyComposer);
 
   // FIXME: this is to test the preview with webforms
-  this.previewControl_.loadRecord({
-    'id': 1,
-    'from': ['Team Blia'],
-    'to': ['You', 'And Me'],
-    'message_tags': 'tag1, tag2',
-    'date': 12398128491,
-    'subject': 'Test web forms',
-    'body': '<b>Some html <span style="color:yellow;"> here</span>',
-    'is_read': 1,
-    'web_form': '<div><div style="margin: 10px;">Are you ging to this meeting?</div><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>Yes, I am!</b></span><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>No, I am not</b></span></div>',
-    'message_attachments': ['/huhutja/babati.txt', '/second/tryal.csv']
-  });
-
-  var events = [
-    {date: '2012-12-11'},
-    {date: '2012-12-21'}
-  ];
+  // this.previewControl_.loadRecord({
+  //   'id': 1,
+  //   'from': ['Team Blia'],
+  //   'to': ['You', 'And Me'],
+  //   'message_tags': 'tag1, tag2',
+  //   'date': 12398128491,
+  //   'subject': 'Test web forms',
+  //   'body': '<b>Some html <span style="color:yellow;"> here</span>',
+  //   'is_read': 1,
+  //   'web_form': '<div><div style="margin: 10px;">Are you ging to this meeting?</div><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>Yes, I am!</b></span><span class="clickable" data-resource="/bluibliu" style="padding: 0 10px;"><b>No, I am not</b></span></div>',
+  //   'message_attachments': ['/huhutja/babati.txt', '/second/tryal.csv']
+  // });
 
   this.callendar_ = new spo.ui.Calendar();
-  this.callendar_.setModel(events);
+  this.callendar_.setModel([]);
   this.callendar_.render(
     goog.dom.getElementByClass(
       goog.getCssName('meeting-box-placeholder'), this.view_.getContentElement()
     )
   );
 
-  this.meetinglist_ = new spo.ui.MeetingList();
-  this.meetinglist_.render(goog.dom.getElementByClass(
+  this.meetinglist_  = new spo.control.MeetingList(goog.dom.getElementByClass(
       goog.getCssName('meeting-box-placeholder'), this.view_.getContentElement()
     ));
 
+  this.meetinglist_.setParentControl(this);
+  // var events = {
+  //     status: 'ok',
+  //     content: {
+  //       meetings: [
+  //         {"time":1359315923000,"status":"upcoming","msgid":8,"subject":"meeting title"},
+  //         {"time":1359318923000,"status":"pending","msgid":32,"subject":"meeting 2"},
+  //         {"time":1359319923000,"status":"pending","msgid":22,"subject":"meeting skajskajs"},
+  //         {"time":1359315923000,"status":"upcoming","msgid":8,"subject":"meeting title"},
+  //         {"time":1359318923000,"status":"pending","msgid":10,"subject":"meeting 2"},
+  //         {"time":1359315923000,"status":"upcoming","msgid":8,"subject":"meeting title"},
+  //         {"time":1359318923000,"status":"pending","msgid":10,"subject":"meeting 2"},
+  //         {"time":1359319923000,"status":"pending","msgid":22,"subject":"meeting skajskajs"},
+  //         {"time":1359315923000,"status":"upcoming","msgid":8,"subject":"meeting title"},
+  //         {"time":1359318923000,"status":"pending","msgid":10,"subject":"meeting 2"},
+  //         {"time":1359319923000,"status":"pending","msgid":22," subject":"meeting skajskajs"}
+  //       ]
+  //     }
+  //   };
+  // this.meetinglist_.model_.handleUpdate(events);
+
+  // this.meetinglist_ = new spo.ui.MeetingList();
+  // this.meetinglist_.render(goog.dom.getElementByClass(
+  //     goog.getCssName('meeting-box-placeholder'), this.view_.getContentElement()
+  //   ));
+
+};
+
+spo.control.GameArena.prototype.showEmptyComposer = function(e) {
+  e.stopPropagation();
+  this.composer.setEnable(true);
+  this.composer.loadModel(this.emptyMessage);
 };
 
 spo.control.GameArena.prototype.performSearch = function(text) {
@@ -163,6 +191,23 @@ spo.control.GameArena.prototype.emptyMessage = {
 /** @inheritDoc */
 spo.control.GameArena.prototype.notify = function(child, action) {
   switch (child) {
+    case this.meetinglist_:
+      console.log('Notify from meeting list')
+      if (action == spo.control.Action.UPDATE) {
+        this.callendar_.setModel(this.meetinglist_.getList());
+      } else if (action == spo.control.Action.SELECT) {
+        var id = this.meetinglist_.lastSelectedId;
+        spo.ds.Resource.getInstance().get({
+          'url': '/message/get/' + id
+        }, goog.bind(function(resp) {
+          if (resp['status'] != 'ok') {
+            // TODO: handle error, should not really happen
+            return;
+          }
+          this.previewControl_.loadRecord(resp['content']['message']);
+        }, this));
+      }
+      break;
     case this.mailbox_:
       if (action == spo.control.Action.SELECT) {
         this.maillist_.setModel(spo.ds.mail.getListing(this.mailbox_.getActiveResource()));
@@ -190,6 +235,7 @@ spo.control.GameArena.prototype.notify = function(child, action) {
           clone['reply_message_id'] = model['id'];
           clone['web_form'] = null;
           clone['web_form_config'] = null;
+          clone['body'] = '';
           clone['is_read'] = 1;
           this.composer.loadModel(clone);
         }

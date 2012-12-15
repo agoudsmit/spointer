@@ -60,6 +60,7 @@ cssbuild:
 	--output-file $(BUILDDIR)/$(NS).css \
 	--output-renaming-map-format CLOSURE_COMPILED \
 	--excluded-classes-from-renaming clickable \
+	--excluded-classes-from-renaming gamearena \
 	--rename CLOSURE \
 	--output-renaming-map $(BUILDDIR)/cssmap-build.js \
 	gss/*.gss \

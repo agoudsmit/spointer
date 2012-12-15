@@ -74,10 +74,8 @@ spo.ui.Calendar.prototype.getDateByEvent = function(date) {
   var events = this.getModel();
   if (events) {
       var dateString = date.toIsoString(true);
-
       var result = goog.array.find(events, function(event) {
-          var eventDate = pstj.date.utils.renderTime(event.date, 'yyyy-mm-dd');
-
+          var eventDate = pstj.date.utils.renderTime(event['time'], 'yyyy-mm-dd');
           return eventDate == dateString;
       });
       if (result === null) return false;

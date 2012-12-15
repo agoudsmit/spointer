@@ -138,4 +138,8 @@ spo.ui.Composer.prototype.decorateInternal = function(el) {
   this.subjectField = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('field-subject'), this.getElement()));
   this.errorToolbar = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('error-toolbar'), this.getElement()));
   this.formContainer = /** @type {!Element} */(goog.dom.getElementByClass(goog.getCssName('web-form-container'), this.getElement()));
+  this.attachments_ = this.getEls(goog.getCssName('attachments'));
+  if (!goog.global['SETUP']['can_set_from']) {
+    this.fromField.parentNode.style.display = 'none';
+  }
 };

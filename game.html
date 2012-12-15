@@ -1,8 +1,12 @@
 <!doctype html>
 <html>
   <head>
-    <title>InetrAct Admin Panel</title>
+    <title>InetrAct Game area</title>
     <link rel="stylesheet" href="build/game.css" type="text/css">
+    <!-- Change with src to link to server, where the server should generate
+    the appropriate values, please use the same syntax and content type
+    text/javascript
+    -->
     <script>
       // Settings
       // We need to know the user name (i.e. who we are)
@@ -17,15 +21,17 @@
     </script>
     <script src="/InterACT/serverTime"></script>
     <script src="/InterACT/recipients"></script>
-    <!--<script>
-    	RECIPIENTS = ['TEAM1', 'TEAM2', 'PLAYER1', 'PLAYER2'];
-    </script>-->
+    <!-- Change with src to point to the server and return similar content:
+    can_use_tags means the user will see tags in mail preview
+    can_set_from means the user will see the from field in composed
+    -->
    	<script>
     	SETUP = {
     	    can_use_tags: true,
-    	    can_set_from: true
+    	    can_set_from: false
     	}
     </script>
+    <!-- Change this to point to a src that the server can understand and return similar content with content type = text/javascript -->
     <script>
     	TEMPLATES = {
   	    intelligence: {
@@ -37,7 +43,14 @@
   	      body: "Let us meet...",
   	      web_form: null,
   	      web_form_config: 0
-  	    }
+  	    },
+        press: {
+          to: ["WorldPress"],
+          from: [PLAYER_NAME],
+          body: "Your press request:",
+          web_form: null,
+          web_form_config: null
+        }
     	}
     </script>
   </head>
@@ -50,9 +63,7 @@
     <script src="build/deps.js"></script>
     <script>goog.require('game');</script>
  -->
-
     <script src="build/game.build.js"></script>
-
 
   </body>
 </html>

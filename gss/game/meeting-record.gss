@@ -1,0 +1,15 @@
+.meeting-record,  .meeting-record-overlay {
+  height: 39px;
+}
+
+.meeting-record-container {
+  height: 50px;
+  padding: 5px;
+  border-top: 1px solid EMBOSS_TEXT_COLOR;
+}
+
+.meeting-record-overlay {
+  cursor: pointer;
+  position: relative;
+  top: -39px;
+}

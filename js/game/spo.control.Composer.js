@@ -21,6 +21,8 @@ goog.require('goog.async.Delay');
 goog.require('spo.ui.MeetingForm');
 goog.require('goog.object');
 goog.require('spo.ui.Attachment');
+goog.require('pstj.ui.Upload.Event');
+
 
 /**
  * @constructor
@@ -36,6 +38,8 @@ spo.control.Composer = function(container) {
   this.view_.render(this.container_);
   this.form = new spo.ui.Attachment();
   this.form.render(this.container_);
+  this.getHandler().listen(this.form, [pstj.ui.Upload.EventType.SUCCESS,
+    pstj.ui.Upload.EventType.FAIL], this.handleAttachmentUpload );
   this.processTemplate_bound_ = goog.bind(this.processTemplate, this);
   this.showError_delayed_ = new goog.async.Delay(this.showError, 8000, this);
 };
@@ -70,6 +74,24 @@ spo.control.Composer.prototype.webFormView;
  * @private
  */
 spo.control.Composer.prototype.mailRecordModel_;
+
+/**
+ * Handles the form event for upload.
+ * @param  {pstj.ui.Upload.Event} ev The upload event.
+ * @protected
+ */
+spo.control.Composer.prototype.handleAttachmentUpload = function(ev) {
+  if (ev.type = pstj.ui.Upload.EventType.SUCCESS) {
+    console.log('Response from upload was: ', ev.formResponse);
+    if (ev.formResponse['status'] == 'ok') {
+      if (!goog.isArray(this.mailRecordModel_['message_attachemnts'])) {
+        this.mailRecordModel_['message_attachments'] = [];
+      }
+      this.mailRecordModel_['message_attachments'].push(ev.formResponse['content']['message_attachments'][0]['filename'])
+      this.saveDraft(goog.bind(this.setAttachments, this));
+    }
+  }
+};
 
 /**
  * Method to load data from a mail record directly instead of parts.
@@ -124,6 +146,7 @@ spo.control.Composer.prototype.loadData = function(to, from, subject, body, web_
     this.webFormView = new spo.ui.MeetingForm((web_form_config == 0) ? undefined : web_form_config);
     this.webFormView.render(this.view_.formContainer);
   }
+  this.setAttachments();
 };
 
 /**
@@ -139,7 +162,17 @@ spo.control.Composer.prototype.setRecordModel = function(msg_record) {
   this.model_ = msg_record;
 };
 
-
+spo.control.Composer.prototype.setAttachments = function() {
+  var result = '';
+  if (goog.isArray(this.mailRecordModel_['message_attachments']) &&
+      !goog.array.isEmpty(this.mailRecordModel_['message_attachments'])) {
+    result = 'Attachments: ' +
+      goog.array.map(this.mailRecordModel_['message_attachments'], function(path) {
+        return path.replace(/\\/g,'/').replace( /.*\//, '' );
+      }).join(', ');
+  }
+  this.view_.attachments_.innerHTML = result;
+};
 /**
  * Binds events from buttons
  * @protected
@@ -155,10 +188,13 @@ spo.control.Composer.prototype.attachEvents = function() {
  * @protected
  */
 spo.control.Composer.prototype.saveDraft = function(callback) {
-  this.mailRecordModel_['to'] = spo.ds.mail.parseStringToNameList(this.view_.toField.value),
-  this.mailRecordModel_['from'] = spo.ds.mail.parseStringToNameList(this.view_.fromField.value),
-  this.mailRecordModel_['subject'] = this.view_.subjectField.value,
-  this.mailRecordModel_['body'] = this.field_.getCleanContents(),
+  this.mailRecordModel_['to'] = spo.ds.mail.parseStringToNameList(this.view_.toField.value);
+  this.mailRecordModel_['from'] = spo.ds.mail.parseStringToNameList(this.view_.fromField.value);
+  this.mailRecordModel_['subject'] = this.view_.subjectField.value;
+  this.mailRecordModel_['body'] = this.field_.getCleanContents();
+  if (this.webFormView && !this.webFormView.isDisposed()) {
+    this.mailRecordModel_['web_form_config'] = this.webFormView.getValue()
+  }
   spo.ds.Resource.getInstance().get({
     'url' : '/message/draft/put',
     'data' : {
@@ -248,7 +284,7 @@ spo.control.Composer.prototype.processTemplate = function(resp) {
   }
   console.log('received draft template', resp);
   var message = resp['content']['message'];
-  console.log(message);
+  message['from'] = [goog.global['PLAYER_NAME']];
   this.loadModel(message);
   //this.loadData( with all the shit );
 };
@@ -278,7 +314,6 @@ spo.control.Composer.prototype.showError = function(err) {
  */
 spo.control.Composer.prototype.handleTemplateSelection = function(ev) {
   ev.stopPropagation();
-  console.log('1');
   if (ev.getAction() == spo.control.Action.SELECT) {
     var templateName = ev.target.getSelectedTemplateName();
     if (templateName == 'draft') {
@@ -294,6 +329,7 @@ spo.control.Composer.prototype.handleTemplateSelection = function(ev) {
       if (goog.isDefAndNotNull(goog.global['TEMPLATES'][templateName])) {
         var template = goog.global['TEMPLATES'][templateName];
         var model = goog.object.unsafeClone(template);
+        model['from'] = [goog.global['PLAYER_NAME']];
         this.loadModel(model);
       } else {
         this.showError('not implemented yet');

@@ -23,7 +23,7 @@ spo.control.MailBoxList = function(container) {
   this.model_ = new spo.ds.MailBoxList();
   this.getHandler().listenOnce(this.model_, spo.ds.OverrideList.EventType.INITED,
       this.loadView);
-  this.getHandler().listen(this.view_, goog.ui.Component.EventType.ACTION, this.handleChildAction);
+  this.getHandler().listen(this.view_, goog.ui.Component.EventType.ACTION, this.handleChildAction_);
   this.model_.update();
 };
 goog.inherits(spo.control.MailBoxList, spo.control.Base);
@@ -42,17 +42,26 @@ spo.control.MailBoxList.prototype.currentActiveResource_;
 /**
  * Handles the action of a child, this is usually to change the focus to another box.
  * @param {goog.events.Event} ev The ACTION component event.
+ * @private
+ */
+spo.control.MailBoxList.prototype.handleChildAction_ = function(ev) {
+  var target = /** @type {!spo.ui.MailBoxItem} */ (ev.target);
+  this.loadMailBox(target);
+};
+
+/**
+ * Loads the mail box.
+ * @param  {spo.ui.MailBoxItem} mailbox The mailbox to load.
  * @protected
  */
-spo.control.MailBoxList.prototype.handleChildAction = function(ev) {
-  var target = /** @type {!spo.ui.MailBoxItem} */ (ev.target);
-  if (this.activeBox_ != target) {
+spo.control.MailBoxList.prototype.loadMailBox = function(mailbox) {
+ if (this.activeBox_ != mailbox) {
     if (this.activeBox_ != null) {
       this.activeBox_.setActive(false);
     }
-    target.setActive(true);
-    this.activeBox_ = target;
-    this.currentActiveResource_ = /** @type {string} */ (target.getModel().getId());
+    mailbox.setActive(true);
+    this.activeBox_ = mailbox;
+    this.currentActiveResource_ = /** @type {string} */ (mailbox.getModel().getId());
     this.notify(this, spo.control.Action.SELECT);
   }
 };
@@ -76,5 +85,10 @@ spo.control.MailBoxList.prototype.loadView = function() {
     var box = new spo.ui.MailBoxItem();
     box.setModel(list.getByIndex(i));
     this.view_.addChild(box, true);
+    if (i == 0) {
+      this.loadMailBox(box);
+    }
   }
+
+
 };

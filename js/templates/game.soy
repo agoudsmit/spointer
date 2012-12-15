@@ -51,9 +51,10 @@
       <div class="{css goog-button} {css form-button} {css text-button} {css attachment-button}">Attach file</div>
   		<div class="{css text-button} {css goog-button} {css from-button} {css template-button}">Templates</div>
   		<div class="{css goog-menu}" style="display: none;">
-  			<div class="{css goog-menuitem}" data-template="draft">Load draft</div>
+  			<div class="{css goog-menuitem}" data-template="draft">Load from draft</div>
   			<div class="{css goog-menuitem}" data-template="meeting">New meeting</div>
   			<div class="{css goog-menuitem}" data-template="intelligence">Intelligence request</div>
+        <div class="{css goog-menuitem}" data-template="press">Wolrd Press request</div>
   		</div>
     	<div class="{css editor-toolbar}"></div>
     </div>
@@ -73,6 +74,7 @@
     </div>
     <div class="{css web-form-container}"></div>
     <div class="{css editor-field}" id="mail-composer-text-field"></div>
+    <div class="{css attachments}"></div>
   </div>
 {/template}
 
@@ -128,6 +130,23 @@
 		</div>
 	</div>
 {/template}
+
+/**
+ * Meeting record
+ * @param recordid
+ * @param date
+ * @param subject
+ */
+{template .MeetingRecord}
+  <div class="{css meeting-record-container}">
+    <div class="{css meeting-record}">
+      <div class="{css meeting-date}">{$date}</div>
+      <div class="{css meeting-subject}">{$subject}</div>
+    </div>
+    <div class="{css meeting-record-overlay}" data-recordid="{$recordid}"></div>
+  </div>
+{/template}
+
 
 /**
  * Mail record in mail list.
@@ -243,8 +262,8 @@
   <div class="{css meetings-list}">
     <div class="{css meetings-label}">meetings</div>
     <div class="{css goog-tab-bar}  {css goog-tab-bar-top}">
-      <div class="{css right} {css goog-tab}">Pending</div>
-      <div class="{css right} {css goog-tab} {css goog-tab-selected}">Upcoming</div>
+      <div class="{css right} {css goog-tab}" data-type="pending">Pending</div>
+      <div class="{css right} {css goog-tab} {css goog-tab-selected}" data-type="upcoming">Upcoming</div>
     </div>
     <div class="{css goog-tab-bar-clear}"></div>
     <div class="{css goog-tab-content}">Example content</div>

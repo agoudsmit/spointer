@@ -32,11 +32,15 @@ game = function() {
     screen));
 
   var gameRecord = null;
-  
+  var blockLayer = goog.dom.createDom('div', {
+    style: 'position: absolute; z-index:9999; top:0; left:0; width: 100%; height:100%; display:table; background-color: rgba(0,0,0,0.7);'
+  });
+  blockLayer.innerHTML = '<div style="display: table-cell; vertical-align: middle; margin: auto; color: red; font-size: 40px; text-align: center; width: 100%;">This game is currently disabled</div>';
+  blockLayer.style.display =  'none';
   function handleGameDetails(result) {
-
+    console.log(result);
     if (result['status'] == 'ok') {
-      var game = result['content']['content'];
+      var game = result['content'];
       if (gameRecord == null) {
         gameRecord = new spo.ds.Game(game);
         window['GAME'] = gameRecord;
@@ -45,8 +49,17 @@ game = function() {
         header.setClockInstance(clock);
         header.setGameName(gameRecord.getProp(spo.ds.Game.Property.NAME)
           .toString());
+
+        spo.ds.Resource.getInstance().registerResourceHandler('/game/update/' + game['id'],
+          function(response) {
+            handleGameDetails(response);
+          });
+
       } else {
         gameRecord.update(new spo.ds.Game(game));
+      }
+      if (gameRecord.getProp(spo.ds.Game.Property.STATUS) != 1) {
+        blockLayer.style.display = 'table';
       }
     }
   }
@@ -55,10 +68,14 @@ game = function() {
     'url': '/game/details'
   }, handleGameDetails);
 
+
+
   var gameArena = new spo.control.GameArena(
       /** @type {!Element} */ (goog.dom.getElementByClass(
       goog.getCssName('content'), screen)));
 
+
+  document.body.appendChild(blockLayer);
 //  var scrollarea = new pstj.ui.CustomScrollArea();
 //  scrollarea.setScrollInsideTheWidget(false);
 //  scrollarea.render(goog.dom.getElementByClass(goog.getCssName('content'),

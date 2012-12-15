@@ -396,7 +396,12 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
       action == spo.control.Action.PLAY) {
     this.syncGameStateToServer_(action);
   } else if (action == spo.control.Action.STOP) {
-    // FIXME: how do we stop a game??
+    spo.ds.Resource.getInstance().get({
+      'url': '/game/update/' + this.gameId_,
+      'data': {
+        'state_id' : 3
+      }
+    });
   }
 };
 

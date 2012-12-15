@@ -73,6 +73,20 @@ spo.ds.Resource.urlhandlers_ = [];
 spo.ds.Resource.handlers_ = [];
 
 /**
+ * If web socket should be used.
+ * @type {boolean}
+ * @private
+ */
+spo.ds.Resource.prototype.useWebSocket_ = goog.global['USE_WEB_SOCKS'];
+/**
+ * Sets the forced used of web socket.
+ * @param  {boolean} enable True if it should be enabled.
+ */
+spo.ds.Resource.prototype.useWebSocket = function(enable) {
+  this.useWebSocket_ = enable;
+};
+
+/**
  * Register a new websocket resource/route/url with a handler that is interested
  *  in it.
  *
@@ -211,11 +225,13 @@ spo.ds.Resource.prototype.handleResponse_ = function(cb, e) {
   // shim we have here.
   // Remove this once we have a working web socket on the server.
   if (goog.isDefAndNotNull(responseObject['resource'])) {
-    console.log('Updating....')
-    goog.net.XhrIo.send('/socket', undefined, 'POST', this.encode_({
-      'data' : spo.ds.Resource.JSON_PROCESSOR_.stringify(responseObject)
-    }));
-    //spo.ds.Resource.defaultCallback_(responseObject);
+    if (this.useWebSocket_)
+      goog.net.XhrIo.send('/socket', undefined, 'POST', this.encode_({
+        'data' : spo.ds.Resource.JSON_PROCESSOR_.stringify(responseObject)
+      }));
+    else {
+      spo.ds.Resource.defaultCallback_(responseObject);
+    }
   }
 };
 
@@ -231,7 +247,7 @@ spo.ds.Resource.prototype.wsShim = function(packet) {
     try {
       packet = spo.ds.Resource.JSON_PROCESSOR_.parse(packet);
     } catch (e) {
-      console.log('Error in package');
+      console.log('Error in package: ', packet, ' ,done.');
     }
   }
   spo.ds.Resource.defaultCallback_(packet);

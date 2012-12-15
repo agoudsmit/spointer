@@ -75,6 +75,9 @@
 }
 .new-button {
   @mixin icons(12);
+  position: absolute;
+  top: 140px;
+  left: 50%;
 }
 .reply-button:hover, .reply-button:focus, .form-button-hover.reply-button,
 .form-button-focused.reply-button {
@@ -93,4 +96,3 @@
 .form-button-focused.delete-button {
   @mixin hoverdark(5);
 }
-

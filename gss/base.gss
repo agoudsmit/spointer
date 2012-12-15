@@ -43,6 +43,7 @@
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  outline: none;
 }
 
 /** Define the font face, probably not a good idea...*/
