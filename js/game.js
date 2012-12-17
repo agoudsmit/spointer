@@ -26,7 +26,6 @@ game = function() {
   screen.innerHTML = spo.gametemplate.game({});
 
 
-
   var header = spo.ui.GameHeader.getInstance();
   header.decorate(goog.dom.getElementByClass(goog.getCssName('header'),
     screen));
@@ -55,6 +54,7 @@ game = function() {
             handleGameDetails(response);
           });
 
+        gameArena.setGame(gameRecord);
       } else {
         gameRecord.update(new spo.ds.Game(game));
       }
@@ -73,6 +73,7 @@ game = function() {
   var gameArena = new spo.control.GameArena(
       /** @type {!Element} */ (goog.dom.getElementByClass(
       goog.getCssName('content'), screen)));
+
 
 
   document.body.appendChild(blockLayer);

@@ -83,6 +83,7 @@ spo.ui.MailList.prototype.decorateInternal = function(el) {
       goog.getCssName('mail-listing-view'), this.getElement()));
   this.buttonPrev_.decorate(goog.dom.getElementByClass(goog.getCssName('prev'), el));
   this.buttonNext_.decorate(goog.dom.getElementByClass(goog.getCssName('next'), el));
+  this.paginator = goog.dom.getElementByClass(goog.getCssName('paginator'), this.getElement());
 };
 
 /** @inheritDoc */
@@ -231,5 +232,6 @@ spo.ui.MailList.prototype.handleListUpdate = function(ev) {
   this.localCopy_ = newList;
   this.buttonPrev_.setEnabled(this.getModel().hasPreviousPage());
   this.buttonNext_.setEnabled(this.getModel().hasNextPage());
+  this.paginator.innerHTML = this.getModel().getCurrentPageNumber()+'/'+this.getModel().getPagesCount();
   this.dispatchEvent(new spo.control.Event(this, spo.control.Action.UPDATE));
 };

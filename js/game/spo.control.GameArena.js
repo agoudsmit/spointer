@@ -25,6 +25,7 @@ goog.require('spo.control.MeetingList');
 spo.control.GameArena = function(container) {
   goog.base(this, container);
   this.init();
+  this.game_ = null;
 };
 goog.inherits(spo.control.GameArena, spo.control.Base);
 
@@ -123,6 +124,15 @@ spo.control.GameArena.prototype.init = function() {
   //     goog.getCssName('meeting-box-placeholder'), this.view_.getContentElement()
   //   ));
 
+};
+
+spo.control.GameArena.prototype.setGame = function(gamerecord) {
+  this.game_ = gamerecord;
+  this.updateCalendar();
+};
+
+spo.control.GameArena.prototype.updateCalendar = function() {
+  this.callendar_.setGame(this.game_);
 };
 
 spo.control.GameArena.prototype.showEmptyComposer = function(e) {

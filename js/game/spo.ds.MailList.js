@@ -92,6 +92,21 @@ spo.ds.MailList.prototype.viewState_;
 spo.ds.MailList.prototype.onPage_ = 1;
 
 /**
+ * Getter for the curretn page num
+ * @return {number} The current page number.
+ */
+spo.ds.MailList.prototype.getCurrentPageNumber = function() {
+  return this.onPage_;
+};
+
+spo.ds.MailList.prototype.getPagesCount = function() {
+  if (this.msgCount_ != -1) {
+    return Math.ceil(this.msgCount_ / this.msgsPerPage);
+  }
+  return 0;
+};
+
+/**
  * @inheritDoc
  */
 spo.ds.MailList.prototype.update = function() {

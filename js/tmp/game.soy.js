@@ -89,7 +89,7 @@ spo.gametemplate.MailBoxList = function(opt_data) {
  * @notypecheck
  */
 spo.gametemplate.MailList = function(opt_data) {
-  return '\t<div class="' + goog.getCssName('mail-list-container') + '"><div class="' + goog.getCssName('mail-listing-view') + '"><!-- mails should go here --></div><div class="' + goog.getCssName('control-buttons') + '"><span class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('prev') + '">Prev</span><span class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('next') + '">Next</span></div></div>';
+  return '\t<div class="' + goog.getCssName('mail-list-container') + '"><div class="' + goog.getCssName('mail-listing-view') + '"><!-- mails should go here --></div><div class="' + goog.getCssName('control-buttons') + '"><span class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('prev') + '">Prev</span><span class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('next') + '">Next</span><div class="' + goog.getCssName('paginator') + '"></div></div></div>';
 };
 
 
@@ -120,11 +120,11 @@ spo.gametemplate.MailRecord = function(opt_data) {
  */
 spo.gametemplate.MailPreview = function(opt_data) {
   var output = '<div class="' + goog.getCssName('mail-preview-box') + '"><div class="' + goog.getCssName('mail-preview-controls') + ' ' + goog.getCssName('mail-padded') + ' ' + goog.getCssName('mail-bottom-border') + '"><!-- controls go here --></div><div class="' + goog.getCssName('mail-preview-details') + ' ' + goog.getCssName('mail-padded') + ' ' + goog.getCssName('mail-bottom-border') + '"><div><span class="' + goog.getCssName('mail-service-info') + '">From:&nbsp;</span>' + opt_data.from + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Date:&nbsp;</span>' + opt_data.date + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Subject:&nbsp;</span>' + opt_data.subject + '</div><div><span class="' + goog.getCssName('mail-service-info') + ' ' + goog.getCssName('user-list-container') + '">To:&nbsp;</span>' + opt_data.recepients + '</div><div class="' + goog.getCssName('tags-list-container') + '"></div><div class="' + goog.getCssName('web-form-container') + '">' + opt_data.webform + '</div></div><div class="' + goog.getCssName('mail-preview-body') + ' ' + goog.getCssName('mail-padded') + '">' + opt_data.body + '</div><div class="' + goog.getCssName('attachments') + '">' + ((opt_data.attachments.length > 0) ? '<div>Message attachments:</div>' : '');
-  var pathList322 = opt_data.attachments;
-  var pathListLen322 = pathList322.length;
-  for (var pathIndex322 = 0; pathIndex322 < pathListLen322; pathIndex322++) {
-    var pathData322 = pathList322[pathIndex322];
-    output += '<a class="attachment-link" target="_blank" href="' + pathData322 + '">' + opt_data.attachments_names[pathIndex322] + '</a>  ';
+  var pathList324 = opt_data.attachments;
+  var pathListLen324 = pathList324.length;
+  for (var pathIndex324 = 0; pathIndex324 < pathListLen324; pathIndex324++) {
+    var pathData324 = pathList324[pathIndex324];
+    output += '<a class="attachment-link" target="_blank" href="' + pathData324 + '">' + opt_data.attachments_names[pathIndex324] + '</a>  ';
   }
   output += '</div><div class="' + goog.getCssName('previous-message-content') + '"></div><div class="' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('loadnext-button') + '" style="display: none; width:  20ex;">Load related mesage</div></div>';
   return output;

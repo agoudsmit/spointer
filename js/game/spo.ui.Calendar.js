@@ -4,6 +4,10 @@ goog.require('goog.ui.DatePicker');
 goog.require('goog.ui.DatePicker');
 goog.require('goog.array');
 goog.require('pstj.date.utils');
+goog.require('goog.dom');
+goog.require('goog.date.Date');
+goog.require('spo.ds.Game');
+goog.require('spo.ds.STP');
 /**
  * @param {goog.date.Date|Date=} opt_date Date to initialize the date picker
  *     with, defaults to the current date.
@@ -16,11 +20,12 @@ goog.require('pstj.date.utils');
  */
 spo.ui.Calendar = function(opt_date, opt_dateTimeSymbols, opt_domHelper) {
     goog.base(this, opt_date, spo.ui.Calendar.symbols_ , opt_domHelper);
+    this.gr = null;
     this.setDecorator(this.eventDecorator);
     this.setShowWeekNum(false);
     this.setShowWeekdayNames(true);
     this.setUseNarrowWeekdayNames(true);
-    this.setShowToday(false);
+    this.setShowToday(true);
     this.setAllowNone(false);
     this.setFirstWeekday(0);
     this.setShowOtherMonths(false);
@@ -108,3 +113,75 @@ spo.ui.Calendar.prototype.setModel = function(obj) {
     goog.base(this, 'setModel', obj);
     this.redrawCalendarGrid_();
 }
+
+
+/** @inheritDoc */
+spo.ui.Calendar.prototype.decorateInternal = function(el) {
+  goog.base(this, 'decorateInternal', el);
+  var e = goog.dom.getElementByClass(goog.getCssName(this.getBaseCssClass(), 'today-cont'), this.getElement());
+  e.colSpan = 4;
+  e = goog.dom.getElementByClass(goog.getCssName(this.getBaseCssClass(), 'none-cont'), this.getElement());
+  e.colSpan = 1;
+};
+
+spo.ui.Calendar.prototype.getGameTimeFromRecord = function() {
+   // If game start time is not set, then the time cannot be calculated.
+  if (this.gr.getProp(spo.ds.Game.Property.START_TIME) == 0) {
+    // This will not happen as the user should not be able to log in when the game is not
+    // started at all.
+    return goog.now();
+  }
+
+  // If the game is paused then is pointeless to calculate time, set it as
+  // the last saved game time on server.
+  if (this.gr.isPaused()) {
+    return this.gr.getProp(spo.ds.Game.Property.SAVED_GAME_TIME);
+  }
+
+  /****************************************
+    DESCRIBES THE SCENARIO OF CALCULATING GAME TIME !!!
+   *****************************************/
+
+  // Get the server time.
+  var serverNow = spo.ds.STP.getInstance().getServerTime();
+
+  // Get the last saved game time.
+  var savedgametime = this.gr.getProp(spo.ds.Game.Property.SAVED_GAME_TIME);
+
+  // Get the time of last save on server.
+  var savets = this.gr.getProp(spo.ds.Game.Property.SAVED_REAL_TIME);
+
+  // Calculate the time elapsed between the last save on server and currenr time
+  // on server.
+  var delta = serverNow - savets;
+
+  // Calculate how much milliseconds (time) ellapsed in game time compared to
+  // real time elapsed.
+  var delta_game_time = delta * this.gr.getProp(spo.ds.Game.Property.SPEED);
+
+  // Calculate the current game time based on the actual time elapsed.
+  var gametimeNow = (savedgametime + delta_game_time);
+  return
+
+}
+
+spo.ui.Calendar.prototype.getGameTime = function() {
+  if (this.gr) {
+    var a = this.getGameTimeFromRecord();
+    if (a !== null) return a;
+  }
+  return goog.now();
+};
+
+/** @inheritDoc */
+spo.ui.Calendar.prototype.selectToday = function() {
+  this.setDate(new Date(this.getGameTime()));
+};
+
+spo.ui.Calendar.prototype.getCurrentTime = function() {
+  return new goog.date.Date(new Date(this.getGameTime()));
+};
+
+spo.ui.Calendar.prototype.setgame = function(gr) {
+  this.gr = gr;
+};
