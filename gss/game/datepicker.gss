@@ -18,3 +18,7 @@
 .meeting-box-placeholder .goog-date-picker-month {
   width: 8ex;
 }
+
+.goog-date-picker-today {
+  background-color: #EDEFF1;
+}
