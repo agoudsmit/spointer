@@ -278,13 +278,13 @@ spo.screen.Login.prototype.handleSubmit_ = function(ev) {
     var query = goog.Uri.QueryData.createFromMap({
       'loginemail': value
     });
-    console.log(query.toString());
+    // console.log(query.toString());
     // TODO: Make a real request where the data is correctly formatted
     goog.net.XhrIo.send(this.lostPasswordUrl_, undefined, 'POST',
       query.toString());
     this.dialog_.setVisible(true);
   } else {
-    if (form) this.io_.sendFromForm(form);
+    if (form) form.submit();
   }
 };
 
