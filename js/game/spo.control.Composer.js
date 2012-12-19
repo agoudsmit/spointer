@@ -243,11 +243,7 @@ spo.control.Composer.prototype.handleActionFromButtons = function(ev) {
       this.saveDraft(goog.bind(this.updateDraft, this));
       break;
     case this.view_.sendButton_:
-      if (!this.isComposingMeeting) {
-        this.saveDraft(goog.bind(this.sendMessage, this));
-      } else {
-        // send as form
-      }
+      this.saveDraft(goog.bind(this.sendMessage, this));
       break;
     case this.view_.attachButton_:
       if (goog.isString(this.mailRecordModel_['hash'])) {
