@@ -161,7 +161,7 @@ spo.ui.Calendar.prototype.getGameTimeFromRecord = function() {
 
   // Calculate the current game time based on the actual time elapsed.
   var gametimeNow = (savedgametime + delta_game_time);
-  return
+  return gametimeNow;
 
 }
 
