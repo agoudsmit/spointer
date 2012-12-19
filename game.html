@@ -14,6 +14,7 @@
       USER_NAME = 'Peter StJ';
       LOGOUT_LINK = 'whatever';
       PLAYER_NAME = 'PLAYER1';
+      TEAM_NAME = 'TEAM1';
       UPLOAD_ATTACHMENT_LINK = '/InterACT/Messages/uploadAttachments';
       // UPLOAD_SCENARIO = '/InterACT/games/upload';
       // UPLOAD_TEAMS = '/InterACT/games/uploadPlayers';
@@ -28,7 +29,8 @@
    	<script>
     	SETUP = {
     	    can_use_tags: true,
-    	    can_set_from: false
+    	    can_set_from: true,
+          is_control_user: true
     	}
     </script>
     <!-- Change this to point to a src that the server can understand and return similar content with content type = text/javascript -->
@@ -50,6 +52,10 @@
           body: "Your press request:",
           web_form: null,
           web_form_config: null
+        },
+        team: {
+          from: [TEAM_NAME],
+          body: "This is message from my team:..."
         }
     	}
     </script>

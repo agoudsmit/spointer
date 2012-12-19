@@ -41,6 +41,7 @@
 
 /**
  * Contains the composer view. It is entierly programatically controlled, thus no fields can be prefilled.
+ * @param shouldSeeTeam
  */
 {template .Composer}
   <div class="{css mail-composer}">
@@ -55,6 +56,9 @@
   			<div class="{css goog-menuitem}" data-template="meeting">New meeting</div>
   			<div class="{css goog-menuitem}" data-template="intelligence">Intelligence request</div>
         <div class="{css goog-menuitem}" data-template="press">Wolrd Press request</div>
+        {if $shouldSeeTeam}
+          <div class="{css goog-menuitem"} data-template="team">Message from team name</div>
+        {/if}
   		</div>
     	<div class="{css editor-toolbar}"></div>
     </div>

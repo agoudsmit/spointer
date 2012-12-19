@@ -325,7 +325,7 @@ spo.control.Composer.prototype.handleTemplateSelection = function(ev) {
       if (goog.isDefAndNotNull(goog.global['TEMPLATES'][templateName])) {
         var template = goog.global['TEMPLATES'][templateName];
         var model = goog.object.unsafeClone(template);
-        model['from'] = [goog.global['PLAYER_NAME']];
+        if (!model['from']) model['from'] = [goog.global['PLAYER_NAME']];
         this.loadModel(model);
       } else {
         this.showError('not implemented yet');
