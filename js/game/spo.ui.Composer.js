@@ -35,7 +35,7 @@ goog.inherits(spo.ui.Composer, pstj.ui.Templated);
 /** @inheritDoc */
 spo.ui.Composer.prototype.getTemplate = function() {
   return spo.gametemplate.Composer({
-    shouldSeeTeam: goog.global['SETUP']['is_control_user']
+    shouldSeeTeam: !goog.global['SETUP']['is_control_user']
   });
 };
 
