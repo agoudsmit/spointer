@@ -182,6 +182,6 @@ spo.ui.Calendar.prototype.getCurrentTime = function() {
   return new goog.date.Date(new Date(this.getGameTime()));
 };
 
-spo.ui.Calendar.prototype.setgame = function(gr) {
+spo.ui.Calendar.prototype.setGameRecord = function(gr) {
   this.gr = gr;
 };

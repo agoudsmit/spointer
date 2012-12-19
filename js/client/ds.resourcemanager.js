@@ -216,9 +216,7 @@ spo.ds.Resource.prototype.handleResponse_ = function(cb, e) {
     xhr.getResponseText());
   var responseObject = response['response'][0];
 
-  if (responseObject['status'] != 'ok') {
-    console.log('Something wrong with response', responseObject);
-  }
+  if (responseObject['status'] != 'ok') { }
   // Handle the response if a callback function was provided.
   if (goog.isFunction(cb)) cb(responseObject);
   // If there is a resource - hand over the object to the web socket
@@ -247,7 +245,7 @@ spo.ds.Resource.prototype.wsShim = function(packet) {
     try {
       packet = spo.ds.Resource.JSON_PROCESSOR_.parse(packet);
     } catch (e) {
-      console.log('Error in package: ', packet, ' ,done.');
+      //console.log('Error in package: ', packet, ' ,done.');
     }
   }
   spo.ds.Resource.defaultCallback_(packet);

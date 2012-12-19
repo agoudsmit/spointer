@@ -92,7 +92,7 @@ spo.ui.Forms.prototype.enableTeam = function() {
  */
 spo.ui.Forms.prototype.notify_ = function(e) {
   var target = /** @type {!goog.net.IframeIo} */ (e.target);
-  console.log('Response from server is', target.getResponseHtml());
+  //console.log('Response from server is', target.getResponseHtml());
   this.dispatchEvent(new spo.ui.Forms.FormEvent(
     (target.isSuccess() ? spo.control.EventType.SUCCESS :
       spo.control.EventType.FAILURE), this, target.getResponseText()));

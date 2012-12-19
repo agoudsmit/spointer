@@ -82,7 +82,7 @@ spo.control.Composer.prototype.mailRecordModel_;
  */
 spo.control.Composer.prototype.handleAttachmentUpload = function(ev) {
   if (ev.type = pstj.ui.Upload.EventType.SUCCESS) {
-    console.log('Response from upload was: ', ev.formResponse);
+    //console.log('Response from upload was: ', ev.formResponse);
     if (ev.formResponse['status'] == 'ok') {
       if (!goog.isArray(this.mailRecordModel_['message_attachemnts'])) {
         this.mailRecordModel_['message_attachments'] = [];
@@ -204,7 +204,7 @@ spo.control.Composer.prototype.saveDraft = function(callback) {
 };
 
 spo.control.Composer.prototype.sendMessage = function(resp) {
-  console.log('resp', resp)
+  //console.log('resp', resp)
   if (resp['status'] == 'ok') {
     spo.ds.Resource.getInstance().get({
       'url' : '/message/draft/send',
@@ -278,7 +278,7 @@ spo.control.Composer.prototype.processTemplate = function(resp) {
     this.showError('Problem loading template: ' + resp['error']);
     return;
   }
-  console.log('received draft template', resp);
+  //console.log('received draft template', resp);
   var message = resp['content']['message'];
   message['from'] = [goog.global['PLAYER_NAME']];
   this.loadModel(message);

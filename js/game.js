@@ -37,7 +37,6 @@ game = function() {
   blockLayer.innerHTML = '<div style="display: table-cell; vertical-align: middle; margin: auto; color: red; font-size: 40px; text-align: center; width: 100%;">This game is currently disabled</div>';
   blockLayer.style.display =  'none';
   function handleGameDetails(result) {
-    console.log(result);
     if (result['status'] == 'ok') {
       var game = result['content'];
       if (gameRecord == null) {

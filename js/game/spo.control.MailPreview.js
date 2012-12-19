@@ -135,7 +135,7 @@ spo.control.MailPreview.prototype.loadNextMEssage = function() {
 };
 
 spo.control.MailPreview.prototype.showRelatedMessage = function(resp) {
-  console.log(resp);
+  //console.log(resp);
   if (resp['status'] == 'ok') {
     var msg = resp['content']['message'];
     if (msg['id'] == this.nextMessageId) {
@@ -160,7 +160,7 @@ spo.control.MailPreview.prototype.showRelatedMessage = function(resp) {
 spo.control.MailPreview.prototype.saveTags = function(ev) {
   ev.stopPropagation();
   var input = this.view_.getTagList();
-  console.log('Input value is', input);
+  //console.log('Input value is', input);
   var arr = input.split(',');
   goog.array.forEach(arr, function(el, i) {
     arr[i] = goog.string.trim(el);

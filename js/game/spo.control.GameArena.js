@@ -132,7 +132,7 @@ spo.control.GameArena.prototype.setGame = function(gamerecord) {
 };
 
 spo.control.GameArena.prototype.updateCalendar = function() {
-  this.callendar_.setGame(this.game_);
+  this.callendar_.setGameRecord(this.game_);
 };
 
 spo.control.GameArena.prototype.showEmptyComposer = function(e) {
@@ -202,7 +202,7 @@ spo.control.GameArena.prototype.emptyMessage = {
 spo.control.GameArena.prototype.notify = function(child, action) {
   switch (child) {
     case this.meetinglist_:
-      console.log('Notify from meeting list')
+      //console.log('Notify from meeting list')
       if (action == spo.control.Action.UPDATE) {
         this.callendar_.setModel(this.meetinglist_.getList());
       } else if (action == spo.control.Action.SELECT) {
@@ -265,7 +265,7 @@ spo.control.GameArena.prototype.notify = function(child, action) {
           clone['is_read'] = 1;
           clone['subject'] = 'Fwd:'+ model['subject'];
           clone['body'] = '<br>-----<br>' + model['body'];
-          console.log(clone);
+          //console.log(clone);
           this.composer.loadModel(clone);
         }
       }
