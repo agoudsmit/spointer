@@ -220,7 +220,7 @@ spo.ui.Header.prototype.onSearchChange_ = function(e) {
     this.searchWasApplied_ = false;
     goog.dom.classes.remove(this.searchField_.getElement(), goog.getCssName('used'));
   }
-  
+
   if (this.searchOnlyOnEnter_ == true) {
     if (e.keyCode != goog.events.KeyCodes.ENTER) {
       return;
@@ -282,7 +282,8 @@ spo.ui.Header.prototype.setGameName = function(gamename) {
  * @param {boolean=} on_enter If the search should be perfored only on enter press or on everykey press.
  */
 spo.ui.Header.prototype.setSearchFiledState = function(text, handler, on_enter) {
-  this.searchField_.clear();
+  // Omit clearing the search field as they want to preserve the filter.
+  //this.searchField_.clear();
   if (goog.isString(text)) {
     this.searchField_.setLabel(text);
     this.searchFieldHandler_ = handler;
