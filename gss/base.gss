@@ -72,9 +72,9 @@ body {
   font-size: 15px;
 }
 
-#screen {
+/*#screen {
   overflow: hidden;
-}
+}*/
 
 /** Common util classes */
 .bold {
