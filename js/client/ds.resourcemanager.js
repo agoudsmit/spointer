@@ -224,7 +224,7 @@ spo.ds.Resource.prototype.handleResponse_ = function(cb, e) {
   // Remove this once we have a working web socket on the server.
   if (goog.isDefAndNotNull(responseObject['resource'])) {
     if (this.useWebSocket_)
-      goog.net.XhrIo.send('/socket', undefined, 'POST', this.encode_({
+      goog.net.XhrIo.send(goog.global['SOCKET_RELAY_ADDRESS'], undefined, 'POST', this.encode_({
         'data' : spo.ds.Resource.JSON_PROCESSOR_.stringify(responseObject)
       }));
     else {
