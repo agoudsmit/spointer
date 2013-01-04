@@ -32,9 +32,9 @@ goog.scope(function() {
           this.dispatchEvent(new spo.control.Event(this,
             spo.control.Action.REPLY));
           break;
-        case 'delete':
+        case 'close':
           this.dispatchEvent(new spo.control.Event(this,
-            spo.control.Action.DELETE));
+            spo.control.Action.CLOSE));
           break;
         case 'forward':
           this.dispatchEvent(new spo.control.Event(this,

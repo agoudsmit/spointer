@@ -39,6 +39,8 @@ spo.control.MailPreview.prototype.handleMessageControlAction = function(ev) {
     case spo.control.Action.FORWARD:
       this.notify(this, ev.getAction());
       break;
+    case spo.control.Action.CLOSE:
+      break;
   }
 };
 
