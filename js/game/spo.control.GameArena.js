@@ -191,9 +191,9 @@ spo.control.GameArena.prototype.handleMailListAction = function(ev) {
  * @protected
  */
 spo.control.GameArena.prototype.emptyMessage = {
-  'id_read': 1,
+  'is_read': 1,
   'from': [goog.global['PLAYER_NAME']],
-  'body': 'Compose your message here',
+  'body': '',
   'web_form' : null,
   'web_form_config': null
 };
