@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   position: relative;
-  left: -175px;
+  left: -170px;
   width: 163px;
   height: 100%;
 }
