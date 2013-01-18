@@ -59,6 +59,7 @@ spo.ds.mail.doMatch = function(message, message_other) {
   // TODO: fix up the compare function!!!
   return pstj.object.deepEquals(message, message_other, function(a, b) {
     if (a['is_read'] != b['is_read']) return false;
+    if (a['is_on_hold'] != b['is_on_hold']) return false;
     return true ;
   });
 };
@@ -108,6 +109,10 @@ spo.ds.mail.getListing = function(resource) {
 spo.ds.mail.isRead = function(record) {
   return record['is_read'] == 1;
 };
+
+spo.ds.mail.isHeld = function(record) {
+  return record['is_on_hold'] == 1;
+}
 
 /**
  * Updates the record in place to be marked as read.

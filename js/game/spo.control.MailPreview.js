@@ -62,6 +62,7 @@ spo.control.MailPreview.prototype.setScrollElement = function(el) {
  * @param {*} record The mail record to load.
  */
 spo.control.MailPreview.prototype.loadRecord = function(record) {
+  this.releaseMessage();
   this.mailRecord_ = record;
   this.nextMessageId = record['reply_message_id'] || null;
   this.loadView();
@@ -85,6 +86,15 @@ spo.control.MailPreview.prototype.view_;
  */
 spo.control.MailPreview.prototype.getRecord = function() {
   return this.mailRecord_ || null;
+};
+
+spo.control.MailPreview.prototype.releaseMessage = function() {
+  if (this.mailRecord_ && spo.ds.mail.isHeld(this.mailRecord_)) {
+    // Release the message if needed.
+    spo.ds.Resource.getInstance().get({
+      'url': '/message/' + this.mailRecord_['id'] + '/unhold'
+    });
+  }
 };
 
 spo.control.MailPreview.prototype.clean = function() {

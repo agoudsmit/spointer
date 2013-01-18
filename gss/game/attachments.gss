@@ -1,0 +1,28 @@
+.attachment-item {
+	display: inline-block;
+	position: relative;
+	padding: 1px 10px 1px 10px;
+	border: 1px solid #497593;
+	margin: 0 10px 5px 0;
+	border-radius: 15px
+}
+
+.actionable {
+	background-color: transparent;
+	background-image: url('../assets/x.png');
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 1px;
+	right: 0;
+	cursor: pointer;
+	display: none;
+}
+
+.attachment-item:hover .actionable {
+	display: block;
+}
+
+.a-title {
+	margin-bottom: 5px;
+}

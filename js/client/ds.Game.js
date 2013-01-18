@@ -84,7 +84,8 @@ spo.ds.Game.Property = {
   PLAYERS_COUNT: 'players_count',
   STATUS: 'state_id',
   SAVED_GAME_TIME: 'last_saved_game_time',
-  SAVED_REAL_TIME: 'last_saved_real_time'
+  SAVED_REAL_TIME: 'last_saved_real_time',
+  SCENARIO: 'scenario'
 
 };
 

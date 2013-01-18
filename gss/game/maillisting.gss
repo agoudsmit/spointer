@@ -8,7 +8,7 @@
 
 .mail-listing-view {
 	height: 100%;
-	padding: 5px 5px 30px 5px;
+	padding: 5px 0 30px 5px;
 }
 
 .mail-record-container {
@@ -41,6 +41,10 @@
 
 .unread {
 	font-weight: bold;
+}
+
+.held {
+	background-color: #FFEFDB !important;
 }
 
 .current-indicator {

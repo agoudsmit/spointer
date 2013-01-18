@@ -37,6 +37,7 @@ spo.control.ControlTeams = function(container, gameid, selectedTeamId) {
 
   this.view_ = new pstj.ui.CustomScrollArea();
   this.view_.setScrollInsideTheWidget(false);
+  this.view_.enableTransitions(true);
 
   // Cache the bound function for performance reasons.
   this.loadUsers_cache_ = goog.bind(this.loadUsers, this);

@@ -70,6 +70,7 @@ body {
   background-repeat: repeat;
   color: white;
   font-size: 15px;
+  overflow-x: hidden;
 }
 
 /*#screen {

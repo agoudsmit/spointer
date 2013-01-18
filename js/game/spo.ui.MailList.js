@@ -214,7 +214,8 @@ spo.ui.MailList.prototype.handleListUpdate = function(ev) {
       sender: newList[i]['from'][0],
       subject: newList[i]['subject'],
       date: pstj.date.utils.renderTime(newList[i]['date'], 'Mon dd hh:xx'),
-      isread: spo.ds.mail.isRead(newList[i])
+      isread: spo.ds.mail.isRead(newList[i]),
+      isheld: spo.ds.mail.isHeld(newList[i])
     });
   }
   if (newList.length == 0) {

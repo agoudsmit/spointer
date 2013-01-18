@@ -36,9 +36,11 @@ spo.ui.GameDetails.prototype.delay_;
  * @inheritDoc
  */
 spo.ui.GameDetails.prototype.createDom = function() {
+  console.log(this.getModel().getProp(spo.ds.Game.Property.SCENARIO));
   this.decorateInternal(
     /** @type {Element} */ (goog.dom.htmlToDocumentFragment(
     spo.template.gameSettings({
+      scenarioUrl: this.getModel().getProp(spo.ds.Game.Property.SCENARIO),
       gamestartdate: this.getModel().getFormatedStartDate(),
       gamestarttime: pstj.date.utils.renderTime(this.getModel().getProp(
         spo.ds.Game.Property.START_TIME), 'hh:xx'),

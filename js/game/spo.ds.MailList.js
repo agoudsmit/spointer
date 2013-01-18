@@ -40,7 +40,7 @@ goog.inherits(spo.ds.MailList, spo.ds.OverrideList);
 /**
  * @inheritDoc
  */
-spo.ds.MailList.prototype.interval = 5000;
+spo.ds.MailList.prototype.interval = goog.global['UPDATE_INTERVAL_MAILIST']  || spo.ds.OverrideList.UPDATE_INTERVAL;
 
 /**
  * Number of items per page.

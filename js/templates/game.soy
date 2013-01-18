@@ -85,6 +85,30 @@
 {/template}
 
 /**
+ * Attachment item
+ * @param title
+ */
+{template .AttachmentElement}
+  <div class="{css attachment-item}">
+    <span>{$title}</span>
+    <div class="{css actionable}"></div>
+  </div>
+{/template}
+
+/**
+ * Holds all attachments
+ */
+{template .Attachments}
+  <div class="{css attachments-container}">
+    <div class="{css a-title}"></div>
+    <div class="{css content-element}">
+      <div style="clear:both"></div>
+    </div>
+  </div>
+{/template}
+
+
+/**
  * Template for the meeting web form
  * @param date_format
  * @param time_format
@@ -162,13 +186,22 @@
  * @param subject
  * @param date
  * @param isread
+ * @param isheld
  */
 {template .MailRecord}
 	<div class="
 	{if ($isread == false)}
-		{css mail-record-container} {css unread}
+    {if ($isheld == true)}
+		  {css mail-record-container} {css unread} {css held}
+    {else}
+      {css mail-record-container} {css unread}
+    {/if}
 	{else}
-		{css mail-record-container}
+    {if ($isheld == true)}
+		  {css mail-record-container} {css held}
+    {else}
+      {css mail-record-container}
+    {/if}
 	{/if}
 	">
 		<div class="{css mail-record}">

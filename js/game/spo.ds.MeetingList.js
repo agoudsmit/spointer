@@ -14,6 +14,9 @@ goog.inherits(spo.ds.MeetingList, spo.ds.OverrideList);
 
 goog.scope(function() {
   var p = spo.ds.MeetingList.prototype;
+
+  /** @inheritDoc */
+  p.interval = goog.global['UPDATE_INTERVAL_MEETINGLIST'] || spo.ds.OverrideList.UPDATE_INTERVAL;
   /**
    * @type {*}
    * @private

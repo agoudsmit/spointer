@@ -27,6 +27,7 @@ spo.control.LiveList = function(container) {
   this.hiddenChildrenIndexes_ = [];
   this.view_ = new pstj.ui.ScrollList(195);
   this.view_.setScrollInsideTheWidget(false);
+  this.view_.enableTransitions(true);
 };
 goog.inherits(spo.control.LiveList, spo.control.Base);
 

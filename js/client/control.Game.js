@@ -3,6 +3,7 @@ goog.provide('spo.control.Game');
 goog.require('goog.async.Deferred');
 goog.require('goog.async.DeferredList');
 goog.require('goog.dom.classes');
+
 goog.require('pstj.ds.ListItem.EventType');
 goog.require('pstj.ui.CustomScrollArea');
 goog.require('spo.admin.Router');
@@ -23,6 +24,9 @@ goog.require('spo.ui.GameEdit');
 goog.require('spo.ui.Header');
 goog.require('spo.ui.HeaderGameTime');
 
+goog.require('spo.control.Dialog');
+goog.require('goog.window');
+
 /**
  * Provides the game details control.
  * @constructor
@@ -40,6 +44,7 @@ spo.control.Game = function(container, gameid, edit) {
   this.gameId_ = gameid;
   this.view_ = new pstj.ui.CustomScrollArea();
   this.view_.setScrollInsideTheWidget(false);
+  this.view_.enableTransitions(true);
 
   // Initialize immediately, this view is disposable
   this.init();
@@ -385,13 +390,7 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
       this.setEditState_(true);
     }
   } else if (action == spo.control.Action.DELETE) {
-    spo.ds.Resource.getInstance().get({
-      'url': '/game/remove/' + this.gameId_
-    }, function(resp) {
-      if (resp['status'] == 'ok') {
-        spo.admin.Router.getInstance().navigate('/games');
-      }
-    });
+    spo.control.Dialog.getInstance().showDialog(goog.bind(this.requestGameDeletion_, this));
   } else if (action == spo.control.Action.PAUSE ||
       action == spo.control.Action.PLAY) {
     this.syncGameStateToServer_(action);
@@ -402,7 +401,25 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
         'state_id' : 3
       }
     });
+  } else if (action == spo.control.Action.EXPORT_PLAYERS) {
+    goog.window.open(goog.global['EXPORT_PLAYERS_URL'] + this.gameId_ + '/exportPlayer');
   }
+};
+
+/**
+ * Extracted delete request function to allow the delete press event to be
+ * unlinked from the delete action by request from the client.
+ *
+ * @private
+ */
+spo.control.Game.prototype.requestGameDeletion_ = function() {
+  spo.ds.Resource.getInstance().get({
+    'url': '/game/remove/' + this.gameId_
+  }, function(resp) {
+    if (resp['status'] == 'ok') {
+      spo.admin.Router.getInstance().navigate('/games');
+    }
+  });
 };
 
 /**

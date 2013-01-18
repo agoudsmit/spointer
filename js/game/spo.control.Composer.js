@@ -22,6 +22,7 @@ goog.require('spo.ui.MeetingForm');
 goog.require('goog.object');
 goog.require('spo.ui.Attachment');
 goog.require('pstj.ui.Upload.Event');
+goog.require('spo.control.Attachments');
 
 
 /**
@@ -42,8 +43,12 @@ spo.control.Composer = function(container) {
     pstj.ui.Upload.EventType.FAIL], this.handleAttachmentUpload );
   this.processTemplate_bound_ = goog.bind(this.processTemplate, this);
   this.showError_delayed_ = new goog.async.Delay(this.showError, 8000, this);
+  this.attachmentsControl = new spo.control.Attachments();
+  this.attachmentsControl.render(this.view_.getEls(goog.getCssName('attachments')));
 };
 goog.inherits(spo.control.Composer, spo.control.Base);
+
+
 
 /**
  * Sets the availability of the composer control. Simply hide it from the user when not needed.
@@ -82,12 +87,11 @@ spo.control.Composer.prototype.mailRecordModel_;
  */
 spo.control.Composer.prototype.handleAttachmentUpload = function(ev) {
   if (ev.type = pstj.ui.Upload.EventType.SUCCESS) {
-    //console.log('Response from upload was: ', ev.formResponse);
     if (ev.formResponse['status'] == 'ok') {
       if (!goog.isArray(this.mailRecordModel_['message_attachemnts'])) {
         this.mailRecordModel_['message_attachments'] = [];
       }
-      this.mailRecordModel_['message_attachments'].push(ev.formResponse['content']['message_attachments'][0]['filename'])
+      this.mailRecordModel_['message_attachments'].push(ev.formResponse['content']['message_attachments'][0])
       this.saveDraft(goog.bind(this.setAttachments, this));
     }
   }
@@ -163,15 +167,16 @@ spo.control.Composer.prototype.setRecordModel = function(msg_record) {
 };
 
 spo.control.Composer.prototype.setAttachments = function() {
-  var result = '';
-  if (goog.isArray(this.mailRecordModel_['message_attachments']) &&
-      !goog.array.isEmpty(this.mailRecordModel_['message_attachments'])) {
-    result = 'Attachments: ' +
-      goog.array.map(this.mailRecordModel_['message_attachments'], function(path) {
-        return path.replace(/\\/g,'/').replace( /.*\//, '' );
-      }).join(', ');
-  }
-  this.view_.attachments_.innerHTML = result;
+  //var result = '';
+  this.attachmentsControl.setModel(this.mailRecordModel_['message_attachments']);
+  // if (goog.isArray(this.mailRecordModel_['message_attachments']) &&
+  //     !goog.array.isEmpty(this.mailRecordModel_['message_attachments'])) {
+  //   result = 'Attachments: ' +
+  //     goog.array.map(this.mailRecordModel_['message_attachments'], function(path) {
+  //       return path.replace(/\\/g,'/').replace( /.*\//, '' );
+  //     }).join(', ');
+  // }
+  // this.view_.attachments_.innerHTML = result;
 };
 /**
  * Binds events from buttons
@@ -180,6 +185,10 @@ spo.control.Composer.prototype.setAttachments = function() {
 spo.control.Composer.prototype.attachEvents = function() {
   this.getHandler().listen(this.view_, goog.ui.Component.EventType.ACTION, this.handleActionFromButtons);
   this.getHandler().listen(this.view_, spo.control.EventType.CONTROL_ACTION, this.handleTemplateSelection);
+  this.getHandler().listen(this.attachmentsControl, spo.control.EventType.CONTROL_ACTION, function(ev) {
+    // Simply save the draft, should be enough.
+    this.saveDraft();
+  });
 };
 
 /**

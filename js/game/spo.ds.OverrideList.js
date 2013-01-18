@@ -19,17 +19,24 @@ spo.ds.OverrideList = function(resource) {
 goog.inherits(spo.ds.OverrideList, goog.events.EventTarget);
 
 /**
+ * Specifies a default update interval;
+ *
+ * @type {!number}
+ */
+spo.ds.OverrideList.UPDATE_INTERVAL = 60000;
+
+/**
  * @type {!number}
  * @protected
  */
-spo.ds.OverrideList.prototype.interval = 60000;
+spo.ds.OverrideList.prototype.interval = spo.ds.OverrideList.UPDATE_INTERVAL;
 
 /**
  * Method to call on every interval to retrieve updates. Note that it is not
  * called directly.
  * TODO: allow receiving timeout notification from transport layer.
- * 
- * @protected 
+ *
+ * @protected
  */
 spo.ds.OverrideList.prototype.update = function() {
   spo.ds.Resource.getInstance().get(this.getRequest(), this.handleUpdate_bound_);
@@ -49,7 +56,7 @@ spo.ds.OverrideList.prototype.getRequest = function() {
  * Method to schedule the next update. It is protected, but could be overridden
  * to allow control on whether the request for update should actually go to the
  * server (i.e. the widget is inactive).
- * 
+ *
  *  @protected
  */
 spo.ds.OverrideList.prototype.scheduleNextUpdate = function() {
@@ -65,7 +72,7 @@ spo.ds.OverrideList.prototype.cancelUpdate = function() {
 
 /**
  * Method to check if the data store has an update scheduled.
- * 
+ *
  * @return {!boolean} True if there is a scheduled update already. False
  * otherwise.
  */
@@ -76,7 +83,7 @@ spo.ds.OverrideList.prototype.hasScheduledUpdate = function() {
 /**
  * Handle the update packet. In this class just check if there is a status of
  * the response as it is obligatory. Subclasses should override this method.
- * 
+ *
  * @protected
  * @param {*} resp The server response
  */

@@ -156,10 +156,13 @@ spo.control.GameArena.prototype.currentPreviewdMailRecord_ = null;
  */
 spo.control.GameArena.prototype.loadMailPreview = function() {
   var record = this.maillist_.getSelectedRecord();
-  if (record != null) {
-    this.currentPreviewdMailRecord_ = record;
-    this.previewControl_.loadRecord(this.currentPreviewdMailRecord_);
-  }
+  var id = spo.ds.mail.getMessageId(this.maillist_.getSelectedRecord());
+  this.requestPreview(id);
+  // TODO: Add server check to assure the message can be opened.
+  // if (record != null) {
+  //   this.currentPreviewdMailRecord_ = record;
+  //   this.previewControl_.loadRecord(this.currentPreviewdMailRecord_);
+  // }
 };
 
 /**
@@ -198,6 +201,22 @@ spo.control.GameArena.prototype.emptyMessage = {
   'web_form_config': null
 };
 
+/**
+ * Load a message in the preview panel by its id.
+ * @param  {string} id The message id to load.
+ */
+spo.control.GameArena.prototype.requestPreview = function(id) {
+  spo.ds.Resource.getInstance().get({
+    'url':'/message/get/' + id
+  }, goog.bind(function(resp) {
+    if (resp['status'] != 'ok') {
+      // TODO: handle error
+      return;
+    }
+    this.previewControl_.loadRecord(resp['content']['message']);
+  }, this));
+};
+
 /** @inheritDoc */
 spo.control.GameArena.prototype.notify = function(child, action) {
   switch (child) {
@@ -207,15 +226,7 @@ spo.control.GameArena.prototype.notify = function(child, action) {
         this.callendar_.setModel(this.meetinglist_.getList());
       } else if (action == spo.control.Action.SELECT) {
         var id = this.meetinglist_.lastSelectedId;
-        spo.ds.Resource.getInstance().get({
-          'url': '/message/get/' + id
-        }, goog.bind(function(resp) {
-          if (resp['status'] != 'ok') {
-            // TODO: handle error, should not really happen
-            return;
-          }
-          this.previewControl_.loadRecord(resp['content']['message']);
-        }, this));
+        this.requestPreview(id);
       }
       break;
     case this.mailbox_:

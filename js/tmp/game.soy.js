@@ -58,6 +58,26 @@ spo.gametemplate.Composer = function(opt_data) {
  * @return {string}
  * @notypecheck
  */
+spo.gametemplate.AttachmentElement = function(opt_data) {
+  return '<div class="' + goog.getCssName('attachment-item') + '"><span>' + soy.$$escapeHtml(opt_data.title) + '</span><div class="' + goog.getCssName('actionable') + '"></div></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @return {string}
+ * @notypecheck
+ */
+spo.gametemplate.Attachments = function(opt_data) {
+  return '<div class="' + goog.getCssName('attachments-container') + '"><div class="' + goog.getCssName('a-title') + '"></div><div class="' + goog.getCssName('content-element') + '"><div style="clear:both"></div></div></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @return {string}
+ * @notypecheck
+ */
 spo.gametemplate.MeetingForm = function(opt_data) {
   return '\t<div class="' + goog.getCssName('meeting-form') + '"><div>Create meeting request for:</div><div><input class="' + goog.getCssName('meeting-date') + '" label="' + soy.$$escapeHtml(opt_data.date_format) + '" value="' + soy.$$escapeHtml(opt_data.date) + '" type="text"/></div><div><input class="' + goog.getCssName('meeting-time') + '" label="' + soy.$$escapeHtml(opt_data.time_format) + '" value="' + soy.$$escapeHtml(opt_data.time) + '" type="text"/></div></div>';
 };
@@ -109,7 +129,7 @@ spo.gametemplate.MeetingRecord = function(opt_data) {
  * @notypecheck
  */
 spo.gametemplate.MailRecord = function(opt_data) {
-  return '\t<div class="' + ((opt_data.isread == false) ? goog.getCssName('mail-record-container') + ' ' + goog.getCssName('unread') : goog.getCssName('mail-record-container')) + '"><div class="' + goog.getCssName('mail-record') + '"><div class="' + goog.getCssName('record-raw') + ' ' + goog.getCssName('raw-one') + '"><span>' + soy.$$escapeHtml(opt_data.sender) + '</span><span class="' + goog.getCssName('mail-date') + '">' + soy.$$escapeHtml(opt_data.date) + '</span><span class="' + goog.getCssName('mail-preview-indicator') + '"></span><div class="' + goog.getCssName('current-indicator') + '"></div></div><div class="' + goog.getCssName('record-raw') + ' ' + goog.getCssName('raw-two') + '">' + soy.$$escapeHtml(opt_data.subject) + '</div></div><div class="' + goog.getCssName('mail-record-overlay') + '" data-recordid="' + soy.$$escapeHtml(opt_data.recordid) + '"></div></div>';
+  return '\t<div class="' + ((opt_data.isread == false) ? (opt_data.isheld == true) ? goog.getCssName('mail-record-container') + ' ' + goog.getCssName('unread') + ' ' + goog.getCssName('held') : goog.getCssName('mail-record-container') + ' ' + goog.getCssName('unread') : (opt_data.isheld == true) ? goog.getCssName('mail-record-container') + ' ' + goog.getCssName('held') : goog.getCssName('mail-record-container')) + '"><div class="' + goog.getCssName('mail-record') + '"><div class="' + goog.getCssName('record-raw') + ' ' + goog.getCssName('raw-one') + '"><span>' + soy.$$escapeHtml(opt_data.sender) + '</span><span class="' + goog.getCssName('mail-date') + '">' + soy.$$escapeHtml(opt_data.date) + '</span><span class="' + goog.getCssName('mail-preview-indicator') + '"></span><div class="' + goog.getCssName('current-indicator') + '"></div></div><div class="' + goog.getCssName('record-raw') + ' ' + goog.getCssName('raw-two') + '">' + soy.$$escapeHtml(opt_data.subject) + '</div></div><div class="' + goog.getCssName('mail-record-overlay') + '" data-recordid="' + soy.$$escapeHtml(opt_data.recordid) + '"></div></div>';
 };
 
 
@@ -120,11 +140,11 @@ spo.gametemplate.MailRecord = function(opt_data) {
  */
 spo.gametemplate.MailPreview = function(opt_data) {
   var output = '<div class="' + goog.getCssName('mail-preview-box') + '"><div class="' + goog.getCssName('mail-preview-controls') + ' ' + goog.getCssName('mail-padded') + ' ' + goog.getCssName('mail-bottom-border') + '"><!-- controls go here --></div><div class="' + goog.getCssName('mail-preview-details') + ' ' + goog.getCssName('mail-padded') + ' ' + goog.getCssName('mail-bottom-border') + '"><div><span class="' + goog.getCssName('mail-service-info') + '">From:&nbsp;</span>' + opt_data.from + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Date:&nbsp;</span>' + opt_data.date + '</div><div><span class="' + goog.getCssName('mail-service-info') + '">Subject:&nbsp;</span>' + opt_data.subject + '</div><div><span class="' + goog.getCssName('mail-service-info') + ' ' + goog.getCssName('user-list-container') + '">To:&nbsp;</span>' + opt_data.recepients + '</div><div class="' + goog.getCssName('tags-list-container') + '"></div><div class="' + goog.getCssName('web-form-container') + '">' + opt_data.webform + '</div></div><div class="' + goog.getCssName('mail-preview-body') + ' ' + goog.getCssName('mail-padded') + '">' + opt_data.body + '</div><div class="' + goog.getCssName('attachments') + '">' + ((opt_data.attachments.length > 0) ? '<div>Message attachments:</div>' : '');
-  var pathList324 = opt_data.attachments;
-  var pathListLen324 = pathList324.length;
-  for (var pathIndex324 = 0; pathIndex324 < pathListLen324; pathIndex324++) {
-    var pathData324 = pathList324[pathIndex324];
-    output += '<a class="attachment-link" target="_blank" href="' + pathData324 + '">' + opt_data.attachments_names[pathIndex324] + '</a>  ';
+  var pathList354 = opt_data.attachments;
+  var pathListLen354 = pathList354.length;
+  for (var pathIndex354 = 0; pathIndex354 < pathListLen354; pathIndex354++) {
+    var pathData354 = pathList354[pathIndex354];
+    output += '<a class="attachment-link" target="_blank" href="' + pathData354 + '">' + opt_data.attachments_names[pathIndex354] + '</a>  ';
   }
   output += '</div><div class="' + goog.getCssName('previous-message-content') + '"></div><div class="' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('loadnext-button') + '" style="display: none; width:  20ex;">Load related mesage</div></div>';
   return output;
