@@ -402,7 +402,7 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
       }
     });
   } else if (action == spo.control.Action.EXPORT_PLAYERS) {
-    goog.window.open(goog.global['EXPORT_PLAYERS_URL'] + this.gameId_ + '/exportPlayer');
+    goog.window.open(goog.global['EXPORT_PLAYERS_URL'] + this.gameId_ + '/exportPlayers');
   }
 };
 
