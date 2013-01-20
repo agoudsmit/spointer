@@ -1,5 +1,7 @@
 /**
  * @fileoverview Provides the global access to the admin panel router.
+ * This file only provides globally accessible router, i.e. the router
+ * is transformed into a singleton.
  */
 goog.provide('spo.admin.Router');
 
@@ -15,5 +17,4 @@ spo.admin.Router = function() {
   goog.base(this);
 };
 goog.inherits(spo.admin.Router, pstj.mvc.SimpleRouter);
-
 goog.addSingletonGetter(spo.admin.Router);
