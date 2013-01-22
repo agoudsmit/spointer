@@ -43,6 +43,16 @@ spo.ui.Game.Strings = {
 spo.ui.Game.defaultTimeFormat_ = 'mm/dd/yy hh:xx';
 
 /**
+ * Flag: when mouse is pressed down set this to true, if mouse was not moved
+ * and did not left the widget when mouse up event fires - this is s click.
+ *
+ * @type {boolean}
+ *
+ * @private
+ */
+spo.ui.Game.prototype.mouseMoved_ = false;
+
+/**
  * The CSS class name to use to setthe pressed state of the widget.
  * @type {string}
  * @private
@@ -108,14 +118,41 @@ spo.ui.Game.prototype.enterDocument = function() {
     this.onMouseDown_);
   this.getHandler().listen(this.getElement(), goog.events.EventType.MOUSEUP,
     this.onMouseUp_);
-  this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK,
-    this.showGameDetails_);
+  this.getHandler().listen(this.getElement(), goog.events.EventType.MOUSEOUT,
+    this.handleMouseOut_);
+  this.getHandler().listen(this.getElement(), goog.events.EventType.MOUSEMOVE,
+    this.handleMouseMove_);
+  // this.getHandler().listen(this.getElement(), goog.events.EventType.CLICK,
+  //   this.showGameDetails_);
 
   // Setup model events
   this.getHandler().listen(/** @type {pstj.ds.ListItem} */ (this.getModel()),
     pstj.ds.ListItem.EventType.DELETE, this.dispose);
   this.getHandler().listen(/** @type {pstj.ds.ListItem} */ (this.getModel()),
     pstj.ds.ListItem.EventType.UPDATE, this.constructInternalView_);
+};
+
+/**
+ * Handles the mouse out event - basically ignore mouse down and remove depressed class.
+ *
+ * @param {goog.events.Event} e The mouse event.
+ *
+ * @private
+ */
+spo.ui.Game.prototype.handleMouseOut_ = function(e) {
+  this.mouseMoved_ = true;
+  this.onMouseUp_();
+};
+
+/**
+ * Handles the mouse move event - basically inform widget to ignore mouse down.
+ *
+ * @param {goog.events.Event} e The mouse event.
+ *
+ * @private
+ */
+spo.ui.Game.prototype.handleMouseMove_ = function(e) {
+  this.mouseMoved_ = true;
 };
 
 /**
@@ -173,9 +210,12 @@ spo.ui.Game.prototype.showGameDetails_ = function() {
  */
 spo.ui.Game.prototype.onMouseDown_ = function(ev) {
   goog.dom.classes.add(this.getElement(), this.cssClassPressed_);
-  this.getHandler().listenOnce(document, goog.events.EventType.MOUSEUP,
-    this.onMouseUp_);
+  this.mouseMoved_ = false;
+  // this.getHandler().listenOnce(document, goog.events.EventType.MOUSEUP,
+  //   this.onMouseUp_);
 };
+
+
 
 /**
  * Handles the mouse up event that is produced when the mouse button
@@ -190,4 +230,8 @@ spo.ui.Game.prototype.onMouseDown_ = function(ev) {
  */
 spo.ui.Game.prototype.onMouseUp_ = function(ev) {
   goog.dom.classes.remove(this.getElement(), this.cssClassPressed_);
+  if (!this.mouseMoved_) {
+    this.showGameDetails_();
+  }
+  this.mouseMoved_ = false;
 };
