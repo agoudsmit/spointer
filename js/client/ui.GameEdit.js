@@ -167,9 +167,10 @@ spo.ui.GameEdit.prototype.decorateInternal = function(el) {
   this.addChild(this.speedSlider_);
   this.speedSlider_.decorate(goog.dom.getElementByClass(goog.getCssName(
     'goog-slider'), this.getElement()));
-  this.speedSlider_.setValue(1400);
-    //this.getModel().getProp(
-    //spo.ds.Game.Property.SPEED));
+  // Work around the inability of the slider to detect the update before it is entered document.
+  setTimeout(goog.bind(function() {
+    this.speedSlider_.setValue(this.getModel().getProp(spo.ds.Game.Property.SPEED));
+  }, this), 100);
   this.getHandler().listen(this.speedSlider_,
     goog.ui.Component.EventType.CHANGE, function() {
       this.minutesElement_.innerHTML = this.speedToDays_(
