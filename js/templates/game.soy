@@ -139,9 +139,14 @@
 
 /**
  * @param header The header title to use (wither TEAMS or Control teams).
+ * @param control True if this is a control user.
  */
 {template .MailBoxList}
-  <div class="{css mail-box-list}">
+  {if $control == true}
+    <div class="{css mail-box-list} {css is-control-user}">
+  {else}
+    <div class="{css mail-box-list} {css not-control-user}">
+  {/if}
     <div class="{css detail-heading}">{$header}</div>
   </div>
 {/template}

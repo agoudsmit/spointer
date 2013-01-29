@@ -143,11 +143,11 @@ spo.template.gameControls = function(opt_data) {
  */
 spo.template.simplelist = function(opt_data) {
   var output = '<div class="' + goog.getCssName('simple-list') + '"><div class="' + goog.getCssName('simple-list-title') + '">' + soy.$$escapeHtml(opt_data.title) + '</div><ul class="' + goog.getCssName('simple-list-list') + '">';
-  var nameList845 = opt_data.teams;
-  var nameListLen845 = nameList845.length;
-  for (var nameIndex845 = 0; nameIndex845 < nameListLen845; nameIndex845++) {
-    var nameData845 = nameList845[nameIndex845];
-    output += '<li>' + soy.$$escapeHtml(nameData845) + '</li>';
+  var nameList856 = opt_data.teams;
+  var nameListLen856 = nameList856.length;
+  for (var nameIndex856 = 0; nameIndex856 < nameListLen856; nameIndex856++) {
+    var nameData856 = nameList856[nameIndex856];
+    output += '<li>' + soy.$$escapeHtml(nameData856) + '</li>';
   }
   output += '</ul></div>';
   return output;

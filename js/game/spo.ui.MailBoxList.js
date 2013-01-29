@@ -10,7 +10,7 @@ goog.require('goog.events.EventType');
 
 /**
  * Provides the mail box view.
- * 
+ *
  * @constructor
  * @extends {spo.ui.Widget}
  */
@@ -24,7 +24,8 @@ goog.inherits(spo.ui.MailBoxList, spo.ui.Widget);
  */
 spo.ui.MailBoxList.prototype.getTemplate = function() {
   return spo.gametemplate.MailBoxList({
-    header: 'messages'
+    header: 'messages',
+    control: goog.global['SETUP']['is_control_user']
   });
 };
 
@@ -64,7 +65,7 @@ spo.ui.MailBoxItem.prototype.activeIndicator_;
 
 /**
  * Getter for the mail box name. It will return the UI name.
- * 
+ *
  * @return {!string} The name of the mailbox.
  */
 spo.ui.MailBoxItem.prototype.getBoxName = function() {
@@ -111,9 +112,9 @@ spo.ui.MailBoxItem.prototype.onClick = function(ev) {
  */
 spo.ui.MailBoxItem.prototype.handleUpdate = function(ev) {
   var unread_count = this.getUnreadCount();
-  if (unread_count != 0) 
+  if (unread_count != 0)
     this.countIndicator_.innerHTML = this.getUnreadCount().toString();
-  else 
+  else
     this.countIndicator_.innerHTML = '';
 };
 
@@ -163,7 +164,7 @@ spo.ui.MailBoxItem.prototype.setSelectedState = function(selected) {
   }
 };
 
-/** 
+/**
  * @inheritDoc
  */
 spo.ui.MailBoxItem.prototype.getTemplate = function() {
