@@ -22,6 +22,12 @@ goog.scope(function() {
     this.addChild(this.newButton, true);
     var button = this.newButton.getElement();
     goog.dom.classes.add(button, goog.getCssName('new-button'), goog.getCssName('circle-button'));
+    var link = document.createElement('a');
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', goog.global['DOWNLOAD_SCENARIO_URL'] || '#');
+    link.innerHTML = 'Download scenario';
+    goog.dom.classes.add(link, 'scenario-link');
+    this.getElement().appendChild(link);
   }
 })
 

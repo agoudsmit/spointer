@@ -39,3 +39,8 @@ h3 {
   bottom: -32px;
 }
 
+.scenario-link {
+  position: absolute;
+  top: 145px;
+  left: 0;
+}
