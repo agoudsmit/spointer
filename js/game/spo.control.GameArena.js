@@ -138,7 +138,7 @@ spo.control.GameArena.prototype.updateCalendar = function() {
 spo.control.GameArena.prototype.showEmptyComposer = function(e) {
   e.stopPropagation();
   this.composer.setEnable(true);
-  this.composer.loadModel(this.emptyMessage);
+  this.composer.loadModel(goog.object.unsafeClone(this.emptyMessage));
 };
 
 spo.control.GameArena.prototype.performSearch = function(text) {
@@ -195,6 +195,8 @@ spo.control.GameArena.prototype.handleMailListAction = function(ev) {
  */
 spo.control.GameArena.prototype.emptyMessage = {
   'is_read': 1,
+  'to': [],
+  'subject': '',
   'from': [goog.global['PLAYER_NAME']],
   'body': '',
   'web_form' : null,
