@@ -1,13 +1,44 @@
 goog.provide('spo.ui.Calendar');
-goog.require('goog.ui.DatePicker');
+goog.provide('spo.util.CalendarClock');
 
 goog.require('goog.ui.DatePicker');
 goog.require('goog.array');
 goog.require('pstj.date.utils');
+goog.require('goog.date');
 goog.require('goog.dom');
 goog.require('goog.date.Date');
 goog.require('spo.ds.Game');
 goog.require('spo.ds.STP');
+goog.require('pstj.ds.TimeProvider');
+
+/**
+ * @constructor
+ * @implements {pstj.ds.IClock}
+ * @param {function(!number): undefined} onSetTime The handler for the set time.
+ *
+ */
+spo.util.CalendarClock = function(onSetTime) {
+  this.onSetTime_ = onSetTime;
+};
+
+/**
+ * The internal handler
+ * @type {[type]}
+ */
+spo.util.CalendarClock.prototype.onSetTime_ = null;
+
+/**
+ * Implementation of the IClock interface.
+ *
+ * @param {!number} time The time in the global time provider as it was set to
+ * during the last update.
+ */
+spo.util.CalendarClock.prototype.setTime = function(time) {
+  if (goog.isFunction(this.onSetTime_)) this.onSetTime_(time);
+};
+
+
+
 /**
  * @param {goog.date.Date|Date=} opt_date Date to initialize the date picker
  *     with, defaults to the current date.
@@ -29,6 +60,8 @@ spo.ui.Calendar = function(opt_date, opt_dateTimeSymbols, opt_domHelper) {
     this.setAllowNone(false);
     this.setFirstWeekday(0);
     this.setShowOtherMonths(false);
+    // setup the iclock listener. This will be called once every time update as per the global time update provider.
+    this.iclock = new spo.util.CalendarClock(goog.bind(this.handleTimeUpdate, this));
 };
 
 goog.inherits(spo.ui.Calendar, goog.ui.DatePicker);
@@ -69,6 +102,18 @@ spo.ui.Calendar.symbols_ = {
  * @return {Array.<*>|null}
  */
 spo.ui.Calendar.prototype.getModel;
+
+spo.ui.Calendar.prototype.handleTimeUpdate = function(time) {
+  var currentGameDate = new Date(this.getGameTime());
+  var currentCalendarDate = this.getDate();
+  if (goog.date.isSameYear(currentCalendarDate, currentGameDate)) {
+    if (goog.date.isSameMonth(currentCalendarDate, currentGameDate)) {
+      if (!goog.date.isSameDay(currentCalendarDate, currentGameDate)) {
+        this.setDate(currentGameDate);
+      }
+    }
+  }
+};
 
 /**
  * Searches for matching date in the event list and returns true on success and null failure
@@ -111,6 +156,7 @@ spo.ui.Calendar.prototype.eventDecorator = function(date) {
  */
 spo.ui.Calendar.prototype.setModel = function(obj) {
     goog.base(this, 'setModel', obj);
+    this.setDate(new Date(this.getGameTime()));
     this.redrawCalendarGrid_();
 }
 
@@ -171,6 +217,12 @@ spo.ui.Calendar.prototype.getGameTime = function() {
     if (a !== null) return a;
   }
   return goog.now();
+};
+
+/** @inheritDoc */
+spo.ui.Calendar.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+  pstj.ds.TimeProvider.getInstance().addSubscriber(this.iclock);
 };
 
 /** @inheritDoc */
