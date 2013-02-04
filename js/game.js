@@ -32,7 +32,7 @@ game = function() {
 
   var gameRecord = null;
   var blockLayer = goog.dom.createDom('div', {
-    style: 'position: absolute; z-index:9999; top:0; left:0; width: 100%; height:100%; display:table; background-color: rgba(0,0,0,0.7);'
+    style: 'position: absolute; z-index:9999; top:0; left:0; width: 100%; height:882px; display:table; background-color: rgba(0,0,0,0.7);'
   });
   blockLayer.innerHTML = '<div style="display: table-cell; vertical-align: middle; margin: auto; color: red; font-size: 40px; text-align: center; width: 100%;">This game is currently disabled</div>';
   blockLayer.style.display =  'none';
