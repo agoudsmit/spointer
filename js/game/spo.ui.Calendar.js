@@ -110,6 +110,8 @@ spo.ui.Calendar.prototype.handleTimeUpdate = function(time) {
     if (goog.date.isSameMonth(currentCalendarDate, currentGameDate)) {
       if (!goog.date.isSameDay(currentCalendarDate, currentGameDate)) {
         this.setDate(currentGameDate);
+      } else {
+        this.redrawCalendarGrid_();
       }
     }
   }
