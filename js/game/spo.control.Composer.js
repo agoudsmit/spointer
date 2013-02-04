@@ -363,6 +363,7 @@ spo.control.Composer.prototype.createEditor = function() {
     goog.editor.Command.BOLD,
     goog.editor.Command.ITALIC,
     goog.editor.Command.UNDERLINE,
+    goog.editor.Command.LINK,
     goog.editor.Command.INDENT,
     goog.editor.Command.OUTDENT,
     goog.editor.Command.JUSTIFY_LEFT,

@@ -3,7 +3,7 @@
 }
 
 .toolbars-wrap {
-	height: 40px;
+	height: 72px;
 	position: relative;
 }
 
@@ -21,10 +21,8 @@
 }
 
 .editor-toolbar {
-	position: absolute;
-  	top: 0;
-	right: 0;
-	width: 50%;
+	position: relative;
+	top: 32px;
 	height: 30px;
 }
 
