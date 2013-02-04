@@ -56,7 +56,20 @@
 	right: -10px;
 }
 
+.unread-indicator {
+	background-image: url('../assets/unread.png');
+	display: none;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	right: -10px;
+}
+
 .active .current-indicator {
+	display: block;
+}
+
+.unread .unread-indicator {
 	display: block;
 }
 
