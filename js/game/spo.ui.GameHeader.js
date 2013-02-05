@@ -26,7 +26,7 @@ goog.scope(function() {
     link.setAttribute('target', '_blank');
     link.setAttribute('href', goog.global['DOWNLOAD_SCENARIO_URL'] || '#');
     link.innerHTML = 'Download scenario';
-    goog.dom.classes.add(link, 'scenario-link');
+    goog.dom.classes.add(link, goog.getCssName('scenario-link'));
     this.getElement().appendChild(link);
   }
 })
