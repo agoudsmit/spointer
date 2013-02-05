@@ -41,6 +41,9 @@ h3 {
 
 .scenario-link {
   position: absolute;
-  top: 145px;
-  left: 0;
+  top: 148px;
+  right: 215px;
+  color: #497593;
+  font-weight: bold;
+  text-decoration: none;
 }
