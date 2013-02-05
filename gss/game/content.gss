@@ -23,6 +23,7 @@
 .left-pane {
   width: 50%;
   position: absolute;
+  top: 0;
   background-color: transparent;
   float: left;
 }
