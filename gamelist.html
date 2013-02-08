@@ -59,12 +59,15 @@
 		background-image: url("assets/lock-icon.png");
 	}
 	</style>
+	<script>
+		var NAVIGATE_TO = '/InterACT/game/'
+	</script>
 </head>
 <body>
 	<h2>Please select the game to enter</h2>
 	<div class="container">
-		<!-- Iterate here -->
-		<div class="tile-item">
+		<!-- Iterate here  NOTICE the ID - change to the game id - it will be added to the NAVIGATE_TO variable.-->
+		<div class="tile-item" data-game="$id">
 			<div class="tile-inner-container">
 				<div class="tile-body">
 					<div class="game-name">e31</div>
@@ -80,5 +83,6 @@
 		<!-- End iteration here -->
 		<div style="clear:both;"></div>
 	</div>
+	<script src="build/gameselect.build.js"></script>
 </body>
 </html>
