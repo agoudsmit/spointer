@@ -98,4 +98,8 @@ goog.scope(function() {
       throw Error('This should not happen');
     }
   };
+
+  p.onTagsUpdate = function() {
+    this.taglist_.onUpdate();
+  };
 });

@@ -182,7 +182,9 @@ spo.control.MailPreview.prototype.saveTags = function(ev) {
     'data': {
       'message_tags': arr.join(', ')
     }
-  });
+  }, goog.bind(function(resp) {
+    if (resp['status'] == 'ok') this.view_.onTagsUpdate();
+  }, this));
 };
 
 /**
