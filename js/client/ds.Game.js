@@ -27,7 +27,7 @@ goog.inherits(spo.ds.Game, pstj.ds.ListItem);
  * @return {boolean} True is the game is paused, false othrewise.
  */
 spo.ds.Game.prototype.isPaused = function() {
-  return (this.getProp(spo.ds.Game.Property.STATUS) == 2);
+  return (this.getProp(spo.ds.Game.Property.STATUS) >= 2);
 };
 
 /**
