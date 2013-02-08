@@ -34,6 +34,9 @@
 	border-bottom: 1px solid EMBOSS_TEXT_COLOR;
 }
 
-.mail-box-list.is-control-user div.mail-box:nth-child(odd) {
-	border-bottom: 1px solid EMBOSS_TEXT_COLOR;
+.mail-box-list.is-control-user div.mail-box:nth-child(5),
+.mail-box-list.is-control-user div.mail-box:nth-child(8),
+.mail-box-list.is-control-user div.mail-box:nth-child(11),
+.mail-box-list.is-control-user div.mail-box:nth-child(14) {
+	border-top: 1px solid EMBOSS_TEXT_COLOR;
 }
