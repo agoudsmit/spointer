@@ -39,7 +39,7 @@ spo.gametemplate.PreviewControl = function(opt_data) {
  * @notypecheck
  */
 spo.gametemplate.Tags = function(opt_data) {
-  return '\t<div class="' + goog.getCssName('tags-container') + '"><input class="' + goog.getCssName('form-values-left') + ' ' + goog.getCssName('field-tags') + '" type="text" value="' + soy.$$escapeHtml(opt_data.tags) + '"/><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + '">Save</div></div>';
+  return '\t<div class="' + goog.getCssName('tags-container') + '"><div style="font-size:13px;font-weight:bold;">Add tags</div><div style="position:relative"><input class="' + goog.getCssName('form-values-left') + ' ' + goog.getCssName('field-tags') + '" type="text" value="' + soy.$$escapeHtml(opt_data.tags) + '"/><div class="' + goog.getCssName('goog-button') + ' ' + goog.getCssName('text-button') + ' ' + goog.getCssName('form-button') + '">Save</div></div></div>';
 };
 
 

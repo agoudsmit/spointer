@@ -36,8 +36,11 @@
 }
 
 .tags-list-container {
-	height: 26px;
 	padding: 5px 0;
+  height: 56px;
+  border-top: 1px solid EMBOSS_TEXT_COLOR;
+  border-bottom: 1px solid EMBOSS_TEXT_COLOR;
+  margin-top: 5px;
 }
 
 .tags-container {
