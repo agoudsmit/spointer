@@ -155,7 +155,7 @@ spo.screen.Login.prototype.greetingElement_;
  * @type {string}
  * @private
  */
-spo.screen.Login.prototype.loginLabel_ = 'name';
+spo.screen.Login.prototype.loginLabel_ = 'e-mail';
 
 /**
  * see Login#loginLabel_
