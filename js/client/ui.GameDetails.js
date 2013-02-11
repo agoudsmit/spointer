@@ -17,7 +17,35 @@ spo.ui.GameDetails = function(odh) {
 };
 goog.inherits(spo.ui.GameDetails, goog.ui.Component);
 
+/**
+ * Provides the valid values for a time set. Those are returned by the server
+ * and should be used to set on the server. Intermediary values are not allowed.
+ * @type {Array.<number>}
+ */
+spo.ui.GameDetails.Speeds = [
+  1, 2, 3, 4, 6, 8, 12, 24, 48, 72, 144, 288, 1440
+];
 
+/**
+ * Specifies the names to be used for the game speed values.
+ * @type {Array.<string>}
+ * @protected
+ */
+spo.ui.GameDetails.SpeedNames = [
+  '24 hours',
+  '12 hours',
+  '8 hours',
+  '6 hours',
+  '4 hours',
+  '3 hours',
+  '2 hours',
+  '1 hour',
+  '30 minutes',
+  '20 minutes',
+  '10 minutes',
+  '5 minutes',
+  '1 minute'
+];
 /**
  * Contains the notification area element.
  * @type {Element}
@@ -88,18 +116,14 @@ spo.ui.GameDetails.prototype.setNotification = function(notice) {
 /**
  * Calculates the minutes it takes in the real life for one day to pass in
  * the game.
- * @param  {number} speed The speed of the game.
+ * @param  {number} speed The speed of the game. Should be allowed speed ( from
+ * 1 to 1440 ).
  * @return {string} Number of minutes that takes in the real life for one day
  *                         to pass in the game.
+ * @private
  */
 spo.ui.GameDetails.prototype.speedToDays_ = function(speed) {
-  if (speed < 1) speed = 1;
-  if (speed > 1440) speed = 1440;
-  var inMinutes = 1440 / speed;
-  if (inMinutes ==  1) return '1';
-  if (inMinutes < 60) return 'more than ' + (inMinutes << 0);
-  if (inMinutes == 1440) return "24 hours and 0"
-  var hours = inMinutes / 60 << 0;
-  var minutes = inMinutes % 60 << 0;
-  return '' + hours + ' hours and ' + minutes;
+  // New implementation
+  var index = goog.array.indexOf(spo.ui.GameDetails.Speeds, speed);
+  return spo.ui.GameDetails.SpeedNames[index];
 };

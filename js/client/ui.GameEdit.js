@@ -2,7 +2,6 @@
 goog.provide('spo.ui.GameEdit');
 
 goog.require('goog.dom');
-goog.require('spo.ui.GameDetails');
 goog.require('goog.ui.CustomButton');
 goog.require('goog.ui.InputDatePicker');
 goog.require('goog.ui.LabelInput');
@@ -13,6 +12,7 @@ goog.require('pstj.date.utils');
 goog.require('spo.ds.Game');
 goog.require('spo.template');
 goog.require('spo.ui.ButtonRenderer');
+goog.require('spo.ui.GameDetails');
 
 /**
  * Provides the Edit widget for a game record.
@@ -26,8 +26,8 @@ spo.ui.GameEdit = function(odh) {
 
   this.speedSlider_ = new goog.ui.Slider();
   this.speedSlider_.setOrientation(goog.ui.Slider.Orientation.HORIZONTAL);
-  this.speedSlider_.setMinimum(1);
-  this.speedSlider_.setMaximum(1440);
+  this.speedSlider_.setMinimum(0);
+  this.speedSlider_.setMaximum(12);
 
   this.gameTimeInput_ = new goog.ui.LabelInput();
 
@@ -167,14 +167,17 @@ spo.ui.GameEdit.prototype.decorateInternal = function(el) {
   this.addChild(this.speedSlider_);
   this.speedSlider_.decorate(goog.dom.getElementByClass(goog.getCssName(
     'goog-slider'), this.getElement()));
-  // Work around the inability of the slider to detect the update before it is entered document.
+  // Work around the inability of the slider to detect the update before it is
+  // entered document.
   setTimeout(goog.bind(function() {
-    this.speedSlider_.setValue(this.getModel().getProp(spo.ds.Game.Property.SPEED));
+    this.speedSlider_.setValue(goog.array.indexOf(
+      spo.ui.GameDetails.Speeds, this.getModel().getProp(
+      spo.ds.Game.Property.SPEED)));
   }, this), 100);
   this.getHandler().listen(this.speedSlider_,
     goog.ui.Component.EventType.CHANGE, function() {
       this.minutesElement_.innerHTML = this.speedToDays_(
-        this.speedSlider_.getValue());
+        spo.ui.GameDetails.Speeds[this.speedSlider_.getValue()]);
     });
 
   this.minutesElement_ = goog.dom.getElementByClass(goog.getCssName(
@@ -212,7 +215,7 @@ spo.ui.GameEdit.prototype.saveGame_ = function() {
   spo.ds.Resource.getInstance().get({
     'url': '/game/update/' + this.getModel().getId(),
     'data': {
-      'speed': this.speedSlider_.getValue(),
+      'speed': spo.ui.GameDetails.Speeds[this.speedSlider_.getValue()],
       'game_started_date': +(start_date),
       'description': desc
     }
