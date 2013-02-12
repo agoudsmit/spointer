@@ -390,7 +390,8 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
       this.setEditState_(true);
     }
   } else if (action == spo.control.Action.DELETE) {
-    spo.control.Dialog.getInstance().showDialog(goog.bind(this.requestGameDeletion_, this));
+    spo.control.Dialog.getInstance().showDialog(goog.bind(
+      this.requestGameDeletion_, this));
   } else if (action == spo.control.Action.PAUSE ||
       action == spo.control.Action.PLAY) {
     this.syncGameStateToServer_(action);
@@ -402,7 +403,11 @@ spo.control.Game.prototype.handleExternalControlAction_ = function(e) {
       }
     });
   } else if (action == spo.control.Action.EXPORT_PLAYERS) {
-    goog.window.open(goog.global['EXPORT_PLAYERS_URL'] + this.gameId_ + '/exportPlayers');
+    goog.window.open(goog.global['EXPORT_PLAYERS_URL'] + this.gameId_ +
+      '/exportPlayers');
+  } else if (action == spo.control.Action.EXPORT_CONTROLS) {
+    goog.window.open(goog.global['EXPORT_CONTROLS_URL'] + this.gameId_ +
+      '/exportControlUsers');
   }
 };
 

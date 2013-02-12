@@ -176,6 +176,11 @@ spo.ui.GameControls.prototype.handleNamedAction = function(action) {
       case 'exportplayers':
         this.dispatchEvent(new spo.control.Event(this,
           spo.control.Action.EXPORT_PLAYERS));
+        break;
+      case 'exportcontrols':
+        this.dispatchEvent(new spo.control.Event(this,
+          spo.control.Action.EXPORT_CONTROLS));
+        break;
     }
   }
 };

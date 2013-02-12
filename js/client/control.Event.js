@@ -62,5 +62,6 @@ spo.control.Action = {
   REPLY: 12,
   FORWARD: 13,
   CLOSE: 14,
-  EXPORT_PLAYERS: 15
+  EXPORT_PLAYERS: 15,
+  EXPORT_CONTROLS: 16
 };
