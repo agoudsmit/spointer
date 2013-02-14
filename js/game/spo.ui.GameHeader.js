@@ -10,6 +10,7 @@ goog.require('goog.dom.classes');
 spo.ui.GameHeader = function() {
   goog.base(this);
   this.newButton = new goog.ui.CustomButton('', spo.ui.ButtonRenderer.getInstance());
+  this.newButton.setTooltip('new message');
 
 };
 goog.inherits(spo.ui.GameHeader, spo.ui.Header);
