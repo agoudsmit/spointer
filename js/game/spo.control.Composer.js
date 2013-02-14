@@ -358,6 +358,10 @@ spo.control.Composer.prototype.createEditor = function() {
   this.field_.setMinHeight(100);
   this.field_.registerPlugin(new goog.editor.plugins.BasicTextFormatter());
   this.field_.registerPlugin(new goog.editor.plugins.EnterHandler());
+  var linkplugin = new goog.editor.plugins.LinkDialogPlugin();
+  linkplugin.showOpenLinkInNewWindow(true);
+  this.field_.registerPlugin(linkplugin);
+  this.field_.registerPlugin(new goog.editor.plugins.LinkBubble());
 
   this.buttons_ = [
     goog.editor.Command.BOLD,
@@ -368,7 +372,8 @@ spo.control.Composer.prototype.createEditor = function() {
     goog.editor.Command.OUTDENT,
     goog.editor.Command.JUSTIFY_LEFT,
     goog.editor.Command.JUSTIFY_CENTER,
-    goog.editor.Command.JUSTIFY_RIGHT
+    goog.editor.Command.JUSTIFY_RIGHT,
+    goog.editor.Command.UPDATE_LINK_BUBBLE
   ];
   var toolbarControl = goog.ui.editor.DefaultToolbar.makeToolbar(this.buttons_, this.view_.googToolbar);
   (new goog.ui.editor.ToolbarController(this.field_, toolbarControl));

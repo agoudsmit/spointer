@@ -29,7 +29,7 @@ spo.gametemplate.UserList = function(opt_data) {
  * @notypecheck
  */
 spo.gametemplate.PreviewControl = function(opt_data) {
-  return '<div class="' + goog.getCssName('game-controls') + '"><div class="' + goog.getCssName('game-control-item') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('reply-button') + ' ' + goog.getCssName('circle-button') + '" data-action="reply" tutle="Reply"></div><div class="' + goog.getCssName('game-control-item') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('forward-button') + ' ' + goog.getCssName('circle-button') + '" data-action="forward" title="Forward"></div></div>';
+  return '<div class="' + goog.getCssName('game-controls') + '"><div class="' + goog.getCssName('game-control-item') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('reply-button') + ' ' + goog.getCssName('circle-button') + '" data-action="reply" title="Reply"></div><div class="' + goog.getCssName('game-control-item') + ' ' + goog.getCssName('form-button') + ' ' + goog.getCssName('goog-button') + ' ' + goog.getCssName('forward-button') + ' ' + goog.getCssName('circle-button') + '" data-action="forward" title="Forward"></div></div>';
 };
 
 
