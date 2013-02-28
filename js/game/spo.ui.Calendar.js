@@ -127,6 +127,7 @@ spo.ui.Calendar.prototype.getDateByEvent = function(date) {
   if (events) {
       var dateString = date.toIsoString(true);
       var result = goog.array.find(events, function(event) {
+          if (event['status'] == 'pending') return false;
           var eventDate = pstj.date.utils.renderTime(event['time'], 'yyyy-mm-dd');
           return eventDate == dateString;
       });
