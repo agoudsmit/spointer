@@ -62,6 +62,8 @@ goog.scope(function() {
     this.keyHandler_.attach(this.contentElement_);
     this.getHandler().listen(this.keyHandler_,
       goog.events.KeyHandler.EventType.KEY, function(e) { this.delay_.start();});
+    this.getHandler().listen(this.contentElement_, goog.events.EventType.PASTE,
+      this.checkTags_);
     this.saveButton_.setEnabled(false);
     this.getHandler().listen(this.saveButton_, goog.ui.Component.EventType.ACTION,
       function(e) {this.saveButton_.setEnabled(false)})
