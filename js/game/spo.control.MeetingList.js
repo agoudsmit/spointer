@@ -24,7 +24,7 @@ spo.control.MeetingList = function(container) {
   this.getHandler().listenOnce(this.model_, spo.ds.OverrideList.EventType.INITED,
       this.loadView);
   this.getHandler().listen(this.view_, goog.ui.Component.EventType.SELECT, this.handleChildAction_);
-  this.getHandler().listen(this.view_.contentElement,
+  this.getHandler().listen(this.view_.getContentElement(),
       goog.events.EventType.CLICK, this.handleMeetingClick);
   // TODO: enable this after tests
   this.model_.update();
@@ -83,11 +83,6 @@ goog.scope(function() {
     var list = this.filter();
     var result = '';
     for (var i = 0; i < list.length; i++) {
-      // FIXME: artificially limit the number of meetings per type as the widget
-      // does not support scrolling.
-      if (i > 2) {
-        break;
-      }
       result = result + spo.gametemplate.MeetingRecord({
         recordid: list[i]['msgid'],
         date: pstj.date.utils.renderTime(list[i]['time'], 'Month dd, yyyy'),
@@ -97,7 +92,8 @@ goog.scope(function() {
     if (result == '') {
       result = 'No meetings in the calendar';
     }
-    this.view_.contentElement.innerHTML = result;
+    this.view_.getContentElement().innerHTML = result;
     this.notify(this, spo.control.Action.UPDATE);
+    //force resize!
   };
 });

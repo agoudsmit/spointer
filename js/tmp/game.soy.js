@@ -187,7 +187,7 @@ spo.gametemplate.game = function(opt_data) {
  * @notypecheck
  */
 spo.gametemplate.MeetingList = function(opt_data) {
-  return '<div class="' + goog.getCssName('meetings-list') + '"><div class="' + goog.getCssName('meetings-label') + '">meetings</div><div class="' + goog.getCssName('goog-tab-bar') + '  ' + goog.getCssName('goog-tab-bar-top') + '"><div class="' + goog.getCssName('right') + ' ' + goog.getCssName('goog-tab') + '" data-type="pending">Pending</div><div class="' + goog.getCssName('right') + ' ' + goog.getCssName('goog-tab') + ' ' + goog.getCssName('goog-tab-selected') + '" data-type="upcoming">Upcoming</div></div><div class="' + goog.getCssName('goog-tab-bar-clear') + '"></div><div class="' + goog.getCssName('goog-tab-content') + '">Example content</div></div>';
+  return '<div class="' + goog.getCssName('meetings-list') + '"><div class="' + goog.getCssName('meetings-label') + '">meetings</div><div class="' + goog.getCssName('goog-tab-bar') + '  ' + goog.getCssName('goog-tab-bar-top') + '"><div class="' + goog.getCssName('right') + ' ' + goog.getCssName('goog-tab') + '" data-type="pending">Pending</div><div class="' + goog.getCssName('right') + ' ' + goog.getCssName('goog-tab') + ' ' + goog.getCssName('goog-tab-selected') + '" data-type="upcoming">Upcoming</div></div><div class="' + goog.getCssName('goog-tab-bar-clear') + '"></div><div class="' + goog.getCssName('goog-tab-content') + '" style="position:relative;overflow:hidden;height:180px;"></div></div>';
 };
 
 
