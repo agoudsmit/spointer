@@ -252,6 +252,7 @@ spo.control.GameArena.prototype.notify = function(child, action) {
         if (model != null) {
           // Useless piece of crap, even clones the model cannot be reused.
           var clone = goog.object.unsafeClone(model);
+          delete clone['date'];
           clone['to'] = model['from'];
           clone['from'] = goog.global['PLAYER_NAME'];
           clone['subject'] = 'Re:'+ model['subject'];
@@ -269,6 +270,7 @@ spo.control.GameArena.prototype.notify = function(child, action) {
         var model = this.previewControl_.getRecord();
         if (model != null) {
           var clone = goog.object.unsafeClone(model);
+          delete clone['date'];
           clone['to'] = [];
           clone['from'] = [goog.global['PLAYER_NAME']];
           clone['id'] = [];
