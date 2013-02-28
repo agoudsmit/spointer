@@ -11,3 +11,14 @@
   text-transform: uppercase;
   font-weight: bold;
 }
+
+.goog-tab-content .custom-scroll-bar {
+	-webkit-transform: none;
+	/** @alternate */ -moz-transform: none;
+	/** @alternate */ -ms-transform: none;
+}
+
+.goog-tab-content .custom-scroll-div {
+  padding-right: 25px;
+}
+
