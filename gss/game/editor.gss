@@ -38,6 +38,12 @@
   left: 72px;
 }
 
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+
 .toolbars-wrap .send-button {
   position: absolute;
   top: 0;

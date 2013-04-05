@@ -245,6 +245,9 @@ spo.control.Composer.prototype.updateDraft = function(resp) {
 spo.control.Composer.prototype.handleActionFromButtons = function(ev) {
   var target = ev.target;
   switch (target) {
+    case this.view_.closeButton_:
+      this.setEnable(false);
+      break;
     case this.view_.saveButton_:
       // compose message from the values.
       // both regular messages and meeting requests are saved as regular messages
