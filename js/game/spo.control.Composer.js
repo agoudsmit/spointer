@@ -156,7 +156,8 @@ spo.control.Composer.prototype.loadData = function(to, from, subject, body, web_
   this.field_.setHtml(undefined, (goog.isString(body)) ? body : '');
   if (goog.isNumber(web_form_config)) {
     this.isComposingMeeting = true;
-    this.webFormView = new spo.ui.MeetingForm((web_form_config == 0) ? undefined : web_form_config);
+    this.webFormView = new spo.ui.MeetingForm(this.gamerecord_,
+      (web_form_config == 0) ? undefined : web_form_config);
     this.getHandler().listen(this.webFormView, spo.ui.MeetingForm.EventType.DISALLOWED_DATE,
       this.handleDissalowedDate);
     this.webFormView.setGameRecord(this.gamerecord_);
