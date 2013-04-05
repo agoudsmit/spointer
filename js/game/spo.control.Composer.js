@@ -1,8 +1,9 @@
 goog.provide('spo.control.Composer');
 
-goog.require('spo.control.Base');
-goog.require('goog.editor.SeamlessField');
+goog.require('goog.async.Delay');
+goog.require('goog.dom');
 goog.require('goog.editor.Command');
+goog.require('goog.editor.SeamlessField');
 goog.require('goog.editor.plugins.BasicTextFormatter');
 goog.require('goog.editor.plugins.EnterHandler');
 goog.require('goog.editor.plugins.HeaderFormatter');
@@ -11,18 +12,17 @@ goog.require('goog.editor.plugins.LinkDialogPlugin');
 goog.require('goog.editor.plugins.ListTabHandler');
 goog.require('goog.editor.plugins.LoremIpsum');
 goog.require('goog.editor.plugins.SpacesTabHandler');
+goog.require('goog.object');
+goog.require('goog.ui.ac');
 goog.require('goog.ui.editor.DefaultToolbar');
 goog.require('goog.ui.editor.ToolbarController');
-goog.require('spo.ui.Composer');
-goog.require('goog.ui.ac');
-goog.require('spo.ds.mail');
-goog.require('goog.dom');
-goog.require('goog.async.Delay');
-goog.require('spo.ui.MeetingForm');
-goog.require('goog.object');
-goog.require('spo.ui.Attachment');
 goog.require('pstj.ui.Upload.Event');
 goog.require('spo.control.Attachments');
+goog.require('spo.control.Base');
+goog.require('spo.ds.mail');
+goog.require('spo.ui.Attachment');
+goog.require('spo.ui.Composer');
+goog.require('spo.ui.MeetingForm');
 
 
 /**
@@ -33,6 +33,7 @@ goog.require('spo.control.Attachments');
 spo.control.Composer = function(container) {
   // render everything in mail editor container.
   goog.base(this, container);
+  this.gamerecord_ = null;
   /** @type {!boolean} */
   this.isCreated = false;
   this.view_ = new spo.ui.Composer();
@@ -129,6 +130,9 @@ spo.control.Composer.prototype.setReplyId = function(msgid) {
  */
 spo.control.Composer.prototype.isComposingMeeting = false;
 
+spo.control.Composer.prototype.handleDissalowedDate = function() {
+  this.showError('Selected date is in the past!');
+};
 /**
  * Loads the composer with the optional data.
  * @param  {Array.<string>=} to The list of recipients.
@@ -139,7 +143,12 @@ spo.control.Composer.prototype.isComposingMeeting = false;
  * @param {*=} web_form_config Optional configuration for the form - this is the date.
  */
 spo.control.Composer.prototype.loadData = function(to, from, subject, body, web_form, web_form_config) {
-  goog.dispose(this.webFormView);
+  if (this.webFormView) {
+    this.getHandler().unlisten(this.webFormView, spo.ui.MeetingForm.EventType.DISALLOWED_DATE,
+      this.handleDissalowedDate);
+    goog.dispose(this.webFormView);
+    this.webFormView = null;
+  }
   this.isComposingMeeting = false;
   this.inReplyOf = null;
   this.view_.formContainer.innerHTML = '';
@@ -148,6 +157,9 @@ spo.control.Composer.prototype.loadData = function(to, from, subject, body, web_
   if (goog.isNumber(web_form_config)) {
     this.isComposingMeeting = true;
     this.webFormView = new spo.ui.MeetingForm((web_form_config == 0) ? undefined : web_form_config);
+    this.getHandler().listen(this.webFormView, spo.ui.MeetingForm.EventType.DISALLOWED_DATE,
+      this.handleDissalowedDate);
+    this.webFormView.setGameRecord(this.gamerecord_);
     this.webFormView.render(this.view_.formContainer);
   }
   this.setAttachments();
@@ -348,6 +360,14 @@ spo.control.Composer.prototype.handleTemplateSelection = function(ev) {
 
 spo.control.Composer.prototype.createAutoComplete = function() {
   this.ac = goog.ui.ac.createSimpleAutoComplete(spo.ds.mail.getNames(), this.view_.toField, true);
+};
+
+/**
+ * Sets the game record once it is availbale, passed down from the main control.
+ * @param {Object} gr The game record proeprties.
+ */
+spo.control.Composer.prototype.setGameRecord = function(gr) {
+  this.gamerecord_ = gr;
 };
 
 /**

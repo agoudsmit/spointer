@@ -133,6 +133,7 @@ spo.control.GameArena.prototype.setGame = function(gamerecord) {
 
 spo.control.GameArena.prototype.updateCalendar = function() {
   this.callendar_.setGameRecord(this.game_);
+  this.composer.setGameRecord(this.game_);
 };
 
 spo.control.GameArena.prototype.showEmptyComposer = function(e) {
