@@ -21,8 +21,9 @@ spo.ds.Resource = function() {};
  *
  * @type {string}
  * @private
+ * @const
  */
-spo.ds.Resource.MAIN_URL_ = '/InterACT/dispatcher';
+spo.ds.Resource.MAIN_URL_ = goog.global['DISPATCHER_PATH'];
 
 /**
  * The JSON processor to use. Here we use the native one and expect the
