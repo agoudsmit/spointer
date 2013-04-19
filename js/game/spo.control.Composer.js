@@ -88,8 +88,9 @@ spo.control.Composer.prototype.mailRecordModel_;
  */
 spo.control.Composer.prototype.handleAttachmentUpload = function(ev) {
   if (ev.type = pstj.ui.Upload.EventType.SUCCESS) {
+    // potencially missing in IE9...
     if (ev.formResponse['status'] == 'ok') {
-      if (!goog.isArray(this.mailRecordModel_['message_attachemnts'])) {
+      if (!goog.isArray(this.mailRecordModel_['message_attachments'])) {
         this.mailRecordModel_['message_attachments'] = [];
       }
       this.mailRecordModel_['message_attachments'].push(ev.formResponse['content']['message_attachments'][0])
