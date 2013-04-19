@@ -8,7 +8,7 @@ goog.require('spo.ds.MailBoxListItem');
 /**
  * Provides the Mail box listing - this is the list of available mail boxes
  * for each user.
- * 
+ *
  * @constructor
  * @extends {spo.ds.OverrideList}
  */
@@ -32,6 +32,9 @@ spo.ds.MailBoxList.prototype.getList = function() {
   return this.boxes_;
 };
 
+/** @inheritDoc */
+spo.ds.MailBoxList.prototype.interval = goog.global['UPDATE_INTERVAL_BOXLIST'] || spo.ds.OverrideList.UPDATE_INTERVAL;
+
 /**
  * @inheritDoc
  */
@@ -41,7 +44,7 @@ spo.ds.MailBoxList.prototype.handleUpdate = function(resp) {
     if (!goog.isDefAndNotNull(resp['content'])) {
       this.dispatchEvent(spo.ds.OverrideList.EventType.UPDATE_ERROR);
       return;
-    }    
+    }
     if (!goog.isArray(resp['content']['mailboxes'])) {
       this.dispatchEvent(spo.ds.OverrideList.EventType.UPDATE_ERROR);
       return;
@@ -60,7 +63,7 @@ spo.ds.MailBoxList.prototype.handleUpdate = function(resp) {
       for (var i = 0; i < len; i++) {
         box = boxes[i];
         this.boxes_.update(new spo.ds.MailBoxListItem(box));
-      }  
+      }
     }
   }
   // Schedule next update

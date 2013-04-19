@@ -28,9 +28,6 @@ spo.control.MailBoxList = function(container) {
 };
 goog.inherits(spo.control.MailBoxList, spo.control.Base);
 
-/** @inheritDoc */
-spo.control.MailBoxList.prototype.interval = goog.global['UPDATE_INTERVAL_BOXLIST'] || spo.ds.OverrideList.UPDATE_INTERVAL;
-
 /**
  * @type {spo.ui.MailBoxItem}
  * @private
