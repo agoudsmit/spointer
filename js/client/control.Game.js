@@ -46,6 +46,8 @@ spo.control.Game = function(container, gameid, edit) {
   this.view_.setScrollInsideTheWidget(false);
   this.view_.enableTransitions(true);
 
+  this.isSynchronizingState_ = false;
+
   // Initialize immediately, this view is disposable
   this.init();
 };
@@ -434,18 +436,21 @@ spo.control.Game.prototype.requestGameDeletion_ = function() {
  * @param  {spo.control.Action} action The action to execute.
  */
 spo.control.Game.prototype.syncGameStateToServer_ = function(action) {
+  if (this.isSynchronizingState_) return;
   var state = 0;
   if (action == spo.control.Action.PAUSE) {
     state = 2;
   } else if (action == spo.control.Action.PLAY) {
     state = 1;
   }
+  this.isSynchronizingState_ = true;
   spo.ds.Resource.getInstance().get({
     'url': '/game/update/' + this.gameId_,
     'data': {
       'state_id': state
     }
   }, goog.bind(function(resp) {
+    this.isSynchronizingState_ = false;
     if (resp['status'] != 'ok') {
       this.view_.getChildAt(1).setNotification('Error: ' +
         resp['error']);
