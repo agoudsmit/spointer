@@ -18,15 +18,17 @@ spo.ui.GameDetails = function(odh) {
 goog.inherits(spo.ui.GameDetails, goog.ui.Component);
 
 /**
+ * TODO: add speed 96 for 15 minutes.
  * Provides the valid values for a time set. Those are returned by the server
  * and should be used to set on the server. Intermediary values are not allowed.
  * @type {Array.<number>}
  */
 spo.ui.GameDetails.Speeds = [
-  1, 2, 3, 4, 6, 8, 12, 24, 48, 72, 144, 288, 1440
+  1, 2, 3, 4, 6, 8, 12, 24, 48, 72, 96, 144, 288, 1440
 ];
 
 /**
+ * TODO: add 15 minutes.
  * Specifies the names to be used for the game speed values.
  * @type {Array.<string>}
  * @protected
@@ -42,6 +44,7 @@ spo.ui.GameDetails.SpeedNames = [
   '1 hour',
   '30 minutes',
   '20 minutes',
+  '15 minutes',
   '10 minutes',
   '5 minutes',
   '1 minute'
