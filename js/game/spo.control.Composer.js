@@ -41,19 +41,22 @@ spo.control.Composer = function(container) {
   this.form = new spo.ui.Attachment();
   this.form.render(this.container_);
   this.getHandler().listen(this.form, [pstj.ui.Upload.EventType.SUCCESS,
-    pstj.ui.Upload.EventType.FAIL], this.handleAttachmentUpload );
+    pstj.ui.Upload.EventType.FAIL], this.handleAttachmentUpload);
   this.processTemplate_bound_ = goog.bind(this.processTemplate, this);
   this.showError_delayed_ = new goog.async.Delay(this.showError, 8000, this);
   this.attachmentsControl = new spo.control.Attachments();
-  this.attachmentsControl.render(this.view_.getEls(goog.getCssName('attachments')));
+  this.attachmentsControl.render(this.view_.getEls(goog.getCssName(
+    'attachments')));
 };
 goog.inherits(spo.control.Composer, spo.control.Base);
 
 
 
 /**
- * Sets the availability of the composer control. Simply hide it from the user when not needed.
- * @param {!boolean} enable True if the composer should be visible for the user. False to hide it.
+ * Sets the availability of the composer control. Simply hide it from the user
+ *  when not needed.
+ * @param {!boolean} enable True if the composer should be visible for the
+ *  user. False to hide it.
  */
 spo.control.Composer.prototype.setEnable = function(enable) {
 
@@ -227,8 +230,13 @@ spo.control.Composer.prototype.saveDraft = function(callback) {
 };
 
 spo.control.Composer.prototype.sendMessage = function(resp) {
+
   //console.log('resp', resp)
   if (resp['status'] == 'ok') {
+    if (goog.string.trim(this.mailRecordModel_['to']) == '') {
+      this.showError('No recepient selected');
+      return;
+    }
     spo.ds.Resource.getInstance().get({
       'url' : '/message/draft/send',
       'data': {
