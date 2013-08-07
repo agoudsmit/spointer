@@ -234,7 +234,11 @@ spo.control.Composer.prototype.sendMessage = function(resp) {
   //console.log('resp', resp)
   if (resp['status'] == 'ok') {
     if (goog.string.trim(this.mailRecordModel_['to']) == '') {
-      this.showError('No recepient selected');
+      this.showError('Please fill in an email address.');
+      return;
+    }
+    if (goog.string.trim(this.mailRecordModel_['subject']) == '') {
+      this.showError('Please fill in an subject.');
       return;
     }
     spo.ds.Resource.getInstance().get({
