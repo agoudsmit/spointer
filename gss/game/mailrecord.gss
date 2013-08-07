@@ -19,3 +19,11 @@ opacity: 1;
 	border-bottom: 1px solid EMBOSS_TEXT_COLOR;
 	cursor: pointer;
 }
+
+.raw-two {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 95%;
+  height: 30px;
+  overflow: hidden;
+}
