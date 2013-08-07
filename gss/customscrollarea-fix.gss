@@ -4,6 +4,8 @@
 .custom-scroll-bar {
   -webkit-transform: translate(25px, 0);
   /* @alternate */ -moz-transform: translate(25px, 0);
+  /* @alternate */ -ms-transform: translate(25px, 0);
+  /* @alternate */ transform: translate(25px, 0);
 }
 
 /**
