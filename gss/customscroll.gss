@@ -9,7 +9,7 @@
   width: 100%;
   height: 100%;
   /** This needto be removed for some case in admin...!!! */
-  position: relative;
+  /*position: relative;*/
 }
 
 /**
