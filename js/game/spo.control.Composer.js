@@ -34,6 +34,9 @@ goog.require('spo.ui.MeetingForm');
 spo.control.Composer = function(container) {
   // render everything in mail editor container.
   goog.base(this, container);
+
+  this.ignoreSendMessage_ = false;
+
   this.gamerecord_ = null;
   /** @type {!boolean} */
   this.isCreated = false;
@@ -241,12 +244,15 @@ spo.control.Composer.prototype.sendMessage = function(resp) {
       this.showError('Please fill in a subject.');
       return;
     }
+    if (this.ignoreSendMessage_) return;
+    this.ignoreSendMessage_ = true;
     spo.ds.Resource.getInstance().get({
       'url' : '/message/draft/send',
       'data': {
         'is_team_sent': 0
       }
     }, goog.bind(function(resp) {
+      this.ignoreSendMessage_ = false;
       if (resp['status'] != 'ok') {
         this.showError('Error sending message: ' + resp['error']);
       } else {
