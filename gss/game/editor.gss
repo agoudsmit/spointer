@@ -3,7 +3,7 @@
 }
 
 .toolbars-wrap {
-	height: 72px;
+	height: 75px;
 	position: relative;
 }
 
@@ -22,39 +22,27 @@
 
 .editor-toolbar {
 	position: relative;
-	top: 32px;
+	top: 10px;
 	height: 30px;
 }
 
-.template-button {
-	position: absolute;
-	right: 52%;
-	top: 5px;
+.toolbars-wrap .send-button,
+.toolbars-wrap .save-button,
+.toolbars-wrap .attachment-button,
+.toolbars-wrap .template-button,
+.toolbars-wrap .close-button {
+  display: inline-block;
+  margin: 0 3px;
 }
 
-.attachment-button {
-  position: absolute;
-  top: 5px;
-  left: 72px;
+.send-button {
+  background-color: #FFA83B;
+  color: black;
 }
 
 .close-button {
   position: absolute;
-  top: 5px;
   right: 0;
-}
-
-.toolbars-wrap .send-button {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-
-.toolbars-wrap .save-button {
-  position: absolute;
-  top: 0;
-  left: 32px;
 }
 
 .editor-field {

@@ -12,6 +12,7 @@ goog.require('goog.editor.plugins.LinkDialogPlugin');
 goog.require('goog.editor.plugins.ListTabHandler');
 goog.require('goog.editor.plugins.LoremIpsum');
 goog.require('goog.editor.plugins.SpacesTabHandler');
+goog.require('goog.string');
 goog.require('goog.object');
 goog.require('goog.ui.ac');
 goog.require('goog.ui.editor.DefaultToolbar');
@@ -230,10 +231,9 @@ spo.control.Composer.prototype.saveDraft = function(callback) {
 };
 
 spo.control.Composer.prototype.sendMessage = function(resp) {
-
   //console.log('resp', resp)
   if (resp['status'] == 'ok') {
-    if (goog.string.trim(this.mailRecordModel_['to']) == '') {
+    if (goog.string.trim(this.mailRecordModel_['to'].join('')) == '') {
       this.showError('Please fill in an email address.');
       return;
     }

@@ -10,18 +10,18 @@
       // For now username will do, but we actually need to know more for the components
       USER_NAME = 'Peter StJ';
       LOGOUT_LINK = 'whatever';
-      UPLOAD_SCENARIO = '/InterACT/games/upload';
-      UPLOAD_TEAMS = '/InterACT/games/uploadPlayers';
+      UPLOAD_SCENARIO = '/games/upload';
+      UPLOAD_TEAMS = '/games/uploadPlayers';
       FINISHED_GAME_STATS_URL = '/whateverYouWant/'; // + the game id will be appended
       // Set this to true once you are ready with the web socket.
       USE_WEB_SOCKS = false;
       SOCKET_RELAY_ADDRESS = '/InterAct/socket';
       EXPORT_PLAYERS_URL = 'games/';
-      DISPATCHER_PATH = '/InterACT/dispatcher';
+      DISPATCHER_PATH = '/dispatcher';
       //DELETE_CONFIRMATION = 'confirmation text'
       //DELETE_TITLE = 'confirmation title'
     </script>
-    <script src="/InterACT/serverTime"></script>
+    <script src="http://srv1.noblestreet.nl/serverTime"></script>
   </head>
   <body>
     <div id="screen"></div>
@@ -35,19 +35,21 @@
 <!--
     <script src="build/admin.build.js"></script>
  -->
+<!--
     <script src="http://demos.158.bg:8080/socket.io/socket.io.js"></script>
+ -->
     <script>
       // Hide variables in closure.
       // It is guaranteed that io will not override anything only if the compiled
       // closure build is wrapped as well. If closure modules are used wrap them as well
       // and use export namespace in the modules. (see compiler options)
       // the build exports window.SocketBridge = { process: function(data) {} }
-      (function() {
-        var socket = io.connect('http://demos.158.bg:8080');
-        socket.on('message', function(data) {
-          SocketBridge.process(data);
-        });
-      }());
+      // (function() {
+      //   var socket = io.connect('http://demos.158.bg:8080');
+      //   socket.on('message', function(data) {
+      //     SocketBridge.process(data);
+      //   });
+      // }());
     </script>
   </body>
 </html>
