@@ -238,7 +238,7 @@ spo.control.Composer.prototype.sendMessage = function(resp) {
       return;
     }
     if (goog.string.trim(this.mailRecordModel_['subject']) == '') {
-      this.showError('Please fill in an subject.');
+      this.showError('Please fill in a subject.');
       return;
     }
     spo.ds.Resource.getInstance().get({
